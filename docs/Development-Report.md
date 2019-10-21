@@ -64,14 +64,58 @@ Scratch your tingle, get ready to mingle!
 
 ### Use Case Diagram
 
-TBA
+![alt text](https://github.com/softeng-feup/open-cx-powerrangers/blob/master/docs/img/useCaseDiagram.png)
 
-* **Actor**. TBA
-* **Description**. TBA
-* **Preconditions and Postconditions**. TBA
+#### Create account use case:
 
-* **Normal Flow**. TBA
-* **Alternative Flows and Exceptions**. TBA
+* **Actor**: Atendee (since the conference staff can also use the app like a normal user, the actor 'Conference Staff' inherits from the'Atendee').
+* **Description**: In order to use the app, all users must create an account before setting up a personal profile and adhering to any conference. This process consists simply on choosing an account name and e-mail for future logins and filling in personal information such as name, age, sex.
+* **Preconditions and Postconditions**: The only precondition is to have the app downloaded and installed on the device. Since this use case assumes the user has no account prior to this step, the program is left in a state where it requires to user to create a personal profile.
+* **Normal Flow**: 
+  * User provides a username;
+  * User provides a valid e-mail (i.e. must comply with the format email@example.com);
+  * User inputs their full name, using only letters (A-Z, a-z);
+  * User chooses their sex (male or female);
+  * User inputs their age;
+  * User presses a button the create the account with the suplied information.
+* **Alternative Flows and Exceptions**: While the username can have almost every format, the user's full name and e-mail must adhere to the above mentioned conditions. If this isn't the case, then the system will inform the user and grey-out the 'Create' button until the errors are fixed.
+
+#### Create profile use case:
+
+* **Actor**: Atendee.
+* **Description**: The user is now asked to create a profile for its account, persistent for all conferences. With this profile, other users are capable of identifying this user.
+* **Preconditions and Postconditions**: As a precondition, the user must have already created an account. Afterwards, the app can now be used normally by the user.
+* **Normal Flow**: 
+  * User selects a profile picture, by which he/she will later be identified;
+  * User selects a few personal (with a maximum of three), non-professional interests, for example, cooking, soccer, etc;
+  * User inputs a small bio about themselves to provides some context;
+  * User can choose to have all the above information, apart from the profile picture, public or private;
+  * User presses the button to confirm and create the profile.
+* **Alternative Flows and Exceptions**: The filling-in of the field 'Bio' and the number of interests chosen is optional, therefore, these steps are not mandatory to fufilling this task.
+
+#### Select interests use case:
+
+* **Actor**: Atendee.
+* **Description**: When selecting to attend any given conference, the user must choose a few interests from a predefined pool, related to the conference, in order to provide a basis for how the matches are created. These interests are different from the profile-defined ones because they are only defined for each conference in particular. We call these 'professional interests'.
+* **Preconditions and Postconditions**: As preconditions, the user must have a correctly setup a user account and profile and must have opted-in into participating in the conference in question. The user can also opt-in and out of having the system activelly looking for possible matches. If the user opts-out of this, the system is left in a state where nothing really happens until/if the user decides to opt-in into the matchmaking process.
+* **Normal Flow**: 
+  * User searches for the desired conferences from the in-app registred ones;
+  * User joins the desired conference;
+  * User is taken to a screen and is asked to select between three to five interests from the availiable pool;
+  * User confirms his/hers choices;
+  * User defines whether or not he wants to be included in the matchmaking process;
+* **Alternative Flows and Exceptions**: This process is only successfully completed after the user chooses the minimum required of three interests.
+
+#### Accept matches use case:
+
+* **Actor**: Atendee.
+* **Description**: Having completed the previous steps successfully, and having opted-in into the matchmaking, the system will begin trying to match the conference's users based on both proximity, their personal and professional interests, the latter having a bigger influence on the outcome.
+* **Preconditions and Postconditions**: The user must have adhered to the conference in question, filled in the necessary interests and opted-in to the matchmaking process. Having accepted a match, the user must now look for their 'partner' in the real-world, and is given access to the other's profile information to ease this process. 
+* **Normal Flow**: 
+  * A notification is sent to the user's device;
+  * The user is shown a screen showing the other user's profile picture and match rating and the option to accept the match;
+  * User chooses to accept the match and is shown the rest of the other user's profile;
+* **Alternative Flows and Exceptions**: Should one of the matched user decline the match for whichever reason, both receive a notification saying the match was cancelled. The match will also 'time-out' if one of the user's doesn't answer in a yet to be specified ammount of time. This happens even if the other user answered positively.
 
 ### User stories
 
