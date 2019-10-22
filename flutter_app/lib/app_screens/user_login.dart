@@ -8,7 +8,7 @@ class UserLogin extends StatefulWidget {
   _UserLoginState createState() => _UserLoginState();
 }
 
-class _UserLoginState extends State<UserLogin> {
+class _UserLoginState extends State<UserLogin> {//TODO: Criar tipo de letra no inicio para nao repetir em cada Textfield; Alterar estrutura do codigo para a do userLogin
 
   TextEditingController emailEditingContrller = TextEditingController();
   TextEditingController passwordEditingContrller = TextEditingController();
@@ -36,7 +36,6 @@ class _UserLoginState extends State<UserLogin> {
                     controller: emailEditingContrller,
                     decoration: InputDecoration(
                         labelText: "Email",
-                        hintText: "Email",
                         labelStyle: TextStyle(
                           color: Colors.black,
                           fontSize: 16,
@@ -60,7 +59,6 @@ class _UserLoginState extends State<UserLogin> {
                     controller: passwordEditingContrller,
                     decoration: InputDecoration(
                         labelText: "Password",
-                        hintText: "Password",
                         labelStyle: TextStyle(
                           color: Colors.black,
                           fontSize: 16,
@@ -95,7 +93,6 @@ class _UserLoginState extends State<UserLogin> {
                       child: Text("Login"),
                     ),
                   ),
-
 
                   SizedBox( // button de Register
                     height: 20,

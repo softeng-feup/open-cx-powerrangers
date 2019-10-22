@@ -6,11 +6,20 @@ class UserRegister extends StatefulWidget {
   _UserRegisterState createState() => _UserRegisterState();
 }
 
-class _UserRegisterState extends State<UserRegister> {
+TextEditingController emailEditingContrller = TextEditingController();
+TextEditingController passwordEditingContrller = TextEditingController();
+
+class _UserRegisterState extends State<UserRegister> {//TODO: Criar tipo de letra no inicio para nao repetir em cada Textfield; Alterar estrutura do codigo para a do userLogin
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(     // Barra azul no topo
+        centerTitle: true,
+        title: Text(
+          'Mingler',
+        ),
+      ),
       //resizeToAvoidBottomInset: false,
       body: Center(
         child: SingleChildScrollView(
@@ -20,15 +29,11 @@ class _UserRegisterState extends State<UserRegister> {
             child: Center(
               child: Column(
                 children: <Widget>[
-                  SizedBox( //caixa do nome
-                    height: 30,
-                  ),
                   TextField(
                     autofocus: false,
                     obscureText: false,
                     decoration: InputDecoration(
                         labelText: "Full name: ",
-                        hintText: "FullName",
                         labelStyle: TextStyle(
                           color: Colors.black,
                           fontSize: 20,
@@ -47,10 +52,11 @@ class _UserRegisterState extends State<UserRegister> {
                   ),
                   TextField(
                     autofocus: false,
-                    obscureText: true,
+                    obscureText: false,
+                    keyboardType: TextInputType.emailAddress,
+                    controller: emailEditingContrller,
                     decoration: InputDecoration(
-                        labelText: "Email: ",
-                        hintText: "Email",
+                        labelText: "Email",
                         labelStyle: TextStyle(
                           color: Colors.black,
                           fontSize: 20,
@@ -59,7 +65,7 @@ class _UserRegisterState extends State<UserRegister> {
                             borderRadius: BorderRadius.all(Radius.circular(4)),
                             borderSide: BorderSide(
                                 width: 1,
-                                color: Colors.blue,
+                                color: Colors.green,
                                 style: BorderStyle.solid))),
                   ),
 
@@ -72,7 +78,6 @@ class _UserRegisterState extends State<UserRegister> {
                     obscureText: false,
                     decoration: InputDecoration(
                         labelText: "Username: ",
-                        hintText: "Username",
                         labelStyle: TextStyle(
                           color: Colors.black,
                           fontSize: 20,
@@ -90,9 +95,10 @@ class _UserRegisterState extends State<UserRegister> {
                   TextField(
                     autofocus: false,
                     obscureText: true,
+                    keyboardType: TextInputType.text,
+                    controller: passwordEditingContrller,
                     decoration: InputDecoration(
-                        labelText: "Password: ",
-                        hintText: "Password",
+                        labelText: "Password",
                         labelStyle: TextStyle(
                           color: Colors.black,
                           fontSize: 20,
@@ -100,7 +106,7 @@ class _UserRegisterState extends State<UserRegister> {
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(4)),
                             borderSide: BorderSide(
-                                width: 0,
+                                width: 1,
                                 color: Colors.green,
                                 style: BorderStyle.solid))),
                   ),
@@ -110,9 +116,10 @@ class _UserRegisterState extends State<UserRegister> {
                   TextField(
                     autofocus: false,
                     obscureText: true,
+                    keyboardType: TextInputType.text,
+                    controller: passwordEditingContrller,
                     decoration: InputDecoration(
-                        labelText: "Password(again): ",
-                        hintText: "PasswordRepeated",
+                        labelText: "Password (again)",
                         labelStyle: TextStyle(
                           color: Colors.black,
                           fontSize: 20,
@@ -120,7 +127,7 @@ class _UserRegisterState extends State<UserRegister> {
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(4)),
                             borderSide: BorderSide(
-                                width: 0,
+                                width: 1,
                                 color: Colors.green,
                                 style: BorderStyle.solid))),
                   ),
@@ -138,25 +145,8 @@ class _UserRegisterState extends State<UserRegister> {
                       },
                       textColor: Colors.white,
                       color: Colors.green,
-                      height: 50,
+                      height: 60,
                       child: Text("Register"),
-                    ),
-                  ),
-                  SizedBox( // button de goBack
-                    height: 20,
-                  ),
-                  ButtonTheme(
-                    minWidth: double.infinity,
-                    child: MaterialButton(
-                      onPressed: () => {
-                        Navigator.pop(
-                            context
-                        ),
-                      },
-                      textColor: Colors.white,
-                      color: Colors.red,
-                      height: 50,
-                      child: Text("Go Back"),
                     ),
                   ),
                 ],
