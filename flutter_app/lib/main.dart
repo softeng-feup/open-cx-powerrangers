@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'app_screens/user_login.dart';
 import 'app_screens/user_profile.dart';
+import 'app_screens/user_register.dart';
 
 void main() => runApp(MyApp());
 
@@ -35,8 +36,6 @@ class MyApp extends StatelessWidget {
         body: UserLogin(),
       )
     );
-
   }
-
 }
 

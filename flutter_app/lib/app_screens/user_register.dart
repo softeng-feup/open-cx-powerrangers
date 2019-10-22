@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'user_profile.dart';
 
-
-class UserProfile extends StatefulWidget {
+class UserRegister extends StatefulWidget {
   @override
-  _UserProfileState createState() => _UserProfileState();
+  _UserRegisterState createState() => _UserRegisterState();
 }
 
-class _UserProfileState extends State<UserProfile> {
+class _UserRegisterState extends State<UserRegister> {
 
   @override
   Widget build(BuildContext context) {
@@ -16,9 +16,8 @@ class _UserProfileState extends State<UserProfile> {
         child: SingleChildScrollView(
           child: Container(
             color: Colors.white,
-            padding: EdgeInsets.all(40),
+            padding: EdgeInsets.all(24),
             child: Center(
-              child: Row(
               child: Column(
                 children: <Widget>[
                   SizedBox( //caixa do nome
@@ -28,8 +27,8 @@ class _UserProfileState extends State<UserProfile> {
                     autofocus: false,
                     obscureText: false,
                     decoration: InputDecoration(
-                        labelText: "Name",
-                        hintText: "Name",
+                        labelText: "Full name: ",
+                        hintText: "FullName",
                         labelStyle: TextStyle(
                           color: Colors.black,
                           fontSize: 20,
@@ -42,15 +41,16 @@ class _UserProfileState extends State<UserProfile> {
                                 style: BorderStyle.solid))),
                   ),
 
-                  SizedBox( // caixa da Password
+
+                  SizedBox( // caixa do email
                     height: 30,
                   ),
                   TextField(
                     autofocus: false,
                     obscureText: true,
                     decoration: InputDecoration(
-                        labelText: "Description",
-                        hintText: "Description",
+                        labelText: "Email: ",
+                        hintText: "Email",
                         labelStyle: TextStyle(
                           color: Colors.black,
                           fontSize: 20,
@@ -63,15 +63,16 @@ class _UserProfileState extends State<UserProfile> {
                                 style: BorderStyle.solid))),
                   ),
 
-                  SizedBox( //caixa dos interesses
+
+                  SizedBox( //caixa do username
                     height: 30,
                   ),
                   TextField(
                     autofocus: false,
                     obscureText: false,
                     decoration: InputDecoration(
-                        labelText: "Interests",
-                        hintText: "Interests",
+                        labelText: "Username: ",
+                        hintText: "Username",
                         labelStyle: TextStyle(
                           color: Colors.black,
                           fontSize: 20,
@@ -83,7 +84,64 @@ class _UserProfileState extends State<UserProfile> {
                                 color: Colors.green,
                                 style: BorderStyle.solid))),
                   ),
-
+                  SizedBox( //caixa da password
+                    height: 30,
+                  ),
+                  TextField(
+                    autofocus: false,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                        labelText: "Password: ",
+                        hintText: "Password",
+                        labelStyle: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                        ),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(4)),
+                            borderSide: BorderSide(
+                                width: 0,
+                                color: Colors.green,
+                                style: BorderStyle.solid))),
+                  ),
+                  SizedBox( //caixa da password repetida
+                    height: 30,
+                  ),
+                  TextField(
+                    autofocus: false,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                        labelText: "Password(again): ",
+                        hintText: "PasswordRepeated",
+                        labelStyle: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                        ),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(4)),
+                            borderSide: BorderSide(
+                                width: 0,
+                                color: Colors.green,
+                                style: BorderStyle.solid))),
+                  ),
+                  SizedBox( // button de register
+                    height: 20,
+                  ),
+                  ButtonTheme(
+                    minWidth: double.infinity,
+                    child: MaterialButton(
+                      onPressed: () => {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => UserProfile()),
+                        )
+                      },
+                      textColor: Colors.white,
+                      color: Colors.green,
+                      height: 50,
+                      child: Text("Register"),
+                    ),
+                  ),
                   SizedBox( // button de goBack
                     height: 20,
                   ),
@@ -92,8 +150,8 @@ class _UserProfileState extends State<UserProfile> {
                     child: MaterialButton(
                       onPressed: () => {
                         Navigator.pop(
-                          context
-                          ),
+                            context
+                        ),
                       },
                       textColor: Colors.white,
                       color: Colors.red,
@@ -103,7 +161,6 @@ class _UserProfileState extends State<UserProfile> {
                   ),
                 ],
               ),
-            ),
             ),
           ),
         ),

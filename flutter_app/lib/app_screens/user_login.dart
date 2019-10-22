@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/app_screens/user_register.dart';
 import 'user_profile.dart';
 
 
@@ -83,28 +84,35 @@ class _UserLoginState extends State<UserLogin> {
                     child: MaterialButton(
                       onPressed: () => {
                         //check if user is valid
-                        //login
-                        //sendMessage(), //UserProfile(),//show profile
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => UserProfile()),
+                        )
                       },
                       textColor: Colors.white,
                       color: Colors.green,
                       height: 50,
-                      child: Text("LOGIN"),
+                      child: Text("Login"),
                     ),
                   ),
 
 
-                  SizedBox( // button de SUBSCIBE
+                  SizedBox( // button de Register
                     height: 20,
                   ),
                   ButtonTheme(
                     minWidth: double.infinity,
                     child: MaterialButton(
-                      onPressed: () => {},
+                      onPressed: () => {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => UserRegister()),
+                        )
+                      },
                       textColor: Colors.white,
                       color: Colors.red,
                       height: 50,
-                      child: Text("SUBSCRIBE"),
+                      child: Text("Register"),
                     ),
                   ),
                 ],
