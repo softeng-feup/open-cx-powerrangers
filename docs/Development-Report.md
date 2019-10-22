@@ -117,9 +117,62 @@ Scratch your tingle, get ready to mingle!
   * User chooses to accept the match and is shown the rest of the other user's profile;
 * **Alternative Flows and Exceptions**: Should one of the matched user decline the match for whichever reason, both receive a notification saying the match was cancelled. The match will also 'time-out' if one of the user's doesn't answer in a yet to be specified ammount of time. This happens even if the other user answered positively.
 
+#### Search matches use case:
+
+* **Actor**: Atendee.
+* **Description**: The user is given the ability to not be part of the matchmaking process. However, the user can change its mind and decide to enter, or leave, the matchmaking for a certain conference, so long as that conference is still ongoing.
+* **Preconditions and Postconditions**: The user must have adhered to the conference in question, filled in the necessary interests and not have opted-in to the matchmaking process. After the process is completed, the user will be inserted in the pool of candidates for matches.
+* **Normal Flow**: 
+  * The user navigates to the conference page;
+  * In the conference settings, the user toggles the matchmaking option on or off.
+  
+#### Rate match use case:
+
+* **Actor**: Atendee.
+* **Description**: After the users involved in a match finish their conversation, they have to option to rate the person to which they matched, on a scale of 1 to 5 stars. In the future, a given user's rating will be displayed, in order to provides more information to other users on who they are going to match.
+* **Preconditions and Postconditions**: The user must be in a active match for this option to appear. Internally, the system will mark a match as "complete" when one of the users involved rates the other.
+* **Normal Flow**: 
+  * The user accesses the app and is taken automatically to the match screen;
+  * The user is shown a scale of five starts and can choose to rate the match or dismiss it;
+  * The user confirms their option and leaves the match screen.
+  
+#### Define conference and related interests use case:
+
+* **Actor**: Conference Staff.
+* **Description**: For attendees to be able to join and make matches in a conference, the conference needs to be set up in the app. Therefore, someone from the conference staff needs to create the in-app event, filling it with several informations such as name, location, dates, external sites for more information. Additionally, they will be asked to provide a pool of topics related to the conference, so that attendees can choose which ones fit them the best.
+* **Preconditions and Postconditions**: The user must have higher privileges than a regular user in order to have access to the menu to create events. After the process is complete, the app will register the event and other user can search and join it.
+* **Normal Flow**: 
+  * The user navigates to the 'Create Event' menu;
+  * The user fills in the event's name, location, description and sets up and external link to the events webpage;
+  * The user defines other users to have staff privileges on that conference;
+  * The user defines a set of topics related to the conference;
+  * The user confirms their submissions and creates the event.
+  
+#### Look up ongoing matches use case:
+
+* **Actor**: Conference staff.
+* **Description**: Conference staff members might have the need to check how active their attendees are with each other outside of the conferences planned events. Users with Staff privileges for a given conference can, therefore, check how many ongoing matches there are, as well as which topics these matches supposedly address.
+* **Preconditions and Postconditions**: The user must have higher priviledges for the conference in question to access this sub-menu.
+* **Normal Flow**: 
+  * The user navigates to the conference page;
+  * In the conference settings, the user selects 'See all matches';
+  * A page appears with all the ongoing matches as well as the topics that led to the creation of the match;
+  * The user can see some global statistics like how many matches are currently happening, how many matches have concluded and the most discussed topics in the matches.
+  
+#### Look up user information use case:
+
+* **Actor**: Conference staff.
+* **Description**: Conference staff members have access to the profile information of all attendees that have opted-in into the matchmaking process and can look up any individual attendee and see their profile, personal and professional interests.
+* **Preconditions and Postconditions**: The user must have higher priviledges for the conference in question to access this sub-menu.
+* **Normal Flow**: 
+  * The user navigates to the conference page;
+  * In the conference settings, the user selects 'See registred users';
+  * A page appears with all users ordered alphabetically but can directly search for a name;
+  * By pressing the desired attendee's link, the user can see all information they have public as well as thei match history for their conference in particular.
+
 ### User stories
 
-TBA (link to Trello)
+[Link to the Trello page.](https://trello.com/b/zLgW01zY/esof-mingler)
 
 ### Domain model
 
