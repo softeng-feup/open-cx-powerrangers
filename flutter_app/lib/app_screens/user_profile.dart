@@ -21,12 +21,14 @@ class _UserProfileState extends State<UserProfile> {//TODO: Criar tipo de letra 
       body: Center(
         child: SingleChildScrollView(
           child:Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.center,
               children:[Container(
-                width: 250, child: leftColumn,
+                child: leftColumn,
+                width: 200,
               ),
                 Container(
-                  width: 150, child: rightColumn,
+                  child: rightColumn,
+                  width: 200,
                 ),
               ],
           ),
@@ -35,25 +37,20 @@ class _UserProfileState extends State<UserProfile> {//TODO: Criar tipo de letra 
     );
   }
 
-  final leftColumn = Container(width: 30,
+  final leftColumn = Container(
     child: Column(children: <Widget>[
-      /*TextField(
+      TextField(
         autofocus: false,
         obscureText: false,
         decoration: InputDecoration(
-            labelText: "PlaceForPicture",
-            hintText: "Picture",
-            labelStyle: TextStyle(
-              color: Colors.black,
-              fontSize: 20,
-            ),
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(4)),
-                borderSide: BorderSide(
-                    width: 0,
-                    color: Colors.green,
-                    style: BorderStyle.solid))),
-      ),*/
+          labelText: ":)",
+          hintText: "Rating",
+          labelStyle: TextStyle(
+            color: Colors.black,
+            fontSize: 200,
+          ),
+        ),
+      ),
       SizedBox( //caixa dos ratings
         height: 30,
       ),
@@ -72,39 +69,36 @@ class _UserProfileState extends State<UserProfile> {//TODO: Criar tipo de letra 
     ],)
   );
   final rightColumn = Container(width: 30,
-      child: Column(children: <Widget>[
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        verticalDirection: VerticalDirection.down,
+        children: <Widget>[
         TextField(
           enabled: false,
           autofocus: false,
           obscureText: false,
           decoration: InputDecoration(
-              labelText: "My Guy",
-              hintText: "Name",
+              labelText: "Anthony",
               labelStyle: TextStyle(
                 color: Colors.black,
-                fontSize: 20,
+                fontSize: 30,
               ),
           ),
         ),
         SizedBox( // caixa da description
-          height: 70,
+          height: 30,
         ),
         TextField(
+          maxLines: 8, //to expand height
           enabled: false,
           autofocus: false,
           decoration: InputDecoration(
-              labelText: "Sports fan, FC Porto supporter.\n Web developer, with about 10 years experience.",
-              hintText: "Description",
+              labelText: "Sports fan, FC Porto\n supporter.\n Web developer, with\n about 10 years\n experience.\n\n\n",
               labelStyle: TextStyle(
                 color: Colors.black,
-                fontSize: 20,
+                fontSize: 15,
               ),
-              border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(4)),
-                  borderSide: BorderSide(
-                      width: 1,
-                      color: Colors.blue,
-                      style: BorderStyle.solid))),
+          ),
         ),
 
         SizedBox( //caixa dos interesses
@@ -116,7 +110,6 @@ class _UserProfileState extends State<UserProfile> {//TODO: Criar tipo de letra 
           obscureText: false,
           decoration: InputDecoration(
               labelText: "Interests",
-              hintText: "Interests",
               labelStyle: TextStyle(
                 color: Colors.black,
                 fontSize: 20,
