@@ -18,13 +18,14 @@ class _MainMenuState extends State<MainMenu> {
         length: 2,
         child: Scaffold(
           appBar: AppBar(
+            title: Text('Mingler'),
+            centerTitle: true,
             bottom: TabBar(
               tabs: [
                 Tab(text: 'Home Page'),
                 Tab(text: 'Profile'),
               ],
             ),
-            title: Text('Mingler', textAlign: TextAlign.right,),
           ),
           body: TabBarView(
             children: [

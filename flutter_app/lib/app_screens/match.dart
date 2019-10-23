@@ -18,7 +18,8 @@ class _MatchState extends State<Match> {
       // TODO - Adicionar botao edit, permite utilizador editar perfil
       //resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text('Match', textAlign: TextAlign.justify,), //make this centered
+        title: Text('Match'),
+          centerTitle: true,
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -119,7 +120,7 @@ class _MatchState extends State<Match> {
             },
             textColor: Colors.white,
             color: Colors.green,
-            child: Text("✔"),
+            child: Text("✓", textScaleFactor: 5),
           ),
         ),
       ],
@@ -145,7 +146,7 @@ class _MatchState extends State<Match> {
             },
             textColor: Colors.white,
             color: Colors.red,
-            child: Text("X"),
+            child: Text("X", textScaleFactor: 5),
           ),
         ),
       ],

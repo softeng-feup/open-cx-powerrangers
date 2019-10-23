@@ -13,6 +13,7 @@ class UserLogin extends StatefulWidget {
   _UserLoginState createState() => _UserLoginState();
 }
 
+
 enum FormType {
   login,
   register
@@ -245,6 +246,5 @@ class _UserLoginState extends State<UserLogin> {
         ),
       ),
     ];
-
   }
 }
