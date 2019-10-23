@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'app_screens/user_login.dart';
 import 'app_screens/user_profile.dart';
 import 'app_screens/user_register.dart';
+import 'app_screens/homePage.dart';
+import 'app_screens/main_Menu.dart';
+import 'app_screens/match.dart';
 
 void main() => runApp(MyApp());
 
@@ -22,13 +25,13 @@ class MyApp extends StatelessWidget {
         length: 2,
         child: Scaffold(
           appBar: AppBar(
-            bottom: TabBar( //temporary: to be used for homescreen/profile/matches
+            bottom: TabBar(
               tabs: [
                 Tab(text: 'Login'),
-                Tab(text: 'Register')
+                Tab(text: 'Register'),
               ],
             ),
-            title: Text('Mingler', textAlign: TextAlign.center,),
+            title: Text('Mingler', textAlign: TextAlign.right,),
           ),
           body: TabBarView(
             children: [

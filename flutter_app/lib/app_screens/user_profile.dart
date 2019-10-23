@@ -11,12 +11,7 @@ class _UserProfileState extends State<UserProfile> {//TODO: Criar tipo de letra 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(     // Barra azul no topo - TODO: Arranjar forma de não ter de repetir em todos os ecras; Adicionar botao edit, permite utilizador editar perfil
-        centerTitle: true,
-        title: Text(
-          'Mingler',
-        ),
-      ),
+      // TODO - Adicionar botao edit, permite utilizador editar perfil
       //resizeToAvoidBottomInset: false,
       body: Center(
         child: SingleChildScrollView(
@@ -55,7 +50,7 @@ class _UserProfileState extends State<UserProfile> {//TODO: Criar tipo de letra 
         autofocus: false,
         obscureText: false,
         decoration: InputDecoration(
-          labelText: ":)",
+          labelText: "☺",
           labelStyle: TextStyle(
             color: Colors.black,
             fontSize: 200,

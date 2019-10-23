@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'user_profile.dart';
+import 'main_Menu.dart';
 
 class UserRegister extends StatefulWidget {
   @override
@@ -174,7 +175,7 @@ class _UserRegisterState extends State<UserRegister> {//TODO: Criar tipo de letr
             onPressed: () => {
               Navigator.push(
                 currentContext,
-                MaterialPageRoute(builder: (currentContext) => UserProfile()),
+                MaterialPageRoute(builder: (currentContext) => MainMenu()),
               )
             },
             textColor: Colors.white,

@@ -7,10 +7,6 @@ class homePage extends StatelessWidget
   Widget build(BuildContext context)
   {
     return new Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: new Text('Home')
-      ),
       body: new Container(
         child: new Text('your feed is empty :(')
       ),
