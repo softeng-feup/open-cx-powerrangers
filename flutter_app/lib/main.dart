@@ -21,27 +21,14 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       //home: MyHomePage(title: 'Flutter Demo Home Page'),
-      home: DefaultTabController(
-        length: 2,
-        child: Scaffold(
+      home: Scaffold(
           appBar: AppBar(
-            bottom: TabBar(
-              tabs: [
-                Tab(text: 'Login'),
-                Tab(text: 'Register'),
-              ],
-            ),
+            centerTitle: true,
             title: Text('Mingler', textAlign: TextAlign.right,),
           ),
-          body: TabBarView(
-            children: [
-              UserLogin(),
-              UserRegister(),
-            ],
+          body: UserLogin(),
           ),
-        ),
-      ),
-    );
+        );
   }
 }
 
