@@ -11,7 +11,6 @@ class UserLogin extends StatefulWidget {
 }
 
 class _UserLoginState extends State<UserLogin> {//TODO: Criar tipo de letra no inicio para nao repetir em cada Textfield
-
   @override
   Widget build(BuildContext context) {
     currentContext = context;
@@ -93,6 +92,9 @@ class _UserLoginState extends State<UserLogin> {//TODO: Criar tipo de letra no i
 
   final loginButtonRow = Container(
       child: Column(children: <Widget>[
+        SizedBox( //caixa da password
+          height: 30,
+        ),
         ButtonTheme(
           //elevation: 4,
           //color: Colors.green,
@@ -117,6 +119,9 @@ class _UserLoginState extends State<UserLogin> {//TODO: Criar tipo de letra no i
 
   final registerButtonRow = Container(
       child: Column(children: <Widget>[
+        SizedBox( //caixa da password
+          height: 30,
+        ),
         ButtonTheme(
           //elevation: 4,
           //color: Colors.green,
@@ -126,7 +131,7 @@ class _UserLoginState extends State<UserLogin> {//TODO: Criar tipo de letra no i
               //check if user is valid
               Navigator.push(
                 currentContext,
-                MaterialPageRoute(builder: (currentContext) => MainMenu()),
+                MaterialPageRoute(builder: (currentContext) => UserRegister()),
               )
             },
             textColor: Colors.white,

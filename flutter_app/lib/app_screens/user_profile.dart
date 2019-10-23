@@ -53,7 +53,7 @@ class _UserProfileState extends State<UserProfile> {//TODO: Criar tipo de letra 
           labelText: "☺",
           labelStyle: TextStyle(
             color: Colors.black,
-            fontSize: 200,
+            fontSize: 150,
           ),
         ),
       ),
