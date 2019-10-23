@@ -6,12 +6,12 @@ class UserProfile extends StatefulWidget {
   _UserProfileState createState() => _UserProfileState();
 }
 
-class _UserProfileState extends State<UserProfile> {//TODO: Criar tipo de letra no inicio para nao repetir em cada Textfield; Alterar estrutura do codigo para a do userLogin
+class _UserProfileState extends State<UserProfile> {//TODO: Criar tipo de letra no inicio para nao repetir em cada Textfield; Mudar TextField para um tipo de caixa read-only
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(     // Barra azul no topo - TODO: Arranjar forma de não ter de repetir em todos os ecras;
+      appBar: AppBar(     // Barra azul no topo - TODO: Arranjar forma de não ter de repetir em todos os ecras; Adicionar botao edit, permite utilizador editar perfil
         centerTitle: true,
         title: Text(
           'Mingler',
@@ -20,31 +20,42 @@ class _UserProfileState extends State<UserProfile> {//TODO: Criar tipo de letra 
       //resizeToAvoidBottomInset: false,
       body: Center(
         child: SingleChildScrollView(
-          child:Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children:[Container(
-                child: leftColumn,
+          child:Column(
+            children: <Widget>[
+          Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+            children:[Container(
+              child: leftColumnTop,
+              width: 200,
+            ),
+              Container(
+                child: rightColumnTop,
                 width: 200,
               ),
-                Container(
-                  child: rightColumn,
-                  width: 200,
-                ),
-              ],
+            ],
           ),
+              Row(
+              children:[Container(
+                child: ColumnBottom,
+                width: 400,
+              )]
+              ),
+            ],
           ),
         ),
-    );
+          ),
+        );
   }
 
-  final leftColumn = Container(
+
+  final leftColumnTop = Container(
     child: Column(children: <Widget>[
-      TextField(
+      TextField(//photoDummy
+        enabled: false,
         autofocus: false,
         obscureText: false,
         decoration: InputDecoration(
           labelText: ":)",
-          hintText: "Rating",
           labelStyle: TextStyle(
             color: Colors.black,
             fontSize: 200,
@@ -55,6 +66,7 @@ class _UserProfileState extends State<UserProfile> {//TODO: Criar tipo de letra 
         height: 30,
       ),
       TextField(
+        enabled: false,
         autofocus: false,
         obscureText: false,
         decoration: InputDecoration(
@@ -68,7 +80,8 @@ class _UserProfileState extends State<UserProfile> {//TODO: Criar tipo de letra 
       ),
     ],)
   );
-  final rightColumn = Container(width: 30,
+
+  final rightColumnTop = Container(width: 30,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         verticalDirection: VerticalDirection.down,
@@ -100,26 +113,23 @@ class _UserProfileState extends State<UserProfile> {//TODO: Criar tipo de letra 
               ),
           ),
         ),
+      ],)
+  );
 
-        SizedBox( //caixa dos interesses
-          height: 30,
-        ),
-        TextField(
+  final ColumnBottom = Container(
+      child: Column(children: <Widget>[
+        TextField(//interests
+          maxLines: 8,
           enabled: false,
           autofocus: false,
           obscureText: false,
           decoration: InputDecoration(
-              labelText: "Interests",
-              labelStyle: TextStyle(
-                color: Colors.black,
-                fontSize: 20,
-              ),
-              border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(4)),
-                  borderSide: BorderSide(
-                      width: 0,
-                      color: Colors.green,
-                      style: BorderStyle.solid))),
+            labelText: "I am interested in: I am interested in: \nI am interested in: I am interested in: \nI am interested in: I am interested in: I am interested in: I am interested in: ",
+            labelStyle: TextStyle(
+              color: Colors.black,
+              fontSize: 20,
+            ),
+          ),
         ),
       ],)
   );

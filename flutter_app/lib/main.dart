@@ -17,15 +17,27 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Scaffold(
-        appBar: AppBar(     // Barra azul no topo
-          centerTitle: true,
-          title: Text(
-              'Mingler',
+      //home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          appBar: AppBar(
+            bottom: TabBar( //temporary: to be used for homescreen/profile/matches
+              tabs: [
+                Tab(text: 'Login'),
+                Tab(text: 'Register')
+              ],
+            ),
+            title: Text('Mingler', textAlign: TextAlign.center,),
+          ),
+          body: TabBarView(
+            children: [
+              UserLogin(),
+              UserRegister(),
+            ],
           ),
         ),
-        body: UserLogin(),
-      )
+      ),
     );
   }
 }

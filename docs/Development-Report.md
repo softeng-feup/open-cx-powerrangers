@@ -120,11 +120,12 @@ Scratch your tingle, get ready to mingle!
 #### Search matches use case:
 
 * **Actor**: Atendee.
-* **Description**: The user is given the ability to not be part of the matchmaking process. However, the user can change its mind and decide to enter, or leave, the matchmaking for a certain conference, so long as that conference is still ongoing.
-* **Preconditions and Postconditions**: The user must have adhered to the conference in question, filled in the necessary interests and not have opted-in to the matchmaking process. After the process is completed, the user will be inserted in the pool of candidates for matches.
+* **Description**: The user is given the option to search is conference match history, so he can choose which match to Mingle with outside the conference.
+* **Preconditions and Postconditions**: The user must have adhered to the conference in question, filled in the necessary interests and have at least one match.
 * **Normal Flow**: 
-  * The user navigates to the conference page;
-  * In the conference settings, the user toggles the matchmaking option on or off.
+  * The user navigates to his profile;
+  * In his profile the user selects "Search Matches".
+  * He presses the match and he is able to start a conversation.
   
 #### Rate match use case:
 
