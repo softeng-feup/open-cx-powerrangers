@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/app_screens/homePage.dart';
 import 'package:flutter_app/app_screens/user_register.dart';
 import 'user_profile.dart';
 
@@ -8,7 +9,8 @@ class UserLogin extends StatefulWidget {
   _UserLoginState createState() => _UserLoginState();
 }
 
-class _UserLoginState extends State<UserLogin> {//TODO: Criar tipo de letra no inicio para nao repetir em cada Textfield; Alterar estrutura do codigo para a do userLogin
+class _UserLoginState extends State<UserLogin> {
+  //TODO: Criar tipo de letra no inicio para nao repetir em cada Textfield; Alterar estrutura do codigo para a do userLogin
 
   TextEditingController emailEditingContrller = TextEditingController();
   TextEditingController passwordEditingContrller = TextEditingController();
@@ -84,7 +86,7 @@ class _UserLoginState extends State<UserLogin> {//TODO: Criar tipo de letra no i
                         //check if user is valid
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => UserProfile()),
+                          MaterialPageRoute(builder: (context) => homePage()),
                         )
                       },
                       textColor: Colors.white,

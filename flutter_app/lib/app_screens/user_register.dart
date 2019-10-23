@@ -9,7 +9,8 @@ class UserRegister extends StatefulWidget {
 TextEditingController emailEditingContrller = TextEditingController();
 TextEditingController passwordEditingContrller = TextEditingController();
 
-class _UserRegisterState extends State<UserRegister> {//TODO: Criar tipo de letra no inicio para nao repetir em cada Textfield; Alterar estrutura do codigo para a do userLogin
+class _UserRegisterState extends State<UserRegister> {
+  //TODO: Criar tipo de letra no inicio para nao repetir em cada Textfield; Alterar estrutura do codigo para a do userLogin
 
   @override
   Widget build(BuildContext context) {
