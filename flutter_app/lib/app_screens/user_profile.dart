@@ -6,7 +6,7 @@ class UserProfile extends StatefulWidget {
   _UserProfileState createState() => _UserProfileState();
 }
 
-class _UserProfileState extends State<UserProfile> {//TODO: Criar tipo de letra no inicio para nao repetir em cada Textfield; Alterar estrutura do codigo para a do userLogin
+class _UserProfileState extends State<UserProfile> {//TODO: Criar tipo de letra no inicio para nao repetir em cada Textfield
 
   @override
   Widget build(BuildContext context) {

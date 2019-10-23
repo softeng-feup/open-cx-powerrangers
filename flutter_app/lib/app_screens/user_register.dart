@@ -8,11 +8,12 @@ class UserRegister extends StatefulWidget {
 
 TextEditingController emailEditingContrller = TextEditingController();
 TextEditingController passwordEditingContrller = TextEditingController();
+var currentContext;
 
-class _UserRegisterState extends State<UserRegister> {//TODO: Criar tipo de letra no inicio para nao repetir em cada Textfield; Alterar estrutura do codigo para a do userLogin
-
+class _UserRegisterState extends State<UserRegister> {//TODO: Criar tipo de letra no inicio para nao repetir em cada Textfield
   @override
   Widget build(BuildContext context) {
+    currentContext = context;
     return Scaffold(
       appBar: AppBar(     // Barra azul no topo
         centerTitle: true,
@@ -34,24 +35,7 @@ class _UserRegisterState extends State<UserRegister> {//TODO: Criar tipo de letr
                   usernameRow,
                   passwordRow,
                   passwordRepeatRow,
-                  SizedBox( // Register button
-                    height: 20,
-                  ),
-                  ButtonTheme(
-                    minWidth: double.infinity,
-                    child: MaterialButton(
-                      onPressed: () => {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => UserProfile()),
-                        )
-                      },
-                      textColor: Colors.white,
-                      color: Colors.green,
-                      height: 60,
-                      child: Text("Register"),
-                    ),
-                  ),
+                  registerButtonRow,
                 ],
               ),
             ),
@@ -180,6 +164,29 @@ class _UserRegisterState extends State<UserRegister> {//TODO: Criar tipo de letr
                       width: 1,
                       color: Colors.green,
                       style: BorderStyle.solid))),
+        ),
+      ],
+      )
+  );
+  final registerButtonRow = Container(
+      child: Column(children: <Widget>[
+        SizedBox( // Register button
+          height: 20,
+        ),
+        ButtonTheme(
+          minWidth: double.infinity,
+          child: MaterialButton(
+            onPressed: () => {
+              Navigator.push(
+                currentContext,
+                MaterialPageRoute(builder: (currentContext) => UserProfile()),
+              )
+            },
+            textColor: Colors.white,
+            color: Colors.green,
+            height: 60,
+            child: Text("Register"),
+          ),
         ),
       ],
       )

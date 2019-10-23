@@ -8,13 +8,15 @@ class UserLogin extends StatefulWidget {
   _UserLoginState createState() => _UserLoginState();
 }
 
-class _UserLoginState extends State<UserLogin> {//TODO: Criar tipo de letra no inicio para nao repetir em cada Textfield; Alterar estrutura do codigo para a do userLogin
+TextEditingController emailEditingContrller = TextEditingController();
+TextEditingController passwordEditingContrller = TextEditingController();
+var currentContext;
 
-  TextEditingController emailEditingContrller = TextEditingController();
-  TextEditingController passwordEditingContrller = TextEditingController();
+class _UserLoginState extends State<UserLogin> {//TODO: Criar tipo de letra no inicio para nao repetir em cada Textfield
 
   @override
   Widget build(BuildContext context) {
+    currentContext = context;
     return Scaffold(
       //resizeToAvoidBottomInset: false,
       body: Center(
@@ -25,93 +27,10 @@ class _UserLoginState extends State<UserLogin> {//TODO: Criar tipo de letra no i
             child: Center(
               child: Column(
                 children: <Widget>[
-
-                  SizedBox( //caixa do email
-                    height: 30,
-                  ),
-                  TextField(
-                    autofocus: false,
-                    obscureText: false,
-                    keyboardType: TextInputType.emailAddress,
-                    controller: emailEditingContrller,
-                    decoration: InputDecoration(
-                        labelText: "Email",
-                        labelStyle: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                        ),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(4)),
-                            borderSide: BorderSide(
-                                width: 1,
-                                color: Colors.green,
-                                style: BorderStyle.solid))),
-                  ),
-
-
-                  SizedBox( // caixa da Password
-                    height: 30,
-                  ),
-                  TextField(
-                    autofocus: false,
-                    obscureText: true,
-                    keyboardType: TextInputType.text,
-                    controller: passwordEditingContrller,
-                    decoration: InputDecoration(
-                        labelText: "Password",
-                        labelStyle: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                        ),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(4)),
-                            borderSide: BorderSide(
-                                width: 1,
-                                color: Colors.green,
-                                style: BorderStyle.solid))),
-                  ),
-
-
-                  SizedBox( // button de LOGIN
-                    height: 50,
-                  ),
-                  ButtonTheme(
-                    //elevation: 4,
-                    //color: Colors.green,
-                    minWidth: double.infinity,
-                    child: MaterialButton(
-                      onPressed: () => {
-                        //check if user is valid
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => UserProfile()),
-                        )
-                      },
-                      textColor: Colors.white,
-                      color: Colors.green,
-                      height: 50,
-                      child: Text("Login"),
-                    ),
-                  ),
-
-                  SizedBox( // button de Register
-                    height: 20,
-                  ),
-                  ButtonTheme(
-                    minWidth: double.infinity,
-                    child: MaterialButton(
-                      onPressed: () => {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => UserRegister()),
-                        )
-                      },
-                      textColor: Colors.white,
-                      color: Colors.red,
-                      height: 50,
-                      child: Text("Register"),
-                    ),
-                  ),
+                  emailRow,
+                  passwordRow,
+                  loginButtonRow,
+                  registerButtonRow,
                 ],
               ),
             ),
@@ -120,4 +39,108 @@ class _UserLoginState extends State<UserLogin> {//TODO: Criar tipo de letra no i
       ),
     );
   }
+
+  final emailRow = Container(
+      child: Column(children: <Widget>[
+        SizedBox( //caixa do username
+          height: 30,
+        ),
+        TextField(
+          autofocus: false,
+          obscureText: false,
+          keyboardType: TextInputType.emailAddress,
+          controller: emailEditingContrller,
+          decoration: InputDecoration(
+              labelText: "Email",
+              labelStyle: TextStyle(
+                color: Colors.black,
+                fontSize: 20,
+              ),
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(4)),
+                  borderSide: BorderSide(
+                      width: 1,
+                      color: Colors.green,
+                      style: BorderStyle.solid))),
+        ),
+      ],)
+  );
+
+
+  final passwordRow = Container(
+      child: Column(children: <Widget>[
+        SizedBox( //caixa da password
+          height: 30,
+        ),
+        TextField(
+          autofocus: false,
+          obscureText: true,
+          keyboardType: TextInputType.text,
+          controller: passwordEditingContrller,
+          decoration: InputDecoration(
+              labelText: "Password",
+              labelStyle: TextStyle(
+                color: Colors.black,
+                fontSize: 20,
+              ),
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(4)),
+                  borderSide: BorderSide(
+                      width: 1,
+                      color: Colors.green,
+                      style: BorderStyle.solid))),
+        ),
+      ],
+      )
+  );
+
+  final loginButtonRow = Container(
+      child: Column(children: <Widget>[
+        SizedBox(
+          height: 50,
+        ),
+        ButtonTheme(
+          //elevation: 4,
+          //color: Colors.green,
+          minWidth: double.infinity,
+          child: MaterialButton(
+            onPressed: () => {
+              //check if user is valid
+              Navigator.push(
+                currentContext,
+                MaterialPageRoute(builder: (currentContext) => UserProfile()),
+              )
+            },
+            textColor: Colors.white,
+            color: Colors.green,
+            height: 50,
+            child: Text("Login"),
+          ),
+        ),
+      ],
+      )
+  );
+  final registerButtonRow = Container(
+      child: Column(children: <Widget>[
+        SizedBox( // button de Register
+          height: 20,
+        ),
+        ButtonTheme(
+          minWidth: double.infinity,
+          child: MaterialButton(
+            onPressed: () => {
+              Navigator.push(
+                currentContext,
+                MaterialPageRoute(builder: (currentContext) => UserRegister()),
+              )
+            },
+            textColor: Colors.white,
+            color: Colors.red,
+            height: 50,
+            child: Text("Register"),
+          ),
+        ),
+      ],
+      )
+  );
 }
