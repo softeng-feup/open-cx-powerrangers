@@ -18,7 +18,8 @@ class _MainMenuState extends State<MainMenu> {
         length: 2,
         child: Scaffold(
           appBar: AppBar(
-            title: Text('Mingler', textAlign: TextAlign.center),
+            title: Text('Mingler'),
+            centerTitle: true,
             bottom: TabBar(
               tabs: [
                 Tab(text: 'Home Page'),

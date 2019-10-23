@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'user_profile.dart';
+import 'match.dart';
+
 import 'main_Menu.dart';
 
 class UserRegister extends StatefulWidget {
@@ -18,7 +20,8 @@ class _UserRegisterState extends State<UserRegister> {//TODO: Criar tipo de letr
     currentContext = context;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Mingler', textAlign: TextAlign.right,), //make this centered
+        title: Text('Mingler'),
+        centerTitle: true,//make this centered
       ),
       //resizeToAvoidBottomInset: false,
       body: Center(
@@ -178,7 +181,7 @@ class _UserRegisterState extends State<UserRegister> {//TODO: Criar tipo de letr
             onPressed: () => {
               Navigator.push(
                 currentContext,
-                MaterialPageRoute(builder: (currentContext) => MainMenu()),
+                MaterialPageRoute(builder: (currentContext) => UserProfile()),
               )
             },
             textColor: Colors.white,
