@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "349515685072",
+    "firebase_url": "https://mingler-44bc4.firebaseio.com",
+    "project_id": "mingler-44bc4",
+    "storage_bucket": "mingler-44bc4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:349515685072:android:63cdb742756ab8df2812d5",
+        "android_client_info": {
+          "package_name": "com.powerrangers.flutter_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "349515685072-aa3kj8r2mpfvolsotr9kecqtr9n3t4t7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCB16jStEUoFL8focm4LIgXGpIXMgqXpqg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "349515685072-aa3kj8r2mpfvolsotr9kecqtr9n3t4t7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
