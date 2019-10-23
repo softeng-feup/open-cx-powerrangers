@@ -6,12 +6,12 @@ class UserProfile extends StatefulWidget {
   _UserProfileState createState() => _UserProfileState();
 }
 
-class _UserProfileState extends State<UserProfile> {//TODO: Criar tipo de letra no inicio para nao repetir em cada Textfield
+class _UserProfileState extends State<UserProfile> {//TODO: Criar tipo de letra no inicio para nao repetir em cada Textfield; Mudar TextField para um tipo de caixa read-only
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(     // Barra azul no topo - TODO: Arranjar forma de não ter de repetir em todos os ecras;
+      appBar: AppBar(     // Barra azul no topo - TODO: Arranjar forma de não ter de repetir em todos os ecras; Adicionar botao edit, permite utilizador editar perfil
         centerTitle: true,
         title: Text(
           'Mingler',

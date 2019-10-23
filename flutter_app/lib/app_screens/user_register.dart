@@ -15,12 +15,6 @@ class _UserRegisterState extends State<UserRegister> {//TODO: Criar tipo de letr
   Widget build(BuildContext context) {
     currentContext = context;
     return Scaffold(
-      appBar: AppBar(     // Barra azul no topo
-        centerTitle: true,
-        title: Text(
-          'Mingler',
-        ),
-      ),
       //resizeToAvoidBottomInset: false,
       body: Center(
         child: SingleChildScrollView(

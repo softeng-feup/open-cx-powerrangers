@@ -30,7 +30,6 @@ class _UserLoginState extends State<UserLogin> {//TODO: Criar tipo de letra no i
                   emailRow,
                   passwordRow,
                   loginButtonRow,
-                  registerButtonRow,
                 ],
               ),
             ),
@@ -115,29 +114,6 @@ class _UserLoginState extends State<UserLogin> {//TODO: Criar tipo de letra no i
             color: Colors.green,
             height: 50,
             child: Text("Login"),
-          ),
-        ),
-      ],
-      )
-  );
-  final registerButtonRow = Container(
-      child: Column(children: <Widget>[
-        SizedBox( // button de Register
-          height: 20,
-        ),
-        ButtonTheme(
-          minWidth: double.infinity,
-          child: MaterialButton(
-            onPressed: () => {
-              Navigator.push(
-                currentContext,
-                MaterialPageRoute(builder: (currentContext) => UserRegister()),
-              )
-            },
-            textColor: Colors.white,
-            color: Colors.red,
-            height: 50,
-            child: Text("Register"),
           ),
         ),
       ],
