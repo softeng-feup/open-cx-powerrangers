@@ -28,110 +28,13 @@ class _UserRegisterState extends State<UserRegister> {//TODO: Criar tipo de letr
             padding: EdgeInsets.all(24),
             child: Center(
               child: Column(
-                children: <Widget>[
-                  TextField(
-                    autofocus: false,
-                    obscureText: false,
-                    decoration: InputDecoration(
-                        labelText: "Full name: ",
-                        labelStyle: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
-                        ),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(4)),
-                            borderSide: BorderSide(
-                                width: 0,
-                                color: Colors.green,
-                                style: BorderStyle.solid))),
-                  ),
-
-
-                  SizedBox( // caixa do email
-                    height: 30,
-                  ),
-                  TextField(
-                    autofocus: false,
-                    obscureText: false,
-                    keyboardType: TextInputType.emailAddress,
-                    controller: emailEditingContrller,
-                    decoration: InputDecoration(
-                        labelText: "Email",
-                        labelStyle: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
-                        ),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(4)),
-                            borderSide: BorderSide(
-                                width: 1,
-                                color: Colors.green,
-                                style: BorderStyle.solid))),
-                  ),
-
-
-                  SizedBox( //caixa do username
-                    height: 30,
-                  ),
-                  TextField(
-                    autofocus: false,
-                    obscureText: false,
-                    decoration: InputDecoration(
-                        labelText: "Username: ",
-                        labelStyle: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
-                        ),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(4)),
-                            borderSide: BorderSide(
-                                width: 0,
-                                color: Colors.green,
-                                style: BorderStyle.solid))),
-                  ),
-                  SizedBox( //caixa da password
-                    height: 30,
-                  ),
-                  TextField(
-                    autofocus: false,
-                    obscureText: true,
-                    keyboardType: TextInputType.text,
-                    controller: passwordEditingContrller,
-                    decoration: InputDecoration(
-                        labelText: "Password",
-                        labelStyle: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
-                        ),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(4)),
-                            borderSide: BorderSide(
-                                width: 1,
-                                color: Colors.green,
-                                style: BorderStyle.solid))),
-                  ),
-                  SizedBox( //caixa da password repetida
-                    height: 30,
-                  ),
-                  TextField(
-                    autofocus: false,
-                    obscureText: true,
-                    keyboardType: TextInputType.text,
-                    controller: passwordEditingContrller,
-                    decoration: InputDecoration(
-                        labelText: "Password (again)",
-                        labelStyle: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
-                        ),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(4)),
-                            borderSide: BorderSide(
-                                width: 1,
-                                color: Colors.green,
-                                style: BorderStyle.solid))),
-                  ),
-                  SizedBox( // button de register
+                children:[
+                  nameRow,
+                  emailRow,
+                  usernameRow,
+                  passwordRow,
+                  passwordRepeatRow,
+                  SizedBox( // Register button
                     height: 20,
                   ),
                   ButtonTheme(
@@ -157,4 +60,128 @@ class _UserRegisterState extends State<UserRegister> {//TODO: Criar tipo de letr
       ),
     );
   }
+  final nameRow = Container(
+      child: Column(children: <Widget>[
+        TextField(
+          autofocus: false,
+          obscureText: false,
+          decoration: InputDecoration(
+              labelText: "Full name: ",
+              labelStyle: TextStyle(
+                color: Colors.black,
+                fontSize: 20,
+              ),
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(4)),
+                  borderSide: BorderSide(
+                      width: 0,
+                      color: Colors.green,
+                      style: BorderStyle.solid))),
+        ),
+      ],)
+  );
+
+  final emailRow = Container(
+      child: Column(children: <Widget>[
+        SizedBox( //caixa do username
+          height: 30,
+        ),
+        TextField(
+          autofocus: false,
+          obscureText: false,
+          keyboardType: TextInputType.emailAddress,
+          controller: emailEditingContrller,
+          decoration: InputDecoration(
+              labelText: "Email",
+              labelStyle: TextStyle(
+                color: Colors.black,
+                fontSize: 20,
+              ),
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(4)),
+                  borderSide: BorderSide(
+                      width: 1,
+                      color: Colors.green,
+                      style: BorderStyle.solid))),
+        ),
+      ],)
+  );
+  final usernameRow = Container(
+      child: Column(children: <Widget>[
+        SizedBox( //caixa do username
+          height: 30,
+        ),
+        TextField(
+          autofocus: false,
+          obscureText: false,
+          decoration: InputDecoration(
+              labelText: "Username: ",
+              labelStyle: TextStyle(
+                color: Colors.black,
+                fontSize: 20,
+              ),
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(4)),
+                  borderSide: BorderSide(
+                      width: 0,
+                      color: Colors.green,
+                      style: BorderStyle.solid))),
+        ),
+      ],
+      )
+  );
+
+  final passwordRow = Container(
+      child: Column(children: <Widget>[
+        SizedBox( //caixa da password
+          height: 30,
+        ),
+        TextField(
+          autofocus: false,
+          obscureText: true,
+          keyboardType: TextInputType.text,
+          controller: passwordEditingContrller,
+          decoration: InputDecoration(
+              labelText: "Password",
+              labelStyle: TextStyle(
+                color: Colors.black,
+                fontSize: 20,
+              ),
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(4)),
+                  borderSide: BorderSide(
+                      width: 1,
+                      color: Colors.green,
+                      style: BorderStyle.solid))),
+        ),
+      ],
+      )
+  );
+
+  final passwordRepeatRow = Container(
+      child: Column(children: <Widget>[
+        SizedBox( //caixa da password
+          height: 30,
+        ),
+        TextField(
+          autofocus: false,
+          obscureText: true,
+          keyboardType: TextInputType.text,
+          controller: passwordEditingContrller,
+          decoration: InputDecoration(
+              labelText: "Password (again)",
+              labelStyle: TextStyle(
+                color: Colors.black,
+                fontSize: 20,
+              ),
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(4)),
+                  borderSide: BorderSide(
+                      width: 1,
+                      color: Colors.green,
+                      style: BorderStyle.solid))),
+        ),
+      ],
+      )
+  );
 }
