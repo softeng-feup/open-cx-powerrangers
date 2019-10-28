@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/app_screens/BaseAppBar.dart';
 import 'package:flutter_app/app_screens/user_register.dart';
-import 'auth.dart';
+import '../services/auth.dart';
 
 
 class UserLogin extends StatefulWidget {
@@ -25,13 +24,11 @@ class _UserLoginState extends State<UserLogin> {
 
   String _email, _password, errorMsg;
   FormType _formType = FormType.login;
-  bool _loading = false;
 
   bool validateAndSave(){
     final form = formKey.currentState;
       if(form.validate()){
         form.save();
-        _loading = true;
         return true;
       }
       else{
@@ -39,18 +36,18 @@ class _UserLoginState extends State<UserLogin> {
       }
   }
 
-  void validateAndSubmit() async {
-
+  void validateAndSubmit() async
+  {
     String userID;
 
     if(validateAndSave()){
       try{
         if(_formType == FormType.login){
-          userID = await widget.auth.signInWithEmailAndPassword(_email, _password);
+          userID = (await widget.auth.signInWithEmailAndPassword(_email, _password)).uid;
           print("Signed in: $userID");
         }
         else{
-          userID = await widget.auth.createUserWithEmailAndPassword(_email, _password);
+          userID = (await widget.auth.createUserWithEmailAndPassword(_email, _password)).uid;
           print("Registered in: $userID");
         }
 
@@ -60,9 +57,7 @@ class _UserLoginState extends State<UserLogin> {
         switch(e.code){
           case "ERROR_USER_NOT_FOUND":
             {
-              errorMsg =
-                "There is no user with such entries. Please try again.";
-              _loading = false;
+              errorMsg = "There is no user with such entries. Please try again.";
 
               showDialog(
                   context: context,
@@ -79,7 +74,6 @@ class _UserLoginState extends State<UserLogin> {
           case "ERROR_WRONG_PASSWORD":
             {
               errorMsg = "Password doesn\'t match your email.";
-              _loading = false;
 
               showDialog(
                   context: context,
@@ -95,9 +89,7 @@ class _UserLoginState extends State<UserLogin> {
 
           case "ERROR_EMAIL_ALREADY_IN_USE":
             {
-
               errorMsg = "This email is already in use.";
-              _loading = false;
 
               showDialog(
                   context: context,
@@ -113,9 +105,7 @@ class _UserLoginState extends State<UserLogin> {
 
           case "ERROR_WEAK_PASSWORD":
             {
-
               errorMsg = "The password must be 6 characters long or more.";
-              _loading = false;
 
               showDialog(
                   context: context,
@@ -130,11 +120,6 @@ class _UserLoginState extends State<UserLogin> {
             break;
 
           default:
-            {
-
-              errorMsg = "";
-
-            }
         }
       }
     }
@@ -178,12 +163,11 @@ class _UserLoginState extends State<UserLogin> {
     );
   }
 
-
-
   List<Widget> inputs(){
     return [
       TextFormField(
         decoration: InputDecoration(labelText: 'Email'),
+        keyboardType: TextInputType.emailAddress,
         validator: (value) => value.isEmpty ? 'Email not valid': null,
         onSaved: (value) => _email = value,
       ),

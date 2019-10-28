@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app_screens/main_Menu.dart';
 import 'user_login.dart';
-import 'auth.dart';
+import '../services/auth.dart';
 
 //Root para melhor gerir mudanças entre login screen e homePage
 class RootPage extends StatefulWidget{

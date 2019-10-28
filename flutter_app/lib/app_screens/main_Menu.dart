@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/app_screens/BaseAppBar.dart';
-import 'auth.dart';
+import '../services/auth.dart';
 import 'package:flutter_app/app_screens/homePage.dart';
 import 'package:flutter_app/app_screens/user_profile.dart';
 
