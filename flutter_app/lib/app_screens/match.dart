@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/app_screens/auth.dart';
 import 'package:flutter_app/app_screens/main_Menu.dart';
+import 'package:flutter_app/app_screens/root.dart';
 
 class Match extends StatefulWidget {
   @override
@@ -115,7 +117,7 @@ class _MatchState extends State<Match> {
             {
               Navigator.push(
                 currentContext,
-                MaterialPageRoute(builder: (currentContext) => MainMenu()),
+                MaterialPageRoute(builder: (currentContext) => RootPage()),
               )
             },
             textColor: Colors.white,
@@ -141,7 +143,7 @@ class _MatchState extends State<Match> {
             {
               Navigator.push(
                 currentContext,
-                MaterialPageRoute(builder: (currentContext) => MainMenu()),
+                MaterialPageRoute(builder: (currentContext) => RootPage()),
               )
             },
             textColor: Colors.white,

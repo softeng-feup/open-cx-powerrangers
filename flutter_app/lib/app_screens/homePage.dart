@@ -8,7 +8,7 @@ class homePage extends StatelessWidget
   {
     return new Scaffold(
       body: new Container(
-        child: new Text('your feed is empty :(')
+        child: new Text('Your feed is empty :(')
       ),
     );
   }

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/app_screens/homePage.dart';
-import 'package:flutter_app/app_screens/main_Menu.dart';
+import 'package:flutter_app/app_screens/BaseAppBar.dart';
 import 'package:flutter_app/app_screens/user_register.dart';
-import 'user_profile.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-
-
+import 'auth.dart';
 
 
 class UserLogin extends StatefulWidget {
+  UserLogin({this.auth, this.onSignedIn});
+  final BaseAuth auth;
+  final VoidCallback onSignedIn;
+
   @override
   _UserLoginState createState() => _UserLoginState();
 }
@@ -20,9 +20,6 @@ enum FormType {
 }
 
 class _UserLoginState extends State<UserLogin> {
-  //TODO: Criar tipo de letra no inicio para nao repetir em cada Textfield
-
-
 
   final formKey = GlobalKey<FormState>();
 
@@ -30,7 +27,7 @@ class _UserLoginState extends State<UserLogin> {
   FormType _formType = FormType.login;
   bool _loading = false;
 
-  bool validateandsave(){
+  bool validateAndSave(){
     final form = formKey.currentState;
       if(form.validate()){
         form.save();
@@ -42,17 +39,23 @@ class _UserLoginState extends State<UserLogin> {
       }
   }
 
-  void validateandsubmit() async {
-    if(validateandsave()){
+  void validateAndSubmit() async {
+
+    String userID;
+
+    if(validateAndSave()){
       try{
         if(_formType == FormType.login){
-          FirebaseUser user = (await FirebaseAuth.instance.signInWithEmailAndPassword(email: _email, password: _password)).user;
-          print("Signed in: ${user.uid}");
+          userID = await widget.auth.signInWithEmailAndPassword(_email, _password);
+          print("Signed in: $userID");
         }
         else{
-          FirebaseUser user = (await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _email, password: _password)).user;
-          print("Registered in: ${user.uid}");
+          userID = await widget.auth.createUserWithEmailAndPassword(_email, _password);
+          print("Registered in: $userID");
         }
+
+        widget.onSignedIn();
+
       } catch (e){
         switch(e.code){
           case "ERROR_USER_NOT_FOUND":
@@ -137,13 +140,15 @@ class _UserLoginState extends State<UserLogin> {
     }
   }
 
-  void movetoregister(){
+  void moveToRegister(){
+    formKey.currentState.reset();
     setState(() {
       _formType = FormType.register;
     });
   }
 
-  void movetologin(){
+  void moveToLogin(){
+    formKey.currentState.reset();
     setState(() {
       _formType = FormType.login;
     });
@@ -154,14 +159,18 @@ class _UserLoginState extends State<UserLogin> {
   Widget build(BuildContext context) {
     currentContext = context;
     return Scaffold(
-      //resizeToAvoidBottomInset: false,
+      appBar: new AppBar(
+        title: Text('Mingler', style: new TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),),
+        centerTitle: true,
+      ),
       body: Center(
         child: Container(
+          padding: EdgeInsets.all(16.0),
           child: Form(
             key: formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: inputs() + loginButtons() + registerButtons()
+              children: inputs() + buildSubButtons()
             ),
           ),
         ),
@@ -187,64 +196,35 @@ class _UserLoginState extends State<UserLogin> {
     ];
   }
 
-  List<Widget> loginButtons(){
-    return [
-
-              SizedBox( //caixa da password
-              height: 30,
-              ),
-              ButtonTheme(
-              //elevation: 4,
-              //color: Colors.green,
-              minWidth: double.infinity,
-                child: MaterialButton(
-                  onPressed: (){
-                    movetologin();
-                    validateandsubmit();
-                    if(_loading == true){
-                      Navigator.push(
-                        currentContext,
-                        MaterialPageRoute(builder: (currentContext) => MainMenu()),
-                      );
-                    }
-
-                  },
-                  textColor: Colors.white,
-                  color: Colors.green,
-                  height: 50,
-                  child: Text("Login"),
-        ),
-      ),
-    ];
-
-  }
-
-  List<Widget> registerButtons(){
-    return [
-      SizedBox( //caixa da password
-        height: 30,
-      ),
-      ButtonTheme(
-        //elevation: 4,
-        //color: Colors.green,
-        minWidth: double.infinity,
-        child: MaterialButton(
-          onPressed: (){
-            movetoregister();
-            validateandsubmit();
-            if(_loading == true){
-              Navigator.push(
-                currentContext,
-                MaterialPageRoute(builder: (currentContext) => UserRegister()),
-              );
-            }
-          },
+  List<Widget> buildSubButtons()
+  {
+    if(_formType == FormType.login) {
+      return [
+        new RaisedButton(
+          color: Colors.green,
           textColor: Colors.white,
-          color: Colors.red,
-          height: 50,
-          child: Text("Register"),
+          child: new Text('Login', style: new TextStyle(fontSize: 20),),
+          onPressed: validateAndSubmit,
         ),
-      ),
-    ];
+        new FlatButton(
+          child: new Text('Register', style: new TextStyle(fontSize: 20),),
+          onPressed: moveToRegister,
+        )
+      ];
+    }
+    else {
+      return [
+        new RaisedButton(
+          color: Colors.red,
+          textColor: Colors.white,
+          child: new Text('Register', style: new TextStyle(fontSize: 20),),
+          onPressed: validateAndSubmit,
+        ),
+        new FlatButton(
+          child: new Text('Have an account? Login', style: new TextStyle(fontSize: 20),),
+          onPressed: moveToLogin,
+        )
+      ];
+    }
   }
 }
