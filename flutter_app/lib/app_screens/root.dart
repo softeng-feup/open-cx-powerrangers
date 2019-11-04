@@ -1,75 +1,51 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/app_screens/homePage.dart';
 import 'package:flutter_app/app_screens/main_Menu.dart';
+import 'package:flutter_app/app_screens/user_register.dart';
+import 'package:flutter_app/models/UserData.dart';
+import 'package:provider/provider.dart';
 import 'user_login.dart';
-import '../services/auth.dart';
+
 
 //Root para melhor gerir mudanças entre login screen e homePage
-class RootPage extends StatefulWidget{
-  RootPage({this.auth});
-  final BaseAuth auth;
+class RootPage extends StatelessWidget{
 
-  @override
-  State<StatefulWidget> createState() => new _RootPageState();
-}
-
-enum AuthStatus{
-  notSignedIn,
-  signedIn
-}
-
-class _RootPageState extends State<RootPage>
-{
-  AuthStatus _authStatus = AuthStatus.notSignedIn;
-
-  @override
-  void initState() {
-    super.initState();
-
-    widget.auth.currentState().then((userID)
-    {
-      setState(() {
-        if (userID == null)
-          _authStatus = AuthStatus.notSignedIn;
-        else
-          _authStatus = AuthStatus.signedIn;
-      });
-    });
+  Widget _getScreenId() {
+    return StreamBuilder<FirebaseUser>(
+      stream: FirebaseAuth.instance.onAuthStateChanged,
+      builder: (BuildContext context, snapshot) {
+        if (snapshot.hasData) {
+          Provider.of<UserData>(context).currentUserId = snapshot.data.uid;
+          return MainMenu();
+        } else {
+          return LoginScreen();
+        }
+      },
+    );
   }
 
-  void _signedIn()
-  {
-    setState(() {
-      _authStatus = AuthStatus.signedIn;
-    });
-  }
-
-  void _signedOut()
-  {
-    setState(() {
-      _authStatus = AuthStatus.notSignedIn;
-    });
-  }
-
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-
-    switch(_authStatus)
-    {
-      case AuthStatus.notSignedIn:
-        {
-          return new UserLogin(
-              auth: widget.auth,
-              onSignedIn: _signedIn,
-          );
-        }
-      case AuthStatus.signedIn:
-        {
-          return new MainMenu(
-            auth: widget.auth,
-            onSignedOut: _signedOut,
-          );
-        }
-    }
+    return ChangeNotifierProvider(
+      builder: (context) => UserData(),
+      child: MaterialApp(
+        title: 'Mingler',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primaryIconTheme: Theme.of(context).primaryIconTheme.copyWith(
+            color: Colors.black,
+          ),
+        ),
+        home: _getScreenId(),
+        routes: {
+          LoginScreen.id: (context) => LoginScreen(),
+          SignupScreen.id: (context) => SignupScreen(),
+          HomePage.id: (context) => HomePage(),
+        },
+      ),
+    );
   }
-}
 
+}

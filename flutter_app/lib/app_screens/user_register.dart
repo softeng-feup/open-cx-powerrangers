@@ -1,196 +1,94 @@
 import 'package:flutter/material.dart';
-import 'user_profile.dart';
-import 'match.dart';
+import 'package:flutter_app/services/auth.dart';
 
-import 'main_Menu.dart';
+class SignupScreen extends StatefulWidget {
+  static final String id = 'signup_screen';
 
-class UserRegister extends StatefulWidget {
   @override
-  _UserRegisterState createState() => _UserRegisterState();
+  _SignupScreenState createState() => _SignupScreenState();
 }
 
-TextEditingController emailEditingContrller = TextEditingController();
-TextEditingController passwordEditingContrller = TextEditingController();
-var currentContext;
+class _SignupScreenState extends State<SignupScreen> {
+  final _formKey = GlobalKey<FormState>();
+  String _name, _email, _password;
 
-class _UserRegisterState extends State<UserRegister> {//TODO: Criar tipo de letra no inicio para nao repetir em cada Textfield
+  _submit() {
+    if (_formKey.currentState.validate()) {
+      _formKey.currentState.save();
+      // Logging in the user w/ Firebase
+      AuthService.signUpUser(context, _name, _email, _password);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    currentContext = context;
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Mingler'),
-        centerTitle: true,//make this centered
+      appBar: new AppBar(
+        title: Text('Mingler', style: new TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),),
+        centerTitle: true,
       ),
-      //resizeToAvoidBottomInset: false,
       body: Center(
-        child: SingleChildScrollView(
-          child: Container(
-            color: Colors.white,
-            padding: EdgeInsets.all(24),
-            child: Center(
-              child: Column(
-                children:[
-                  nameRow,
-                  emailRow,
-                  usernameRow,
-                  passwordRow,
-                  passwordRepeatRow,
-                  registerButtonRow,
-                ],
+        child: Container(
+          child: Column(
+            children: <Widget>[
+              Form(
+                key: _formKey,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      TextFormField(
+                          decoration: InputDecoration(labelText: 'Name'),
+                          validator: (input) => input.trim().isEmpty
+                              ? 'Please enter a valid name'
+                              : null,
+                          onSaved: (input) => _name = input,
+                        ),
+                      TextFormField(
+                          decoration: InputDecoration(labelText: 'Email'),
+                        keyboardType: TextInputType.emailAddress,
+                          validator: (input) => !input.contains('@')
+                              ? 'Please enter a valid email'
+                              : null,
+                          onSaved: (input) => _email = input,
+                        ),
+                      TextFormField(
+                          decoration: InputDecoration(labelText: 'Password'),
+                          validator: (input) => input.length < 6
+                              ? 'Must be at least 6 characters'
+                              : null,
+                          onSaved: (input) => _password = input,
+                          obscureText: true,
+                        ),
+                      RaisedButton(
+                          onPressed: _submit,
+                          color: Colors.red,
+                          child: Text(
+                            'Sign Up',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18.0,
+                            ),
+                          ),
+                        ),
+                      FlatButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: Text(
+                            'Already have an account? Login',
+                            style: TextStyle(
+                              fontSize: 16.0,
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
         ),
       ),
     );
   }
-  final nameRow = Container(
-      child: Column(children: <Widget>[
-        TextField(
-          autofocus: false,
-          obscureText: false,
-          decoration: InputDecoration(
-              labelText: "Full name: ",
-              labelStyle: TextStyle(
-                color: Colors.black,
-                fontSize: 20,
-              ),
-              border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(4)),
-                  borderSide: BorderSide(
-                      width: 0,
-                      color: Colors.green,
-                      style: BorderStyle.solid))),
-        ),
-      ],)
-  );
-
-  final emailRow = Container(
-      child: Column(children: <Widget>[
-        SizedBox( //caixa do username
-          height: 30,
-        ),
-        TextField(
-          autofocus: false,
-          obscureText: false,
-          keyboardType: TextInputType.emailAddress,
-          controller: emailEditingContrller,
-          decoration: InputDecoration(
-              labelText: "Email",
-              labelStyle: TextStyle(
-                color: Colors.black,
-                fontSize: 20,
-              ),
-              border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(4)),
-                  borderSide: BorderSide(
-                      width: 1,
-                      color: Colors.green,
-                      style: BorderStyle.solid))),
-        ),
-      ],)
-  );
-  final usernameRow = Container(
-      child: Column(children: <Widget>[
-        SizedBox( //caixa do username
-          height: 30,
-        ),
-        TextField(
-          autofocus: false,
-          obscureText: false,
-          decoration: InputDecoration(
-              labelText: "Username: ",
-              labelStyle: TextStyle(
-                color: Colors.black,
-                fontSize: 20,
-              ),
-              border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(4)),
-                  borderSide: BorderSide(
-                      width: 0,
-                      color: Colors.green,
-                      style: BorderStyle.solid))),
-        ),
-      ],
-      )
-  );
-
-  final passwordRow = Container(
-      child: Column(children: <Widget>[
-        SizedBox( //caixa da password
-          height: 30,
-        ),
-        TextField(
-          autofocus: false,
-          obscureText: true,
-          keyboardType: TextInputType.text,
-          controller: passwordEditingContrller,
-          decoration: InputDecoration(
-              labelText: "Password",
-              labelStyle: TextStyle(
-                color: Colors.black,
-                fontSize: 20,
-              ),
-              border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(4)),
-                  borderSide: BorderSide(
-                      width: 1,
-                      color: Colors.green,
-                      style: BorderStyle.solid))),
-        ),
-      ],
-      )
-  );
-
-  final passwordRepeatRow = Container(
-      child: Column(children: <Widget>[
-        SizedBox( //caixa da password
-          height: 30,
-        ),
-        TextField(
-          autofocus: false,
-          obscureText: true,
-          keyboardType: TextInputType.text,
-          controller: passwordEditingContrller,
-          decoration: InputDecoration(
-              labelText: "Password (again)",
-              labelStyle: TextStyle(
-                color: Colors.black,
-                fontSize: 20,
-              ),
-              border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(4)),
-                  borderSide: BorderSide(
-                      width: 1,
-                      color: Colors.green,
-                      style: BorderStyle.solid))),
-        ),
-      ],
-      )
-  );
-  final registerButtonRow = Container(
-      child: Column(children: <Widget>[
-        SizedBox( // Register button
-          height: 20,
-        ),
-        ButtonTheme(
-          minWidth: double.infinity,
-          child: MaterialButton(
-            onPressed: () => {
-              Navigator.push(
-                currentContext,
-                MaterialPageRoute(builder: (currentContext) => UserProfile()),
-              )
-            },
-            textColor: Colors.white,
-            color: Colors.green,
-            height: 60,
-            child: Text("Register"),
-          ),
-        ),
-      ],
-      )
-  );
 }

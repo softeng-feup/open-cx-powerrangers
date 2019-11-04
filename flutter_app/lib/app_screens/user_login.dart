@@ -1,148 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app_screens/user_register.dart';
-import '../services/auth.dart';
+import 'package:flutter_app/services/auth.dart';
 
-
-class UserLogin extends StatefulWidget {
-  UserLogin({this.auth, this.onSignedIn});
-  final BaseAuth auth;
-  final VoidCallback onSignedIn;
+class LoginScreen extends StatefulWidget {
+  static final String id = 'login_screen';
 
   @override
-  _UserLoginState createState() => _UserLoginState();
+  _LoginScreenState createState() => _LoginScreenState();
 }
 
+class _LoginScreenState extends State<LoginScreen> {
+  final _formKey = GlobalKey<FormState>();
+  String _email, _password;
 
-enum FormType {
-  login,
-  register
-}
+  _submit() {
+    if (_formKey.currentState.validate()) {
+      _formKey.currentState.save();
 
-class _UserLoginState extends State<UserLogin> {
 
-  final formKey = GlobalKey<FormState>();
-
-  String _email, _password, errorMsg;
-  FormType _formType = FormType.login;
-
-  bool validateAndSave(){
-    final form = formKey.currentState;
-      if(form.validate()){
-        form.save();
-        return true;
-      }
-      else{
-        return false;
-      }
-  }
-
-  void validateAndSubmit() async
-  {
-    String userID;
-
-    if(validateAndSave()){
-      try{
-        if(_formType == FormType.login){
-          userID = (await widget.auth.signInWithEmailAndPassword(_email, _password)).uid;
-          print("Signed in: $userID");
-        }
-        else{
-          userID = (await widget.auth.createUserWithEmailAndPassword(_email, _password)).uid;
-          print("Registered in: $userID");
-        }
-
-        widget.onSignedIn();
-
-      } catch (e){
-        switch(e.code){
-          case "ERROR_USER_NOT_FOUND":
-            {
-              errorMsg = "There is no user with such entries. Please try again.";
-
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      content: Container(
-                        child: Text(errorMsg),
-                      ),
-                    );
-                  });
-            }
-            break;
-
-          case "ERROR_WRONG_PASSWORD":
-            {
-              errorMsg = "Password doesn\'t match your email.";
-
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      content: Container(
-                        child: Text(errorMsg),
-                      ),
-                    );
-                  });
-            }
-            break;
-
-          case "ERROR_EMAIL_ALREADY_IN_USE":
-            {
-              errorMsg = "This email is already in use.";
-
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      content: Container(
-                        child: Text(errorMsg),
-                      ),
-                    );
-                  });
-            }
-            break;
-
-          case "ERROR_WEAK_PASSWORD":
-            {
-              errorMsg = "The password must be 6 characters long or more.";
-
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      content: Container(
-                        child: Text(errorMsg),
-                      ),
-                    );
-                  });
-            }
-            break;
-
-          default:
-        }
-      }
+      AuthService.login(_email, _password);
     }
   }
 
-  void moveToRegister(){
-    formKey.currentState.reset();
-    setState(() {
-      _formType = FormType.register;
-    });
-  }
-
-  void moveToLogin(){
-    formKey.currentState.reset();
-    setState(() {
-      _formType = FormType.login;
-    });
-  }
-
-
   @override
   Widget build(BuildContext context) {
-    currentContext = context;
     return Scaffold(
       appBar: new AppBar(
         title: Text('Mingler', style: new TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),),
@@ -150,65 +31,60 @@ class _UserLoginState extends State<UserLogin> {
       ),
       body: Center(
         child: Container(
-          padding: EdgeInsets.all(16.0),
-          child: Form(
-            key: formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: inputs() + buildSubButtons()
-            ),
+          height: MediaQuery.of(context).size.height,
+          child: Column(
+            children: <Widget>[
+              Form(
+                key: _formKey,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      TextFormField(
+                          decoration: InputDecoration(labelText: 'Email'),
+                          keyboardType: TextInputType.emailAddress,
+                          validator: (input) => !input.contains('@')
+                              ? 'Please enter a valid email'
+                              : null,
+                          onSaved: (input) => _email = input,
+                        ),
+                      TextFormField(
+                          decoration: InputDecoration(labelText: 'Password'),
+                          validator: (input) => input.length < 6
+                              ? 'Must be at least 6 characters'
+                              : null,
+                          onSaved: (input) => _password = input,
+                          obscureText: true,
+                        ),
+                      RaisedButton(
+                          onPressed: _submit,
+                          color: Colors.green,
+                          child: Text(
+                            'Login',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20.0,
+                            ),
+                          ),
+                        ),
+                      FlatButton(
+                          onPressed: () => Navigator.pushNamed(context, SignupScreen.id),
+                          child: Text(
+                            'Register',
+                            style: TextStyle(
+                              fontSize: 18.0,
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),
     );
-  }
-
-  List<Widget> inputs(){
-    return [
-      TextFormField(
-        decoration: InputDecoration(labelText: 'Email'),
-        keyboardType: TextInputType.emailAddress,
-        validator: (value) => value.isEmpty ? 'Email not valid': null,
-        onSaved: (value) => _email = value,
-      ),
-      TextFormField(
-        decoration: InputDecoration(labelText: 'Password'),
-        obscureText: true,
-        validator: (value) => value.isEmpty ? 'Password not valid': null,
-        onSaved: (value) => _password = value,
-      ),
-    ];
-  }
-
-  List<Widget> buildSubButtons()
-  {
-    if(_formType == FormType.login) {
-      return [
-        new RaisedButton(
-          color: Colors.green,
-          textColor: Colors.white,
-          child: new Text('Login', style: new TextStyle(fontSize: 20),),
-          onPressed: validateAndSubmit,
-        ),
-        new FlatButton(
-          child: new Text('Register', style: new TextStyle(fontSize: 20),),
-          onPressed: moveToRegister,
-        )
-      ];
-    }
-    else {
-      return [
-        new RaisedButton(
-          color: Colors.red,
-          textColor: Colors.white,
-          child: new Text('Register', style: new TextStyle(fontSize: 20),),
-          onPressed: validateAndSubmit,
-        ),
-        new FlatButton(
-          child: new Text('Have an account? Login', style: new TextStyle(fontSize: 20),),
-          onPressed: moveToLogin,
-        )
-      ];
-    }
   }
 }

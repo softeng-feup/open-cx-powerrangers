@@ -1,131 +1,104 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/app_screens/edit_profile.dart';
+import 'package:flutter_app/models/User.dart';
+import 'package:flutter_app/utils/constants.dart';
 
 
 class UserProfile extends StatefulWidget {
+  final String userId;
+
+  UserProfile({this.userId});
+
   @override
   _UserProfileState createState() => _UserProfileState();
 }
 
-class _UserProfileState extends State<UserProfile> {//TODO: Criar tipo de letra no inicio para nao repetir em cada Textfield; Mudar TextField para um tipo de caixa read-only
+class _UserProfileState extends State<UserProfile> {
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // TODO - Adicionar botao edit, permite utilizador editar perfil
-      //resizeToAvoidBottomInset: false,
-      body: Center(
-        child: SingleChildScrollView(
-          child:Column(
-            children: <Widget>[
-          Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-            children:[Container(
-              child: leftColumnTop,
-              width: 200,
+      body: FutureBuilder(
+        future: usersRef.document(widget.userId).get(),
+        builder: (BuildContext context, AsyncSnapshot snapshot){
+          if(!snapshot.hasData)
+          {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          User user = User.fromDoc(snapshot.data);
+
+        return ListView(
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.fromLTRB(30, 30, 30, 0),
+              child: Row(
+                children: <Widget>[
+                  CircleAvatar(
+                    radius: 50.0,
+                    backgroundImage: NetworkImage('https://i.redd.it/dmdqlcdpjlwz.jpg'),
+                  ),
+                  Expanded(
+                    child: Column(
+                      children: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            Text(
+                              user.name,
+                              style: TextStyle(
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.w600
+                              ),
+                            )
+                          ],
+                        ),
+                        Container(
+                          width: 150,
+                          child: FlatButton(
+                            color: Colors.blue,
+                            textColor: Colors.white,
+                            child: Text(
+                              'Edit Profile',
+                              style: TextStyle(
+                                fontSize: 18,
+                              ),
+                            ),
+                            onPressed: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (_) => EditProfile(user: user,))),
+                          ),
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
-              Container(
-                child: rightColumnTop,
-                width: 200,
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    user.bio,
+                    style: TextStyle(fontSize: 15),
+                  ),
+                  SizedBox(height: 5.0),
+                  Container(
+                    height: 80.0,
+                    child: Text('Interests',
+                      style: TextStyle(fontSize: 15),
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
-              Row(
-              children:[Container(
-                child: ColumnBottom,
-                width: 400,
-              )]
-              ),
-            ],
-          ),
-        ),
-          ),
+            )
+          ],
         );
+      }
+      ),
+    );
   }
-
-
-  final leftColumnTop = Container(
-    child: Column(children: <Widget>[
-      TextField(//photoDummy
-        enabled: false,
-        autofocus: false,
-        obscureText: false,
-        decoration: InputDecoration(
-          labelText: "☺",
-          labelStyle: TextStyle(
-            color: Colors.black,
-            fontSize: 150,
-          ),
-        ),
-      ),
-      SizedBox( //caixa dos ratings
-        height: 30,
-      ),
-      TextField(
-        enabled: false,
-        autofocus: false,
-        obscureText: false,
-        decoration: InputDecoration(
-            labelText: "★★★★☆",
-            hintText: "Rating",
-            labelStyle: TextStyle(
-              color: Colors.black,
-              fontSize: 40,
-            ),
-        ),
-      ),
-    ],)
-  );
-
-  final rightColumnTop = Container(width: 30,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        verticalDirection: VerticalDirection.down,
-        children: <Widget>[
-        TextField(
-          enabled: false,
-          autofocus: false,
-          obscureText: false,
-          decoration: InputDecoration(
-              labelText: "Anthony",
-              labelStyle: TextStyle(
-                color: Colors.black,
-                fontSize: 30,
-              ),
-          ),
-        ),
-        SizedBox( // caixa da description
-          height: 30,
-        ),
-        TextField(
-          maxLines: 8, //to expand height
-          enabled: false,
-          autofocus: false,
-          decoration: InputDecoration(
-              labelText: "Sports fan, FC Porto\n supporter.\n Web developer, with\n about 10 years\n experience.\n\n\n",
-              labelStyle: TextStyle(
-                color: Colors.black,
-                fontSize: 15,
-              ),
-          ),
-        ),
-      ],)
-  );
-
-  final ColumnBottom = Container(
-      child: Column(children: <Widget>[
-        TextField(//interests
-          maxLines: 8,
-          enabled: false,
-          autofocus: false,
-          obscureText: false,
-          decoration: InputDecoration(
-            labelText: "I am interested in: I am interested in: \nI am interested in: I am interested in: \nI am interested in: I am interested in: I am interested in: I am interested in: ",
-            labelStyle: TextStyle(
-              color: Colors.black,
-              fontSize: 20,
-            ),
-          ),
-        ),
-      ],)
-  );
 }

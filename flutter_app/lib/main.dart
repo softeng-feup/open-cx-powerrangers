@@ -12,12 +12,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return StreamProvider<User>.value(
-      value: Auth().user,
       child: MaterialApp(
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: RootPage(auth: new Auth(),),
+        home: RootPage(),
       ),
     );
   }
