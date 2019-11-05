@@ -93,7 +93,8 @@ class _UserProfileState extends State<UserProfile> {
                   SizedBox(height: 5.0),
                   Container(
                     height: 80.0,
-                    child: Text('Interests',
+                    child: Text(
+                      'Interests',
                       style: TextStyle(fontSize: 15),
                     ),
                   ),
@@ -102,8 +103,7 @@ class _UserProfileState extends State<UserProfile> {
             )
           ],
         );
-      }
-      ),
+      }),
     );
   }
 }

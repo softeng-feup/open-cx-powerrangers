@@ -1,11 +1,13 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/models/User.dart';
 import 'package:flutter_app/models/UserData.dart';
+import 'package:flutter_app/utils/constants.dart';
 import 'package:provider/provider.dart';
 import '../services/auth.dart';
 import 'package:flutter_app/app_screens/homePage.dart';
 import 'package:flutter_app/app_screens/user_profile.dart';
-
 
 class MainMenu extends StatefulWidget {
 
@@ -16,6 +18,11 @@ class MainMenu extends StatefulWidget {
 class _MainMenuState extends State<MainMenu> {
   int _currentTab = 0;
   PageController _pageController;
+
+  _getUid(BuildContext context)
+  {
+     return Provider.of<UserData>(context).currentUserId;
+  }
 
   @override
   void initState() {
@@ -31,7 +38,7 @@ class _MainMenuState extends State<MainMenu> {
           controller: _pageController,
           children: <Widget>[
             HomePage(),
-            UserProfile(userId: Provider.of<UserData>(context).currentUserId)
+            UserProfile(userId: _getUid(context))
           ],
         onPageChanged: (int index) {
             setState(() {
@@ -50,6 +57,66 @@ class _MainMenuState extends State<MainMenu> {
           )
         ],
       ),
+      drawer: FutureBuilder(
+        future: usersRef.document(_getUid(context)).get(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (!snapshot.hasData) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          User user = User.fromDoc(snapshot.data);
+
+          return Drawer(
+            child: Column(
+              children: <Widget>[
+                UserAccountsDrawerHeader(
+                  accountEmail: Text(user.email),
+                  accountName: Text(user.name),
+                  currentAccountPicture: CircleAvatar(
+                    radius: 50.0,
+                    backgroundColor: Colors.grey,
+                    backgroundImage:
+                    user.profileImageUrl.isEmpty
+                        ? AssetImage('assets/images/user_placeholder.jpg')
+                        : CachedNetworkImageProvider(user.profileImageUrl),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 20.0),
+                ),
+                ListTile(
+                  leading: Icon(Icons.search),
+                  title: Text('Search Event'),
+                  onTap: () => print('searching'),
+                ),
+                ListTile(
+                  leading: Icon(Icons.add),
+                  title: Text('Create Event'),
+                  onTap: () => print('creating'),
+                ),
+                ListTile(
+                  leading: Icon(Icons.history),
+                  title: Text('Match history'),
+                  onTap: () => print('historiating'),
+                ),
+                Divider(),
+                Expanded(
+                  child: Align(
+                    alignment: FractionalOffset.bottomCenter,
+                    child: ListTile(
+                      leading: Icon(Icons.help),
+                      title: Text('About us'),
+                      onTap: () => print('aboutating'),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
+        ),
       bottomNavigationBar: CupertinoTabBar(
         backgroundColor: Colors.grey[200],
         currentIndex: _currentTab,
