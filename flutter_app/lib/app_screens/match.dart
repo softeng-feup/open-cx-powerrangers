@@ -1,67 +1,91 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/services/auth.dart';
-import 'package:flutter_app/app_screens/main_Menu.dart';
 import 'package:flutter_app/app_screens/root.dart';
+import 'package:flutter_app/app_screens/user_profile.dart';
+import 'package:flutter_app/models/User.dart';
+import 'package:flutter_app/utils/constants.dart';
 
 class Match extends StatefulWidget {
+  final String userId = "MozrRTZtgJdlDSEaP8vWyK023Z73"; 
+
+
   @override
   _MatchState createState() => _MatchState();
 }
 
 var currentContext;
 
+
+
 class _MatchState extends State<Match> {
   //TODO: Criar tipo de letra no inicio para nao repetir em cada Textfield; Mudar TextField para um tipo de caixa read-only
+
+
 
   @override
   Widget build(BuildContext context) {
     currentContext = context;
     return Scaffold(
-      // TODO - Adicionar botao edit, permite utilizador editar perfil
-      //resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        title: Text('Match'),
-          centerTitle: true,
-      ),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [Container(
-                  child: imageColumn,
-                  width: 400,
-                )
-                ],
+      body: FutureBuilder(
+        future: usersRef.document(widget.userId).get(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (!snapshot.hasData) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          User user = User.fromDoc(snapshot.data);
+          return Scaffold(
+
+            appBar: AppBar(
+              title: Text('Match'),
+              centerTitle: true,
+            ),
+            body: Center(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    Text(
+                      user.name
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [Container(
+                        child: imageColumn,
+                        width: 400,
+                      )
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [Container(
+                        child: textColumn,
+                        width: 400,
+                      )
+                      ],
+                    ),
+                    Row(
+                        children: [Container(
+                          child: acceptButton,
+                          width: 200,
+                          height: 200,
+                        ),
+                          Container(
+                            child: rejectButton,
+                            width: 200,
+                            height: 200,
+                          )
+                        ]
+                    ),
+                  ],
+                ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [Container(
-                  child: textColumn,
-                  width: 400,
-                )
-                ],
-              ),
-              Row(
-                  children: [Container(
-                    child: acceptButton,
-                    width: 200,
-                    height: 200,
-                  ),
-                    Container(
-                      child: rejectButton,
-                      width: 200,
-                      height: 200,
-                    )
-                  ]
-              ),
-            ],
-          ),
-        ),
-      ),
+            ),
+          );
+        }),
     );
   }
+
+
 
   final imageColumn = Container( //Match profile pic
       child: Column(children: <Widget>[
@@ -91,7 +115,7 @@ class _MatchState extends State<Match> {
           autofocus: false,
           obscureText: false,
           decoration: InputDecoration(
-            labelText: "John wants to Mingle\n with you!",
+            labelText: "wants to Mingle\n with you!",
             hintText: "Rating",
             labelStyle: TextStyle(
               color: Colors.black,
@@ -163,3 +187,5 @@ final rejectButtonShape = CircleBorder(
 final acceptButtonShape = CircleBorder(
     side: BorderSide(color: Colors.green)
 );
+
+
