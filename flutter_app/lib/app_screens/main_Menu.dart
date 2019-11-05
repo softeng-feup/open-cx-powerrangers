@@ -51,6 +51,7 @@ class _MainMenuState extends State<MainMenu> {
         ],
       ),
       bottomNavigationBar: CupertinoTabBar(
+        backgroundColor: Colors.grey[200],
         currentIndex: _currentTab,
         onTap: (int index) {
           setState(() {
