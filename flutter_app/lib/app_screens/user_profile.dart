@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app_screens/edit_profile.dart';
 import 'package:flutter_app/models/User.dart';
@@ -37,7 +38,11 @@ class _UserProfileState extends State<UserProfile> {
                 children: <Widget>[
                   CircleAvatar(
                     radius: 50.0,
-                    backgroundImage: NetworkImage('https://i.redd.it/dmdqlcdpjlwz.jpg'),
+                    backgroundColor: Colors.grey,
+                    backgroundImage:
+                      user.profileImageUrl.isEmpty
+                          ? AssetImage('assets/images/user_placeholder.jpg')
+                          : CachedNetworkImageProvider(user.profileImageUrl),
                   ),
                   Expanded(
                     child: Column(
