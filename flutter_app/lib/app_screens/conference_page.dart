@@ -10,6 +10,12 @@ class ConferencePage extends StatefulWidget {
 class _ConferencePageState extends State<ConferencePage> {
   bool isJoined = false;
 
+  _logout()
+  {
+    AuthService.logout();
+    Navigator.pop(context);
+  }
+
   joinEvent() {
     print('following event');
     setState(() {
@@ -32,7 +38,7 @@ class _ConferencePageState extends State<ConferencePage> {
         centerTitle: true,
         actions: <Widget>[
           FlatButton.icon(
-            onPressed: () => AuthService.logout(),
+            onPressed: _logout,
             icon: Icon(Icons.exit_to_app),
             label: Text('Logout'),
           )
