@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/app_screens/match.dart' as prefix0;
+import 'package:flutter_app/app_screens/match.dart';
 
 class HomePage extends StatelessWidget
 {
@@ -22,7 +22,7 @@ class HomePage extends StatelessWidget
             ),
           onPressed: () => Navigator.push(
               context,
-              MaterialPageRoute(builder: (_) => prefix0.Match())),
+              MaterialPageRoute(builder: (_) => Match())),
         )
       ),
     );

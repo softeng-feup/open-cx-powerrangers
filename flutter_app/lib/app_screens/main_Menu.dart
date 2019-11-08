@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/app_screens/conference_page.dart';
+import 'package:flutter_app/app_screens/list_events.dart';
 import 'package:flutter_app/models/User.dart';
 import 'package:flutter_app/models/UserData.dart';
 import 'package:flutter_app/utils/constants.dart';
@@ -46,7 +48,7 @@ class _MainMenuState extends State<MainMenu> {
             });
         },
       ),
-      appBar: new AppBar(
+      appBar: AppBar(
         title: Text('Mingler', style: new TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),),
         centerTitle: true,
         actions: <Widget>[
@@ -92,9 +94,11 @@ class _MainMenuState extends State<MainMenu> {
                   onTap: () => print('searching'),
                 ),
                 ListTile(
-                  leading: Icon(Icons.add),
-                  title: Text('Create Event'),
-                  onTap: () => print('creating'),
+                  leading: Icon(Icons.book),
+                  title: Text('My Events'),
+                  onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => ConferencePage())),
                 ),
                 ListTile(
                   leading: Icon(Icons.history),

@@ -1,6 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app_screens/root.dart';
-import 'package:flutter_app/app_screens/user_profile.dart';
 import 'package:flutter_app/models/User.dart';
 import 'package:flutter_app/utils/constants.dart';
 
@@ -15,11 +15,7 @@ class Match extends StatefulWidget {
 var currentContext;
 
 
-
 class _MatchState extends State<Match> {
-  //TODO: Criar tipo de letra no inicio para nao repetir em cada Textfield; Mudar TextField para um tipo de caixa read-only
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +46,14 @@ class _MatchState extends State<Match> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [Container(
-                        child: imageColumn,
+                        child: CircleAvatar(
+                          radius: 20.0,
+                          backgroundColor: Colors.grey,
+                          backgroundImage:
+                          user.profileImageUrl.isEmpty
+                              ? AssetImage('assets/images/user_placeholder.jpg')
+                              : CachedNetworkImageProvider(user.profileImageUrl),
+                        ),
                         width: 400,
                       )
                       ],
@@ -84,29 +87,6 @@ class _MatchState extends State<Match> {
         }),
     );
   }
-
-
-
-  final imageColumn = Container( //Match profile pic
-      child: Column(children: <Widget>[
-        TextField(
-          textAlign: TextAlign.center,
-          enabled: false,
-          autofocus: false,
-          obscureText: false,
-          decoration: InputDecoration(
-            labelText: "☺",
-            hintText: "Rating",
-            labelStyle: TextStyle(
-              color: Colors.black,
-              fontSize: 100,
-            ),
-          ),
-        ),
-      ],
-      )
-  );
-
   final textColumn = Container( //Match generic text
       child: Column(children: <Widget>[
         TextField(
@@ -136,14 +116,11 @@ class _MatchState extends State<Match> {
           minWidth: double.infinity,
           height: 100,
           child: RaisedButton(
-            shape: acceptButtonShape,
+            shape: CircleBorder(
+              side: BorderSide(color: Colors.green),),
             onPressed: () =>
-            {
-              Navigator.push(
-                currentContext,
-                MaterialPageRoute(builder: (currentContext) => RootPage()),
-              )
-            },
+            (Navigator.push( currentContext,
+                MaterialPageRoute(builder: (currentContext) => RootPage()))),
             textColor: Colors.white,
             color: Colors.green,
             child: Text("✓", textScaleFactor: 5),
@@ -162,14 +139,11 @@ class _MatchState extends State<Match> {
           minWidth: double.infinity,
           height: 100,
           child: RaisedButton(
-            shape: rejectButtonShape,
+            shape: CircleBorder(
+              side: BorderSide(color: Colors.red)),
             onPressed: () =>
-            {
-              Navigator.push(
-                currentContext,
-                MaterialPageRoute(builder: (currentContext) => RootPage()),
-              )
-            },
+            (Navigator.push(currentContext,
+                MaterialPageRoute(builder: (currentContext) => RootPage()))),
             textColor: Colors.white,
             color: Colors.red,
             child: Text("X", textScaleFactor: 5),
@@ -180,12 +154,5 @@ class _MatchState extends State<Match> {
   );
 }
 
-final rejectButtonShape = CircleBorder(
-    side: BorderSide(color: Colors.red)
-);
-
-final acceptButtonShape = CircleBorder(
-    side: BorderSide(color: Colors.green)
-);
 
 
