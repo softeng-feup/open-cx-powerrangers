@@ -1,12 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app_screens/root.dart';
 import 'package:flutter_app/models/User.dart';
 import 'package:flutter_app/utils/constants.dart';
+import 'package:flutter_app/services/findMatch.dart';
 
 class Match extends StatefulWidget {
-  final String userId = "MozrRTZtgJdlDSEaP8vWyK023Z73"; 
+  final String userId;
 
+
+  Match({this.userId});
 
   @override
   _MatchState createState() => _MatchState();
@@ -17,10 +21,25 @@ var currentContext;
 
 class _MatchState extends State<Match> {
 
+  var match;
+
+  @override
+  void initState() {
+    super.initState();
+
+    FindMatch()
+        .findRandomMatch()
+        .then((QuerySnapshot docs) {
+          if(docs.documents.isNotEmpty){
+          match = docs.documents[1].data;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     currentContext = context;
-    return Scaffold(
+    /*return Scaffold(
       body: FutureBuilder(
         future: usersRef.document(widget.userId).get(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -85,6 +104,9 @@ class _MatchState extends State<Match> {
             ),
           );
         }),
+    ); */
+    return Text(
+      match['email']
     );
   }
   final textColumn = Container( //Match generic text
