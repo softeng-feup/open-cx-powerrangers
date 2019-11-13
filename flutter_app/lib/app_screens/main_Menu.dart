@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/app_screens/conference_edit.dart';
 import 'package:flutter_app/app_screens/conference_page.dart';
 import 'package:flutter_app/app_screens/list_events.dart';
 import 'package:flutter_app/models/User.dart';
@@ -103,7 +104,10 @@ class _MainMenuState extends State<MainMenu> {
                 ListTile(
                   leading: Icon(Icons.history),
                   title: Text('Match history'),
-                  onTap: () => print('historiating'),
+                  //onTap: () => print('historiating'),
+                  onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => ConferenceEdit())),
                 ),
                 Divider(),
                 Expanded(
