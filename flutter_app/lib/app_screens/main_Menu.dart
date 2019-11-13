@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app_screens/conference_edit.dart';
 import 'package:flutter_app/app_screens/conference_page.dart';
-import 'package:flutter_app/app_screens/list_events.dart';
 import 'package:flutter_app/models/User.dart';
 import 'package:flutter_app/models/UserData.dart';
 import 'package:flutter_app/utils/constants.dart';
@@ -97,14 +96,13 @@ class _MainMenuState extends State<MainMenu> {
                 ListTile(
                   leading: Icon(Icons.book),
                   title: Text('My Events'),
-                  onTap: () => Navigator.push(
+                  onTap: () => print('Conference page done but inaccessible') /*Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (_) => ConferencePage())),
+                      MaterialPageRoute(builder: (_) => ConferencePage())),*/
                 ),
                 ListTile(
                   leading: Icon(Icons.history),
                   title: Text('Match history'),
-                  //onTap: () => print('historiating'),
                   onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(builder: (_) => ConferenceEdit())),

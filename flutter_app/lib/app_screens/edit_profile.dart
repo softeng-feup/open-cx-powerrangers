@@ -34,7 +34,6 @@ class _EditProfileState extends State<EditProfile> {
 
   _handleImageFromGallery() async {
     File imageFile = await ImagePicker.pickImage(source: ImageSource.gallery);
-    print('hello');
 
     if(imageFile != null)
     {

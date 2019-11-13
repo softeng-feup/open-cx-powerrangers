@@ -1,6 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/models/Conference.dart';
 import 'package:flutter_app/services/auth.dart';
+import 'package:flutter_app/utils/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ConferencePage extends StatefulWidget {
@@ -49,8 +52,18 @@ class _ConferencePageState extends State<ConferencePage> {
           )
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
+      body: FutureBuilder(
+        future: eventRef.document(widget.eventId).get(),
+        builder: (BuildContext context, AsyncSnapshot snapshot){
+          if(!snapshot.hasData)
+          {
+            return Center(
+              child: CircularProgressIndicator()
+            );
+          }
+          Conference conf = Conference.fromDoc(snapshot.data);
+          return SingleChildScrollView(
+            child: Column(
               children: <Widget>[
                 Row(
                   children: <Widget>[
@@ -59,10 +72,12 @@ class _ConferencePageState extends State<ConferencePage> {
                         height: 200,
                         width: 200,
                         decoration: BoxDecoration(
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: AssetImage('assets/images/event_placeholder.jpg'),
-                          )
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: conf.imageUrl.isEmpty
+                                  ? AssetImage('assets/images/event_placeholder.jpg')
+                                  : CachedNetworkImageProvider(conf.imageUrl),
+                            )
                         ),
                       ),
                     )
@@ -76,7 +91,7 @@ class _ConferencePageState extends State<ConferencePage> {
                         Padding(
                           padding: EdgeInsets.only(top: 12),
                           child: Text(
-                            'Dez',
+                            conf.date.month.toString(),
                             style: TextStyle(
                               fontSize: 17,
                               fontWeight: FontWeight.w800,
@@ -85,25 +100,25 @@ class _ConferencePageState extends State<ConferencePage> {
                           ),
                         ),
                         Text(
-                          '21',
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.black,
-                          )
+                            conf.date.day.toString(),
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.black,
+                            )
                         )
                       ],
                     ),
                     Column(
                       children: <Widget>[
                         Container(
-                            padding: EdgeInsets.only(top: 15),
-                            child: Text(
-                              'Conference name',
-                              style: TextStyle(
-                                fontSize: 28,
-                                fontWeight: FontWeight.bold,
-                              ),),
-                          ),
+                          padding: EdgeInsets.only(top: 15),
+                          child: Text(
+                            conf.name,
+                            style: TextStyle(
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold,
+                            ),),
+                        ),
                       ],
                     ),
                   ],
@@ -125,7 +140,7 @@ class _ConferencePageState extends State<ConferencePage> {
                     Column(
                       children: <Widget>[
                         Text(
-                          '21/12/2019',
+                          conf.date.toString(),
                           style: TextStyle(
                               fontSize: 20
                           ),
@@ -152,7 +167,7 @@ class _ConferencePageState extends State<ConferencePage> {
                       child: Column(
                         children: <Widget>[
                           Text(
-                            'Faculdade de Engenharia da Universidade do Porto',
+                            conf.address,
                             style: TextStyle(
                                 fontSize: 20
                             ),
@@ -180,14 +195,14 @@ class _ConferencePageState extends State<ConferencePage> {
                       children: <Widget>[
                         InkWell(
                           child: Text(
-                            'www.google.com',
+                            conf.urlName,
                             style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                              color: Colors.blue
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                                color: Colors.blue
                             ),
                           ),
-                          onTap: () => launch('www.google.com'),
+                          onTap: () => launch(conf.urlLink),
                         )
                       ],
                     )
@@ -210,27 +225,28 @@ class _ConferencePageState extends State<ConferencePage> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ExpandablePanel(
-                        header: Text(
-                          'Details', //para ficar sempre assim, nao mudar
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w800
-                          ),
-                        ),
-                        expanded: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              'stuff stuff stuff stuff stuff',
-                              softWrap: true,
-                            )
-                        ),
-                        tapHeaderToExpand: true,
-                        hasIcon: true,
+                    header: Text(
+                      'Details', //para ficar sempre assim, nao mudar
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w800
                       ),
+                    ),
+                    expanded: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          conf.descr,
+                          softWrap: true,
+                        )
+                    ),
+                    tapHeaderToExpand: true,
+                    hasIcon: true,
+                  ),
                 ),
               ],
-        ),
-      )
+            ),
+          );
+        })
     );
   }
 

@@ -6,10 +6,10 @@ class Conference{
   final String name;
   final String address;
   final String descr;
-  final Timestamp date;
+  final DateTime date;
   final String urlName;
   final String urlLink;
-
+  final String imageUrl;
   Conference({
     this.eventId,
     this.ownerId,
@@ -18,7 +18,8 @@ class Conference{
     this.descr,
     this.date,
     this.urlName,
-    this.urlLink
+    this.urlLink,
+    this.imageUrl,
   });
 
   factory Conference.fromDoc(DocumentSnapshot doc)
@@ -31,7 +32,8 @@ class Conference{
       descr: doc['descr'] ?? '',
       date: doc['date'] ?? '',
       urlName: doc['urlName'] ?? '',
-      urlLink: doc['urlLink'] ?? ''
+      urlLink: doc['urlLink'] ?? '',
+      imageUrl: doc['imageUrl'],
     );
   }
 }
