@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/app_screens/topics_edit.dart';
 import 'package:flutter_app/services/auth.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -259,7 +260,9 @@ class _ConferenceEditState extends State<ConferenceEdit> {
 
                             Column(
                               children: <Widget>[
-                                FlatButton.icon(onPressed:() => print('.....'), icon: Icon(Icons.edit), label: Text('Edit'))
+                                FlatButton.icon(onPressed:() =>  Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => TopicsEdit())), icon: Icon(Icons.edit), label: Text('Edit'))
                               ],
                             ),
                           ],
