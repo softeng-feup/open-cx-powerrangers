@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -21,19 +23,11 @@ var currentContext;
 
 class _MatchState extends State<Match> {
 
-  var match;
+  Future findRandomMatch(userId) async{
 
-  @override
-  void initState() {
-    super.initState();
+    QuerySnapshot query = await usersRef.where("uid",isGreaterThan: userId).getDocuments();
 
-    FindMatch()
-        .findRandomMatch()
-        .then((QuerySnapshot docs) {
-          if(docs.documents.isNotEmpty){
-          match = docs.documents[1].data;
-      }
-    });
+    return query.documents;
   }
 
   @override
@@ -105,10 +99,90 @@ class _MatchState extends State<Match> {
           );
         }),
     ); */
-    return Text(
-      match['email']
+    return Scaffold(
+      body: FutureBuilder(
+        future: findRandomMatch(widget.userId),
+        builder: ( _, snapshot){
+          if(snapshot.connectionState == ConnectionState.waiting){
+            return Center(
+              child: Text(
+                "Loading",
+              ),
+            );
+          }
+          else{
+            var rnd = new Random();
+            var min = 0, max = 3;
+            var index = min + rnd.nextInt(max - min);
+
+            return Scaffold(
+
+              appBar: AppBar(
+                title: Text("Match"),
+                centerTitle: true,
+              ),
+              body: Center(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: <Widget>[
+                      Text(
+                        snapshot.data[index].data['name'],
+                        textAlign: TextAlign.center,
+                        textScaleFactor: 2,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            child: CircleAvatar(
+                              minRadius: 50.0,
+                              backgroundColor: Colors.grey,
+                              backgroundImage:
+                            //snapshot.data[index].data['profileImgUrl']
+                                  AssetImage('assets/images/user_placeholder.jpg')
+                                //: CachedNetworkImageProvider(snapshot.data[index].data['profileImgUrl']),
+                          ),
+                          width: 100,
+                        )
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [Container(
+                          child: Text(
+                            "wants to mingle with you",
+                            textAlign: TextAlign.center,
+                            textScaleFactor: 2,
+                          ),
+                          width: 400,
+                        )
+                        ],
+                      ),
+                      Row(
+                          children: [Container(
+                            child: acceptButton,
+                            width: 200,
+                            height: 200,
+                          ),
+                            Container(
+                              child: rejectButton,
+                              width: 200,
+                              height: 200,
+                            )
+                          ]
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }
+        },
+
+      ),
     );
   }
+
   final textColumn = Container( //Match generic text
       child: Column(children: <Widget>[
         TextField(
@@ -121,7 +195,7 @@ class _MatchState extends State<Match> {
             hintText: "Rating",
             labelStyle: TextStyle(
               color: Colors.black,
-              fontSize: 35,
+              fontSize: 10,
             ),
           ),
         ),
