@@ -103,17 +103,16 @@ class _MatchState extends State<Match> {
       body: FutureBuilder(
         future: findRandomMatch(widget.userId),
         builder: ( _, snapshot){
-          if(snapshot.connectionState == ConnectionState.waiting){
+          if(!snapshot.hasData){
             return Center(
-              child: Text(
-                "Loading",
-              ),
+                child: CircularProgressIndicator()
             );
           }
           else{
             var rnd = new Random();
             var min = 0, max = 3;
             var index = min + rnd.nextInt(max - min);
+            User user = User.fromDoc(snapshot.data[index]);
 
             return Scaffold(
 
@@ -126,7 +125,7 @@ class _MatchState extends State<Match> {
                   child: Column(
                     children: <Widget>[
                       Text(
-                        snapshot.data[index].data['name'],
+                        user.name,
                         textAlign: TextAlign.center,
                         textScaleFactor: 2,
                       ),
@@ -138,9 +137,9 @@ class _MatchState extends State<Match> {
                               minRadius: 50.0,
                               backgroundColor: Colors.grey,
                               backgroundImage:
-                            //snapshot.data[index].data['profileImgUrl']
-                                  AssetImage('assets/images/user_placeholder.jpg')
-                                //: CachedNetworkImageProvider(snapshot.data[index].data['profileImgUrl']),
+                              user.profileImageUrl.isEmpty
+                                  ? AssetImage('assets/images/user_placeholder.jpg')
+                                  : CachedNetworkImageProvider(user.profileImageUrl),
                           ),
                           width: 100,
                         )
