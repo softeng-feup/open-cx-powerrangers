@@ -24,7 +24,8 @@ class Database{
       'ownerId': conf.ownerId,
       'urlLink': conf.urlLink,
       'urlName': conf.urlName,
-      'imageUrl': conf.imageUrl
+      'imageUrl': conf.imageUrl,
+      'topics': conf.topics
     });
   }
 
@@ -38,7 +39,8 @@ class Database{
       'ownerId': conf.ownerId,
       'urlLink': conf.urlLink,
       'urlName': conf.urlName,
-      'imageUrl': conf.imageUrl
+      'imageUrl': conf.imageUrl,
+      'topics': conf.topics
     });
 
     print(ref.documentID);

@@ -31,6 +31,15 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
+  _clearSearch()
+  {
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => _searchController.clear());
+    setState(() {
+      _events = null;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,18 +57,26 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
             suffixIcon: IconButton(
               icon: Icon(Icons.clear),
-              onPressed: () => print('clear'),
+              onPressed: _clearSearch,
             ),
             filled: true,
           ),
           onSubmitted: (input){
-            setState(() {
-              _events = Database.searchEvents(input);
-            });
+            if(input.isNotEmpty) {
+              setState(() {
+                _events = Database.searchEvents(input);
+              });
+            }
           },
         ),
       ),
-      body: FutureBuilder(
+      body: _events == null
+          ? Center(
+        child: Text(
+          'Search for an event'
+        ),
+      )
+          : FutureBuilder(
         future: _events,
         builder: (context, snapshot){
           if(!snapshot.hasData) {

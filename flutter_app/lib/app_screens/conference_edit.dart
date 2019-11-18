@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/app_screens/topics_edit.dart';
 import 'package:flutter_app/models/Conference.dart';
 import 'package:flutter_app/models/UserData.dart';
 import 'package:flutter_app/services/database.dart';
@@ -30,6 +29,7 @@ class _ConferenceEditState extends State<ConferenceEdit> {
   String _desc = '';
   File _eventImage;
   DateTime _dateTime;
+  Map<String, String> _formData;
 
   bool _isLoading = false;
 
@@ -42,7 +42,25 @@ class _ConferenceEditState extends State<ConferenceEdit> {
       _location = widget.conf.address;
       _desc = widget.conf.descr;
       _dateTime = widget.conf.getDate;
+      _formData = widget.conf.topics;
     }
+    else{
+      _formData = _initiateMap();
+    }
+  }
+
+  Map<String, String> _initiateMap()
+  {
+    var myMap = new Map<String, String>();
+
+    myMap['topic0'] = '';
+    myMap['topic1'] = '';
+    myMap['topic2'] = '';
+    myMap['topic3'] = '';
+    myMap['topic4'] = '';
+    myMap['topic5'] = '';
+
+    return myMap;
   }
 
   _dateToStamp()
@@ -75,9 +93,19 @@ class _ConferenceEditState extends State<ConferenceEdit> {
       return FileImage(_eventImage);
     }
   }
+  
+  _countTopics()
+  {
+    int cnt = 0;
+    _formData.forEach((k,v) => v.trim().isEmpty
+        ? null
+        : cnt++);
+
+    return cnt;
+  }
 
   _submit() async {
-    if (_formKey.currentState.validate()) {
+    if (_formKey.currentState.validate() && _countTopics() > 2) {
       _formKey.currentState.save();
 
       setState(() {
@@ -88,7 +116,7 @@ class _ConferenceEditState extends State<ConferenceEdit> {
       String _eventImageUrl = '';
 
 
-      if (_eventImage == null) {
+      if (_eventImage == null && widget.conf != null) {
         _eventImageUrl = widget.conf.imageUrl;
       } else {
         if (widget.conf != null) {
@@ -115,6 +143,7 @@ class _ConferenceEditState extends State<ConferenceEdit> {
           urlName: _urlName,
           urlLink: _url,
           imageUrl: _eventImageUrl,
+          topics: _formData
         );
 
         Database.updateConference(conf);
@@ -129,12 +158,35 @@ class _ConferenceEditState extends State<ConferenceEdit> {
           urlName: _urlName,
           urlLink: _url,
           imageUrl: _eventImageUrl,
+          topics: _formData
         );
 
         Database.createConference(conf);
       }
 
       Navigator.pop(context);
+    }
+    else if (_countTopics() < 3)
+    {
+      showDialog(
+          context: context,
+          builder: (BuildContext context){
+            return AlertDialog(
+              title: Text('Not enough topics!'),
+              content: Text('Please select at least 3 topics.'),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text(
+                      'Close',
+                  style: TextStyle(
+                    color: Colors.red
+                  ),
+                  ),
+                  onPressed: () => Navigator.pop(context),
+                )
+              ],
+            );
+          });
     }
   }
 
@@ -314,6 +366,96 @@ class _ConferenceEditState extends State<ConferenceEdit> {
                           input.trim().length > 300 ? 'Description max: 300 chars.' : null,
                       onSaved: (input) => _desc = input,
                     ),
+                    Divider(
+                      color: Colors.white,
+                      height: 30,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Column(
+                          children: <Widget>[
+                            Text(
+                              'Select topics',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20
+                              ),
+                            ),
+                            Text(
+                              '(min. 3, leave undesirables null)'
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                    TextFormField(
+                      initialValue: _formData['topic0'],
+                      style: TextStyle(fontSize: 18),
+                      decoration: InputDecoration(
+                        icon: Icon(Icons.filter_1),
+                        labelText: 'Topic 1'
+                      ),
+                      validator: (input) =>
+                        input.trim().length > 70 ? 'Topic max: 70 chars.' : null,
+                      onSaved: (input) => _formData['topic0'] = input,
+                    ),
+                    TextFormField(
+                      initialValue: _formData['topic1'],
+                      style: TextStyle(fontSize: 18),
+                      decoration: InputDecoration(
+                          icon: Icon(Icons.filter_2),
+                          labelText: 'Topic 2'
+                      ),
+                      validator: (input) =>
+                      input.trim().length > 70 ? 'Topic max: 70 chars.' : null,
+                      onSaved: (input) => _formData['topic1'] = input,
+                    ),
+                    TextFormField(
+                      initialValue: _formData['topic2'],
+                      style: TextStyle(fontSize: 18),
+                      decoration: InputDecoration(
+                          icon: Icon(Icons.filter_3),
+                          labelText: 'Topic 3'
+                      ),
+                      validator: (input) =>
+                      input.trim().length > 70 ? 'Topic max: 70 chars.' : null,
+                      onSaved: (input) => _formData['topic2'] = input,
+                    ),
+                    TextFormField(
+                      initialValue: _formData['topic3'],
+                      style: TextStyle(fontSize: 18),
+                      decoration: InputDecoration(
+                          icon: Icon(Icons.filter_4),
+                          labelText: 'Topic 4'
+                      ),
+                      validator: (input) =>
+                      input.trim().length > 70 ? 'Topic max: 70 chars.' : null,
+                      onSaved: (input) => _formData['topic3'] = input,
+                    ),
+                    TextFormField(
+                      initialValue: _formData['topic4'],
+                      style: TextStyle(fontSize: 18),
+                      decoration: InputDecoration(
+                          icon: Icon(Icons.filter_5),
+                          labelText: 'Topic 5'
+                      ),
+                      validator: (input) =>
+                      input.trim().length > 70 ? 'Topic max: 70 chars.' : null,
+                      onSaved: (input) => _formData['topic4'] = input,
+                    ),
+                    TextFormField(
+                      initialValue: _formData['topic5'],
+                      style: TextStyle(fontSize: 18),
+                      decoration: InputDecoration(
+                          icon: Icon(Icons.filter_6),
+                          labelText: 'Topic 6'
+                      ),
+                      validator: (input) =>
+                      input.trim().length > 70 ? 'Topic max: 70 chars.' : null,
+                      onSaved: (input) => _formData['topic5'] = input,
+                    ),
+
                     Container(
                       margin: EdgeInsets.all(40),
                       height: 40,
@@ -327,31 +469,6 @@ class _ConferenceEditState extends State<ConferenceEdit> {
                           style: TextStyle(fontSize: 18),
                         ),
                       ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Column(
-                          children: <Widget>[
-                            Text(
-                              'Topics',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-                        Column(
-                          children: <Widget>[
-                            FlatButton.icon(
-                                onPressed: () => Navigator.push(context,
-                                    MaterialPageRoute(builder: (_) => TopicsEdit())),
-                                icon: Icon(Icons.edit),
-                                label: Text('Edit'))
-                          ],
-                        ),
-                      ],
                     ),
                   ],
                 ),

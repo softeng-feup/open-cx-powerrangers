@@ -10,6 +10,8 @@ class Conference{
   final String urlName;
   final String urlLink;
   final String imageUrl;
+  final Map<String, String> topics;
+
   Conference({
     this.eventId,
     this.ownerId,
@@ -20,6 +22,7 @@ class Conference{
     this.urlName,
     this.urlLink,
     this.imageUrl,
+    this.topics
   });
 
   factory Conference.fromDoc(DocumentSnapshot doc)
@@ -34,6 +37,7 @@ class Conference{
       urlName: doc['urlName'] ?? '',
       urlLink: doc['urlLink'] ?? '',
       imageUrl: doc['imageUrl'],
+      topics: doc['topics'],
     );
   }
 
