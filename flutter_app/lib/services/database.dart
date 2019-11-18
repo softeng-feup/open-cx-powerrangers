@@ -44,4 +44,10 @@ class Database{
     print(ref.documentID);
   }
 
+  static Future<QuerySnapshot> searchEvents(String input)
+  {
+    Future<QuerySnapshot> events = eventRef.where('name', isGreaterThanOrEqualTo: input).getDocuments();
+    return events;
+  }
+
 }

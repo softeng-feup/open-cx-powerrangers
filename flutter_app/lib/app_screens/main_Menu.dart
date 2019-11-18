@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app_screens/conference_edit.dart';
 import 'package:flutter_app/app_screens/conference_page.dart';
+import 'package:flutter_app/app_screens/search_screen.dart';
 import 'package:flutter_app/models/User.dart';
 import 'package:flutter_app/models/UserData.dart';
 import 'package:flutter_app/utils/constants.dart';
@@ -91,7 +92,9 @@ class _MainMenuState extends State<MainMenu> {
                 ListTile(
                   leading: Icon(Icons.search),
                   title: Text('Search Event'),
-                  onTap: () => print('searching'),
+                  onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => SearchScreen())),
                 ),
                 ListTile(
                   leading: Icon(Icons.book),

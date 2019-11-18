@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app_screens/topics_edit.dart';
 import 'package:flutter_app/models/Conference.dart';
@@ -40,8 +41,13 @@ class _ConferenceEditState extends State<ConferenceEdit> {
       _name = widget.conf.name;
       _location = widget.conf.address;
       _desc = widget.conf.descr;
-      _dateTime = widget.conf.date;
+      _dateTime = widget.conf.getDate;
     }
+  }
+
+  _dateToStamp()
+  {
+    return Timestamp.fromDate(_dateTime);
   }
 
   _handleImageFromGallery() async {
@@ -85,8 +91,6 @@ class _ConferenceEditState extends State<ConferenceEdit> {
       if (_eventImage == null) {
         _eventImageUrl = widget.conf.imageUrl;
       } else {
-
-
         if (widget.conf != null) {
           _eventImageUrl = await Storage.uploadEventImage(
             widget.conf.imageUrl,
@@ -107,7 +111,7 @@ class _ConferenceEditState extends State<ConferenceEdit> {
           name: _name,
           address: _location,
           descr: _desc,
-          date: _dateTime,
+          date: _dateToStamp(),
           urlName: _urlName,
           urlLink: _url,
           imageUrl: _eventImageUrl,
@@ -121,7 +125,7 @@ class _ConferenceEditState extends State<ConferenceEdit> {
           name: _name,
           address: _location,
           descr: _desc,
-          date: _dateTime,
+          date: _dateToStamp(),
           urlName: _urlName,
           urlLink: _url,
           imageUrl: _eventImageUrl,
@@ -235,7 +239,10 @@ class _ConferenceEditState extends State<ConferenceEdit> {
                                   lastDate: DateTime(2030))
                                   .then((date) {
                                 setState(() {
-                                  _dateTime = date;
+                                 if(date == null)
+                                   _dateTime = DateTime.now();
+                                 else
+                                   _dateTime = date;
                                 });
                               });
                             },

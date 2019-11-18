@@ -91,7 +91,7 @@ class _ConferencePageState extends State<ConferencePage> {
                         Padding(
                           padding: EdgeInsets.only(top: 12),
                           child: Text(
-                            conf.date.month.toString(),
+                            conf.getMonth.toString(),
                             style: TextStyle(
                               fontSize: 17,
                               fontWeight: FontWeight.w800,
@@ -100,7 +100,7 @@ class _ConferencePageState extends State<ConferencePage> {
                           ),
                         ),
                         Text(
-                            conf.date.day.toString(),
+                            conf.getDate.day.toString(),
                             style: TextStyle(
                               fontSize: 20,
                               color: Colors.black,
@@ -140,7 +140,7 @@ class _ConferencePageState extends State<ConferencePage> {
                     Column(
                       children: <Widget>[
                         Text(
-                          conf.date.toString(),
+                          conf.getCalendarDate.toString(),
                           style: TextStyle(
                               fontSize: 20
                           ),
@@ -195,7 +195,9 @@ class _ConferencePageState extends State<ConferencePage> {
                       children: <Widget>[
                         InkWell(
                           child: Text(
-                            conf.urlName,
+                            conf.urlName.isEmpty
+                                ? conf.urlLink
+                                : conf.urlName,
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20,
