@@ -1,9 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/app_screens/conference_edit.dart';
 import 'package:flutter_app/models/Conference.dart';
+import 'package:flutter_app/models/UserData.dart';
 import 'package:flutter_app/services/auth.dart';
 import 'package:flutter_app/utils/constants.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ConferencePage extends StatefulWidget {
@@ -17,6 +20,7 @@ class ConferencePage extends StatefulWidget {
 
 class _ConferencePageState extends State<ConferencePage> {
   bool isJoined = false;
+  int atCnt = 0;
 
   _logout()
   {
@@ -36,6 +40,24 @@ class _ConferencePageState extends State<ConferencePage> {
     setState(() {
       isJoined = false;
     });
+  }
+
+  List _getTopics(Conference conf)
+  {
+    List<String> lst = new List();
+    conf.topics.forEach((k,v) => v.toString().isNotEmpty
+    ? lst.add(v.toString())
+    : null);
+
+    return lst;
+  }
+
+  _buildTopicTile(String topic)
+  {
+    return ListTile(
+      leading: Icon(Icons.star),
+      title: Text(topic)
+    );
   }
 
   @override
@@ -214,12 +236,7 @@ class _ConferencePageState extends State<ConferencePage> {
                   color: Colors.black,
                   height: 10,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    buildJoinButton(),
-                  ],
-                ),
+                _buildButtonOptions(conf),
                 Divider(
                   color: Colors.black,
                   height: 10,
@@ -245,11 +262,64 @@ class _ConferencePageState extends State<ConferencePage> {
                     hasIcon: true,
                   ),
                 ),
+                Divider(
+                  color: Colors.black,
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      "Events Topics",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20.0
+                      ),)
+                  ],
+                ),
+                ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: _getTopics(conf).length,
+                      itemBuilder: (BuildContext context, int index){
+                      String topic = _getTopics(conf)[index];
+                      return _buildTopicTile(topic);
+                      },
+                  ),
               ],
             ),
           );
         })
     );
+  }
+
+  _buildButtonOptions(Conference conf)
+  {
+    if (conf.ownerId == Provider.of<UserData>(context).currentUserId)
+    {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            buildJoinButton(),
+            FlatButton(
+              color: Colors.blue,
+              textColor: Colors.white,
+              child: Text('Edit event'),
+              onPressed: () => Navigator.push(
+                context,
+              MaterialPageRoute(builder: (_) => ConferenceEdit(conf: conf,))),
+              ),
+          ],
+        );
+    }
+    else {
+      return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+          buildJoinButton(),
+        ]
+      );
+    }
   }
 
   RaisedButton buildJoinButton()

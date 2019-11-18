@@ -10,7 +10,7 @@ class Conference{
   final String urlName;
   final String urlLink;
   final String imageUrl;
-  final Map<String, String> topics;
+  final Map<dynamic, dynamic> topics;
 
   Conference({
     this.eventId,

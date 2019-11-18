@@ -2,7 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app_screens/edit_profile.dart';
 import 'package:flutter_app/models/User.dart';
+import 'package:flutter_app/models/UserData.dart';
 import 'package:flutter_app/utils/constants.dart';
+import 'package:provider/provider.dart';
 
 
 class UserProfile extends StatefulWidget {
@@ -15,6 +17,30 @@ class UserProfile extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfile> {
+
+  _displayInfo(User user)
+  {
+    return user.uid == Provider.of<UserData>(context).currentUserId
+        ? Container(
+                width: 150,
+                child: FlatButton(
+                  color: Colors.blue,
+                  textColor: Colors.white,
+                  child: Text(
+                    'Edit Profile',
+                    style: TextStyle(
+                      fontSize: 18,
+                    ),
+                  ),
+                  onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => EditProfile(user: user,))),
+                ),
+              )
+        : Text(
+      user.email
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,28 +79,13 @@ class _UserProfileState extends State<UserProfile> {
                             Text(
                               user.name,
                               style: TextStyle(
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.w600
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.w600
                               ),
                             )
                           ],
                         ),
-                        Container(
-                          width: 150,
-                          child: FlatButton(
-                            color: Colors.blue,
-                            textColor: Colors.white,
-                            child: Text(
-                              'Edit Profile',
-                              style: TextStyle(
-                                fontSize: 18,
-                              ),
-                            ),
-                            onPressed: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (_) => EditProfile(user: user,))),
-                          ),
-                        )
+                        _displayInfo(user)
                       ],
                     ),
                   )

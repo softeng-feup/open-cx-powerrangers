@@ -29,7 +29,7 @@ class _ConferenceEditState extends State<ConferenceEdit> {
   String _desc = '';
   File _eventImage;
   DateTime _dateTime;
-  Map<String, String> _formData;
+  Map<dynamic, dynamic> _formData;
 
   bool _isLoading = false;
 
@@ -40,6 +40,8 @@ class _ConferenceEditState extends State<ConferenceEdit> {
     if (widget.conf != null) {
       _name = widget.conf.name;
       _location = widget.conf.address;
+      _url = widget.conf.urlLink;
+      _urlName = widget.conf.urlName;
       _desc = widget.conf.descr;
       _dateTime = widget.conf.getDate;
       _formData = widget.conf.topics;
@@ -49,9 +51,9 @@ class _ConferenceEditState extends State<ConferenceEdit> {
     }
   }
 
-  Map<String, String> _initiateMap()
+  Map<dynamic, dynamic> _initiateMap()
   {
-    var myMap = new Map<String, String>();
+    var myMap = new Map<dynamic, dynamic>();
 
     myMap['topic0'] = '';
     myMap['topic1'] = '';
@@ -93,19 +95,9 @@ class _ConferenceEditState extends State<ConferenceEdit> {
       return FileImage(_eventImage);
     }
   }
-  
-  _countTopics()
-  {
-    int cnt = 0;
-    _formData.forEach((k,v) => v.trim().isEmpty
-        ? null
-        : cnt++);
-
-    return cnt;
-  }
 
   _submit() async {
-    if (_formKey.currentState.validate() && _countTopics() > 2) {
+    if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
 
       setState(() {
@@ -165,28 +157,6 @@ class _ConferenceEditState extends State<ConferenceEdit> {
       }
 
       Navigator.pop(context);
-    }
-    else if (_countTopics() < 3)
-    {
-      showDialog(
-          context: context,
-          builder: (BuildContext context){
-            return AlertDialog(
-              title: Text('Not enough topics!'),
-              content: Text('Please select at least 3 topics.'),
-              actions: <Widget>[
-                FlatButton(
-                  child: Text(
-                      'Close',
-                  style: TextStyle(
-                    color: Colors.red
-                  ),
-                  ),
-                  onPressed: () => Navigator.pop(context),
-                )
-              ],
-            );
-          });
     }
   }
 
@@ -383,7 +353,7 @@ class _ConferenceEditState extends State<ConferenceEdit> {
                               ),
                             ),
                             Text(
-                              '(min. 3, leave undesirables null)'
+                              '(max. 6, leave undesirables null)'
                             ),
                           ],
                         )
@@ -409,7 +379,7 @@ class _ConferenceEditState extends State<ConferenceEdit> {
                       ),
                       validator: (input) =>
                       input.trim().length > 70 ? 'Topic max: 70 chars.' : null,
-                      onSaved: (input) => _formData['topic1'] = input,
+                      onSaved: (input) => _formData['topic1']  = input,
                     ),
                     TextFormField(
                       initialValue: _formData['topic2'],
