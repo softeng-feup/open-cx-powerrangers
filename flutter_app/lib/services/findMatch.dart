@@ -16,6 +16,13 @@ class FindMatch{
     return query.documents;
   }
 
+  Future getMatchesRequest(userId) async{
+    QuerySnapshot query = await matches.where("receiver",isEqualTo: userId).where("accepted",isEqualTo: false).getDocuments();
+
+    return query.documents;
+  }
+
+
 
 
 }

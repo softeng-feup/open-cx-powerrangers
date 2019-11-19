@@ -105,6 +105,11 @@ class _MainMenuState extends State<MainMenu> {
                   title: Text('Match history'),
                   onTap: () => print('historiating'),
                 ),
+                ListTile(
+                  leading: Icon(Icons.mail),
+                  title: Text('Match requests'),
+                  onTap: () => print('yeet'),
+                ),
                 Divider(),
                 Expanded(
                   child: Align(
