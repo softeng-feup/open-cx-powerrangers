@@ -59,35 +59,37 @@ class _EditProfileState extends State<EditProfile> {
     }
   }
 
-  _submit() async
-  {
-    _formKey.currentState.save();
+  _submit() async {
+    if (_formKey.currentState.validate() && !_isLoading) {
+      _formKey.currentState.save();
 
-    setState(() {
-      _isLoading = true;
-    });
+      setState(() {
+        _isLoading = true;
+      });
 
-    String _profileImageUrl = '';
+      // Update user in database
+      String _profileImageUrl = '';
 
-    if(_profileImage == null)
-    {
-      _profileImageUrl = widget.user.profileImageUrl;
-    }
-    else {
-      _profileImageUrl = await Storage.uploadUserProfileImage(
+      if (_profileImage == null) {
+        _profileImageUrl = widget.user.profileImageUrl;
+      } else {
+        _profileImageUrl = await Storage.uploadUserProfileImage(
           widget.user.profileImageUrl,
-          _profileImage);
+          _profileImage,
+        );
+      }
+
+      User user = User(
+        uid: widget.user.uid,
+        name: _name,
+        profileImageUrl: _profileImageUrl,
+        bio: _bio,
+      );
+      // Database update
+      Database.updateUser(user);
+
+      Navigator.pop(context);
     }
-
-    User user = User(
-      uid: widget.user.uid,
-      name: _name,
-      bio: _bio,
-      profileImageUrl: _profileImageUrl,
-    );
-
-    Database.updateUser(user);
-    Navigator.pop(context);
   }
 
   @override

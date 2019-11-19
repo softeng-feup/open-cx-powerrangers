@@ -5,14 +5,16 @@ import 'package:flutter_app/app_screens/conference_edit.dart';
 import 'package:flutter_app/models/Conference.dart';
 import 'package:flutter_app/models/UserData.dart';
 import 'package:flutter_app/services/auth.dart';
+import 'package:flutter_app/services/database.dart';
 import 'package:flutter_app/utils/constants.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ConferencePage extends StatefulWidget {
+  final String currentUserId;
   final String eventId;
 
-  ConferencePage({this.eventId});
+  ConferencePage({this.currentUserId, this.eventId});
 
   @override
   _ConferencePageState createState() => _ConferencePageState();
@@ -29,16 +31,27 @@ class _ConferencePageState extends State<ConferencePage> {
   }
 
   joinEvent() {
-    print('following event');
+
+    Database.followEvent(
+        currentUserId: widget.currentUserId,
+        eventId: widget.eventId);
+
     setState(() {
       isJoined = true;
+      atCnt++;
     });
   }
 
   unJoinEvent() {
-    print('unfollowing event');
+
+    Database.unFollowEvent(
+      currentUserId: widget.currentUserId,
+      eventId: widget.eventId
+    );
+
     setState(() {
       isJoined = false;
+      atCnt--;
     });
   }
 
@@ -58,6 +71,34 @@ class _ConferencePageState extends State<ConferencePage> {
       leading: Icon(Icons.star),
       title: Text(topic)
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _setupIsJoined();
+    _setupFollowerCount();
+  }
+
+  _setupIsJoined() async
+  {
+    bool isFollowingEvent = await Database.isFollowingEvent(
+      currentUserId: widget.currentUserId,
+      eventId: widget.eventId
+    );
+
+    setState(() {
+      isJoined = isFollowingEvent;
+    });
+  }
+
+  _setupFollowerCount() async
+  {
+    int userFollowerCnt = await Database.numFollowers(widget.eventId);
+
+    setState(() {
+      atCnt = userFollowerCnt;
+    });
   }
 
   @override
@@ -282,8 +323,8 @@ class _ConferencePageState extends State<ConferencePage> {
                       physics: NeverScrollableScrollPhysics(),
                       itemCount: _getTopics(conf).length,
                       itemBuilder: (BuildContext context, int index){
-                      String topic = _getTopics(conf)[index];
-                      return _buildTopicTile(topic);
+                        String topic = _getTopics(conf)[index];
+                        return _buildTopicTile(topic);
                       },
                   ),
               ],
@@ -300,6 +341,22 @@ class _ConferencePageState extends State<ConferencePage> {
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
+            Column(
+              children: <Widget>[
+                Text(
+                  atCnt.toString(),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold
+                  ),
+                ),
+                Text(
+                  'going',
+                  style: TextStyle(
+                      color: Colors.grey[700]
+                  ),
+                )
+              ],
+            ),
             buildJoinButton(),
             FlatButton(
               color: Colors.blue,
@@ -314,9 +371,25 @@ class _ConferencePageState extends State<ConferencePage> {
     }
     else {
       return Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-          buildJoinButton(),
+            Column(
+              children: <Widget>[
+                Text(
+                      atCnt.toString(),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold
+                      ),
+                ),
+                Text(
+                  'attendees',
+                  style: TextStyle(
+                    color: Colors.grey[700]
+                  ),
+                )
+              ],
+            ),
+            buildJoinButton(),
         ]
       );
     }

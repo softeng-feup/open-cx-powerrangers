@@ -3,7 +3,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app_screens/conference_page.dart';
 import 'package:flutter_app/models/Conference.dart';
+import 'package:flutter_app/models/UserData.dart';
 import 'package:flutter_app/services/database.dart';
+import 'package:provider/provider.dart';
 
 class SearchScreen extends StatefulWidget {
   @override
@@ -27,7 +29,9 @@ class _SearchScreenState extends State<SearchScreen> {
       title: Text(conference.name),
       onTap: () => Navigator.push(
           context,
-          MaterialPageRoute(builder: (_) => ConferencePage(eventId: conference.eventId,))),
+          MaterialPageRoute(builder: (_) => ConferencePage(
+            currentUserId: Provider.of<UserData>(context).currentUserId,
+            eventId: conference.eventId,))),
     );
   }
 

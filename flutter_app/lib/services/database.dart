@@ -52,4 +52,44 @@ class Database{
     return events;
   }
 
+  static void followEvent ({String currentUserId, String eventId})
+  {
+    //adiciona o evento à lista de eventos que o currentUser se juntou
+    followingRef.document(currentUserId).collection('userFollowing').document(eventId).setData({});
+
+    //adiciona o currentUser à lista de users que seguem o evento eventId
+    followersRef.document(eventId).collection('userFollowers').document(currentUserId).setData({});
+  }
+
+  static void unFollowEvent ({String currentUserId, String eventId})
+  {
+    //remove o evento da lista de eventos que o currentUser se juntou
+    followingRef.document(currentUserId).collection('userFollowing').document(eventId).get()
+    .then((doc){
+      if(doc.exists)
+        doc.reference.delete();
+    });
+
+    //remove o currentUser da lista de users que seguem o evento eventId
+    followersRef.document(eventId).collection('userFollowers').document(currentUserId).get()
+    .then((doc){
+      if(doc.exists)
+        doc.reference.delete();
+    });
+  }
+
+  static Future<bool> isFollowingEvent({String currentUserId, String eventId}) async
+  {
+    DocumentSnapshot followingDoc = await followersRef.document(eventId).collection('userFollowers')
+        .document(currentUserId).get();
+
+    return followingDoc.exists;
+  }
+
+  static Future<int> numFollowers(String eventId) async {
+    QuerySnapshot followersSnap = await followersRef.document(eventId).collection('userFollowers').getDocuments();
+
+    return followersSnap.documents.length;
+  }
+
 }
