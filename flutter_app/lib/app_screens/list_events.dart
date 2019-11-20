@@ -35,14 +35,14 @@ class _ListEventsState extends State<ListEvents> {
                         ? AssetImage(conf.imageUrl)
                         : CachedNetworkImageProvider(conf.imageUrl)
                 ),
-                title: Text (conf.name),
-                subtitle: Text(conf.address +'\n'+ conf.getCalendarDate.toString()),
+                title: Text (conf.name,  style: TextStyle( fontSize: 20),),
+                subtitle: Text(conf.address +'\n'+ conf.getCalendarDate.toString(),   style: TextStyle( fontSize: 15),),
               ),
               ButtonTheme.bar( // make buttons use the appropriate styles for cards
                 child: ButtonBar(
                   children: <Widget>[
                     FlatButton(
-                      child: const Text('GO TO EVENT'),
+                      child: const Text('GO TO EVENT',  style: TextStyle( fontSize: 18),),
                       onPressed: () => Navigator.push(
                         context,
                         MaterialPageRoute(builder: (_) => ConferencePage(currentUserId: widget.uid, eventId: conf.eventId))),
