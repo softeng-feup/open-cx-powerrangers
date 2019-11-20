@@ -17,7 +17,7 @@ class FindMatch{
   }
 
   Future getMatchesRequest(userId) async{
-    QuerySnapshot query = await matches.where("receiver",isEqualTo: userId).where("accepted",isEqualTo: false).getDocuments();
+    QuerySnapshot query = await matchesRef.where("receiver",isEqualTo: userId).where("accepted",isEqualTo: false).getDocuments();
 
     return query.documents;
   }

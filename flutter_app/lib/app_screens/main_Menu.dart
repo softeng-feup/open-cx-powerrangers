@@ -11,6 +11,8 @@ import '../services/auth.dart';
 import 'package:flutter_app/app_screens/homePage.dart';
 import 'package:flutter_app/app_screens/user_profile.dart';
 
+import 'match_requests.dart';
+
 class MainMenu extends StatefulWidget {
 
   @override
@@ -108,7 +110,10 @@ class _MainMenuState extends State<MainMenu> {
                 ListTile(
                   leading: Icon(Icons.mail),
                   title: Text('Match requests'),
-                  onTap: () => print('yeet'),
+                  onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => MatchRequests())
+                  ),
                 ),
                 Divider(),
                 Expanded(
