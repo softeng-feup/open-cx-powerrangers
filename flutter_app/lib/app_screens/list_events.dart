@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/models/Conference.dart';
 import 'package:flutter_app/services/database.dart';
 import 'package:flutter_app/utils/constants.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+
+import 'conference_page.dart';
 
 class ListEvents extends StatefulWidget {
   final String uid;
@@ -18,8 +21,40 @@ class _ListEventsState extends State<ListEvents> {
 
   _buildEventCard(Conference conf)
   {
-    return Text(
-      conf.name,
+    return Center(
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+               ListTile(
+                leading: CircleAvatar(
+                  radius: 30.0,
+                    backgroundImage: conf.imageUrl.isEmpty
+                        ? AssetImage(conf.imageUrl)
+                        : CachedNetworkImageProvider(conf.imageUrl)
+                ),
+                title: Text (conf.name),
+                subtitle: Text(conf.address +'\n'+ conf.getCalendarDate.toString()),
+              ),
+              ButtonTheme.bar( // make buttons use the appropriate styles for cards
+                child: ButtonBar(
+                  children: <Widget>[
+                    FlatButton(
+                      child: const Text('GO TO EVENT'),
+                      onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => ConferencePage(currentUserId: widget.uid, eventId: conf.eventId))),
+                    ),
+
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 
