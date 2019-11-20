@@ -52,6 +52,13 @@ class Database{
     return events;
   }
 
+  static Future<QuerySnapshot> getEvents(String uid)
+  {
+    Future<QuerySnapshot> events = followingRef.document(uid).collection('userFollowing').getDocuments();
+
+    return events;
+  }
+
   static void followEvent ({String currentUserId, String eventId})
   {
     //adiciona o evento à lista de eventos que o currentUser se juntou
