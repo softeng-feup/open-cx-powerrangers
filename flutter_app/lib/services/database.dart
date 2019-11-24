@@ -42,8 +42,6 @@ class Database{
       'imageUrl': conf.imageUrl,
       'topics': conf.topics
     });
-
-    print(ref.documentID);
   }
 
   static Future<QuerySnapshot> searchEvents(String input)
