@@ -31,7 +31,7 @@ class _SearchScreenState extends State<SearchScreen> {
           context,
           MaterialPageRoute(builder: (_) => ConferencePage(
             currentUserId: Provider.of<UserData>(context).currentUserId,
-            eventId: conference.eventId,))),
+            conf: conference,))),
     );
   }
 

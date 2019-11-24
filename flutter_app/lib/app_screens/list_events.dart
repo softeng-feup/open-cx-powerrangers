@@ -24,7 +24,7 @@ class _ListEventsState extends State<ListEvents> {
     return Center(
       child: Card(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.only(top: 12, left: 12, right: 12),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
@@ -45,7 +45,7 @@ class _ListEventsState extends State<ListEvents> {
                       child: const Text('GO TO EVENT',  style: TextStyle( fontSize: 18),),
                       onPressed: () => Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (_) => ConferencePage(currentUserId: widget.uid, eventId: conf.eventId))),
+                        MaterialPageRoute(builder: (_) => ConferencePage(currentUserId: widget.uid, conf: conf))),
                     ),
 
                   ],

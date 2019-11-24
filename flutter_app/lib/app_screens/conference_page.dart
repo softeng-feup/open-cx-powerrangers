@@ -1,20 +1,22 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/app_screens/SelectInterests.dart';
 import 'package:flutter_app/app_screens/conference_edit.dart';
+import 'package:flutter_app/models/Attendee.dart';
 import 'package:flutter_app/models/Conference.dart';
 import 'package:flutter_app/models/UserData.dart';
 import 'package:flutter_app/services/auth.dart';
 import 'package:flutter_app/services/database.dart';
-import 'package:flutter_app/utils/constants.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ConferencePage extends StatefulWidget {
   final String currentUserId;
-  final String eventId;
+  final Conference conf;
 
-  ConferencePage({this.currentUserId, this.eventId});
+  ConferencePage({this.currentUserId, this.conf});
 
   @override
   _ConferencePageState createState() => _ConferencePageState();
@@ -23,6 +25,20 @@ class ConferencePage extends StatefulWidget {
 class _ConferencePageState extends State<ConferencePage> {
   bool isJoined = false;
   int atCnt = 0;
+  Attendee at;
+  Map<dynamic, dynamic> topicos;
+  List lst;
+
+  Map<dynamic, dynamic> _generateTopics()
+  {
+    var myMap = new Map<dynamic, dynamic>();
+
+    lst.forEach((f) =>
+        myMap[f] = false
+    );
+
+    return myMap;
+  }
 
   _logout()
   {
@@ -34,19 +50,24 @@ class _ConferencePageState extends State<ConferencePage> {
 
     Database.followEvent(
         currentUserId: widget.currentUserId,
-        eventId: widget.eventId);
+        eventId: widget.conf.eventId,
+        topics: topicos);
 
     setState(() {
       isJoined = true;
       atCnt++;
     });
+
+    Navigator.push(context,
+        MaterialPageRoute( builder: (_) => SelectInterests(
+          topicMap: topicos,)));
   }
 
   unJoinEvent() {
 
     Database.unFollowEvent(
       currentUserId: widget.currentUserId,
-      eventId: widget.eventId
+      eventId: widget.conf.eventId
     );
 
     setState(() {
@@ -55,14 +76,14 @@ class _ConferencePageState extends State<ConferencePage> {
     });
   }
 
-  List _getTopics(Conference conf)
+  List _getTopics()
   {
-    List<String> lst = new List();
-    conf.topics.forEach((k,v) => v.toString().isNotEmpty
-    ? lst.add(v.toString())
+    List<String> lista = new List();
+    widget.conf.topics.forEach((k,v) => v.toString().isNotEmpty
+    ? lista.add(v.toString())
     : null);
 
-    return lst;
+    return lista;
   }
 
   _buildTopicTile(String topic)
@@ -78,13 +99,33 @@ class _ConferencePageState extends State<ConferencePage> {
     super.initState();
     _setupIsJoined();
     _setupFollowerCount();
+    lst = _getTopics();
+    _setupGetTopics();
+  }
+
+  _setupGetTopics() async
+  {
+    print('here');
+    DocumentSnapshot doc = await Database.getTopics(
+        currentUserId: widget.currentUserId,
+        eventId: widget.conf.eventId);
+
+    Attendee at = Attendee.fromDoc(doc);
+    setState(() {
+      topicos = at.topics;
+    });
+
+    if(topicos == null || topicos.isEmpty) {
+      topicos = _generateTopics();
+      print('i was here');
+    }
   }
 
   _setupIsJoined() async
   {
     bool isFollowingEvent = await Database.isFollowingEvent(
       currentUserId: widget.currentUserId,
-      eventId: widget.eventId
+      eventId: widget.conf.eventId
     );
 
     setState(() {
@@ -94,7 +135,7 @@ class _ConferencePageState extends State<ConferencePage> {
 
   _setupFollowerCount() async
   {
-    int userFollowerCnt = await Database.numFollowers(widget.eventId);
+    int userFollowerCnt = await Database.numFollowers(widget.conf.eventId);
 
     setState(() {
       atCnt = userFollowerCnt;
@@ -115,17 +156,8 @@ class _ConferencePageState extends State<ConferencePage> {
           )
         ],
       ),
-      body: FutureBuilder(
-        future: eventRef.document(widget.eventId).get(),
-        builder: (BuildContext context, AsyncSnapshot snapshot){
-          if(!snapshot.hasData)
-          {
-            return Center(
-              child: CircularProgressIndicator()
-            );
-          }
-          Conference conf = Conference.fromDoc(snapshot.data);
-          return SingleChildScrollView(
+      body:
+       SingleChildScrollView(
             child: Column(
               children: <Widget>[
                 Row(
@@ -137,9 +169,9 @@ class _ConferencePageState extends State<ConferencePage> {
                         decoration: BoxDecoration(
                             image: DecorationImage(
                               fit: BoxFit.cover,
-                              image: conf.imageUrl.isEmpty
+                              image: widget.conf.imageUrl.isEmpty
                                   ? AssetImage('assets/images/event_placeholder.jpg')
-                                  : CachedNetworkImageProvider(conf.imageUrl),
+                                  : CachedNetworkImageProvider(widget.conf.imageUrl),
                             )
                         ),
                       ),
@@ -154,7 +186,7 @@ class _ConferencePageState extends State<ConferencePage> {
                         Padding(
                           padding: EdgeInsets.only(top: 12),
                           child: Text(
-                            conf.getMonth.toString(),
+                            widget.conf.getMonth.toString(),
                             style: TextStyle(
                               fontSize: 17,
                               fontWeight: FontWeight.w800,
@@ -163,7 +195,7 @@ class _ConferencePageState extends State<ConferencePage> {
                           ),
                         ),
                         Text(
-                            conf.getDate.day.toString(),
+                            widget.conf.getDate.day.toString(),
                             style: TextStyle(
                               fontSize: 20,
                               color: Colors.black,
@@ -176,7 +208,7 @@ class _ConferencePageState extends State<ConferencePage> {
                         Container(
                           padding: EdgeInsets.only(top: 15),
                           child: Text(
-                            conf.name,
+                            widget.conf.name,
                             style: TextStyle(
                               fontSize: 28,
                               fontWeight: FontWeight.bold,
@@ -203,7 +235,7 @@ class _ConferencePageState extends State<ConferencePage> {
                     Column(
                       children: <Widget>[
                         Text(
-                          conf.getCalendarDate.toString(),
+                          widget.conf.getCalendarDate.toString(),
                           style: TextStyle(
                               fontSize: 20
                           ),
@@ -230,7 +262,7 @@ class _ConferencePageState extends State<ConferencePage> {
                       child: Column(
                         children: <Widget>[
                           Text(
-                            conf.address,
+                            widget.conf.address,
                             style: TextStyle(
                                 fontSize: 20
                             ),
@@ -258,16 +290,16 @@ class _ConferencePageState extends State<ConferencePage> {
                       children: <Widget>[
                         InkWell(
                           child: Text(
-                            conf.urlName.isEmpty
-                                ? conf.urlLink
-                                : conf.urlName,
+                            widget.conf.urlName.isEmpty
+                                ? widget.conf.urlLink
+                                : widget.conf.urlName,
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20,
                                 color: Colors.blue
                             ),
                           ),
-                          onTap: () => launch(conf.urlLink),
+                          onTap: () => launch(widget.conf.urlLink),
                         )
                       ],
                     )
@@ -277,7 +309,7 @@ class _ConferencePageState extends State<ConferencePage> {
                   color: Colors.black,
                   height: 10,
                 ),
-                _buildButtonOptions(conf),
+                _buildButtonOptions(widget.conf),
                 Divider(
                   color: Colors.black,
                   height: 10,
@@ -295,7 +327,7 @@ class _ConferencePageState extends State<ConferencePage> {
                     expanded: Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          conf.descr,
+                          widget.conf.descr,
                           softWrap: true,
                         )
                     ),
@@ -321,16 +353,15 @@ class _ConferencePageState extends State<ConferencePage> {
                 ListView.builder(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
-                      itemCount: _getTopics(conf).length,
+                      itemCount: lst.length,
                       itemBuilder: (BuildContext context, int index){
-                        String topic = _getTopics(conf)[index];
+                        String topic = _getTopics()[index];
                         return _buildTopicTile(topic);
                       },
                   ),
               ],
             ),
-          );
-        })
+          )
     );
   }
 

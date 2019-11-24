@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_app/models/Attendee.dart';
 import 'package:flutter_app/models/Conference.dart';
 import 'package:flutter_app/models/User.dart';
 import 'package:flutter_app/utils/constants.dart';
@@ -57,13 +58,23 @@ class Database{
     return events;
   }
 
-  static void followEvent ({String currentUserId, String eventId})
+  static getTopics ({String currentUserId, String eventId}) async
+  {
+    DocumentSnapshot doc = await followersRef.document(eventId).collection('userFollowers')
+        .document(currentUserId).get();
+
+    return doc;
+  }
+
+  static void followEvent ({String currentUserId, String eventId, Map topics})
   {
     //adiciona o evento à lista de eventos que o currentUser se juntou
     followingRef.document(currentUserId).collection('userFollowing').document(eventId).setData({});
 
     //adiciona o currentUser à lista de users que seguem o evento eventId
-    followersRef.document(eventId).collection('userFollowers').document(currentUserId).setData({});
+    followersRef.document(eventId).collection('userFollowers').document(currentUserId).setData({
+      'topics': topics
+    });
   }
 
   static void unFollowEvent ({String currentUserId, String eventId})
