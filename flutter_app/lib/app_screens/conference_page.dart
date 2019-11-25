@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/app_screens/SelectInterests.dart';
+import 'package:flutter_app/app_screens/select_interests.dart';
 import 'package:flutter_app/app_screens/conference_edit.dart';
 import 'package:flutter_app/models/Attendee.dart';
 import 'package:flutter_app/models/Conference.dart';
@@ -48,6 +48,9 @@ class _ConferencePageState extends State<ConferencePage> {
 
   joinEvent() {
 
+    if(topicos == null || topicos.isEmpty)
+      topicos = _generateTopics();
+
     Database.followEvent(
         currentUserId: widget.currentUserId,
         eventId: widget.conf.eventId,
@@ -58,9 +61,12 @@ class _ConferencePageState extends State<ConferencePage> {
       atCnt++;
     });
 
+    print(topicos);
     Navigator.push(context,
         MaterialPageRoute( builder: (_) => SelectInterests(
-          topicMap: topicos,)));
+          topicMap: topicos,
+          eventId: widget.conf.eventId,
+          userId: widget.currentUserId,)));
   }
 
   unJoinEvent() {
@@ -111,9 +117,7 @@ class _ConferencePageState extends State<ConferencePage> {
         eventId: widget.conf.eventId);
 
     Attendee at = Attendee.fromDoc(doc);
-    setState(() {
-      topicos = at.topics;
-    });
+    topicos = at.topics;
 
     if(topicos == null || topicos.isEmpty) {
       topicos = _generateTopics();
@@ -390,6 +394,15 @@ class _ConferencePageState extends State<ConferencePage> {
             ),
             buildJoinButton(),
             FlatButton(
+              onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => SelectInterests(
+                    topicMap: topicos,
+                    eventId: widget.conf.eventId,
+                    userId: widget.currentUserId,))),
+              child: Text('Topics'),
+            ),
+            FlatButton(
               color: Colors.blue,
               textColor: Colors.white,
               child: Text('Edit event'),
@@ -421,6 +434,16 @@ class _ConferencePageState extends State<ConferencePage> {
               ],
             ),
             buildJoinButton(),
+            FlatButton(
+              onPressed: () => isJoined ? Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => SelectInterests(
+                    topicMap: topicos,
+                    eventId: widget.conf.eventId,
+                    userId: widget.currentUserId,)))
+              : null,
+              child: Text('Topics'),
+            )
         ]
       );
     }
