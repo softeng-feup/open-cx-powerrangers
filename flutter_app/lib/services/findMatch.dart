@@ -22,6 +22,10 @@ class FindMatch{
     return query.documents;
   }
 
+  /*Future<DocumentSnapshot> isMatchAccepted(MatchId) async{
+    DocumentSnapshot query = await matchesRef.document(MatchId).get();
+    return query;
+  }*/
 
 
 
