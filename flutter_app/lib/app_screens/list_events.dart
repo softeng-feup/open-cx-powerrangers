@@ -108,7 +108,7 @@ class _ListEventsState extends State<ListEvents> {
               }
           );
         },
-      )
+      ),
     );
   }
 

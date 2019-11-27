@@ -15,12 +15,6 @@ class SelectInterests extends StatefulWidget {
 
 class _SelectInterestsState extends State<SelectInterests> {
 
-  _logout()
-  {
-    AuthService.logout();
-    Navigator.pop(context);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,13 +22,6 @@ class _SelectInterestsState extends State<SelectInterests> {
           automaticallyImplyLeading: false,
           title: Text('Select topics', style: new TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),),
           centerTitle: true,
-          actions: <Widget>[
-            FlatButton.icon(
-              onPressed: _logout,
-              icon: Icon(Icons.exit_to_app),
-              label: Text('Logout'),
-            )
-          ],
         ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
