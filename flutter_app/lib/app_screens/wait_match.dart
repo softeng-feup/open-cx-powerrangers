@@ -41,7 +41,9 @@ class _WaitMatchState extends State<WaitMatch> {
         'requester': widget.user1,
         'receiver' :widget.user2,
         'event'    :widget.event,
-        'accepted' :false
+        'accepted' :false,
+        'completed':false,
+        'rating': 0.0
       });
     }
 
@@ -60,7 +62,7 @@ class _WaitMatchState extends State<WaitMatch> {
         future: waitForResponse(),
         builder: ( _,snapshot){
           newTime = DateTime.now();
-          if(!snapshot.hasData ){// or match is not accepted and timeout not reached
+          if(!snapshot.hasData && newTime.isBefore(timeoutTime)  == true){// or match is not accepted and timeout not reached
             return Center(
                 child: CircularProgressIndicator()
             );

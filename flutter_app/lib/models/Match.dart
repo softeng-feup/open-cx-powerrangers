@@ -2,7 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Match {
   final String requester,receiver,event;
-  final bool accepted;
+  final bool accepted, completed;
+  final double rating;
   //interests?
 
   Match({
@@ -10,6 +11,8 @@ class Match {
     this.receiver,
     this.event,
     this.accepted,
+    this.completed,
+    this.rating
     });
 
   factory Match.fromDoc(DocumentSnapshot doc) {
@@ -17,7 +20,9 @@ class Match {
         requester: doc['requester'],
         receiver: doc['receiver'],
         event: doc['event'],
-        accepted: doc['accepted'] ?? ''
+        accepted: doc['accepted'],
+        completed: doc['completed'],
+        rating: doc['rating']?? ''
     );
   }
 }
