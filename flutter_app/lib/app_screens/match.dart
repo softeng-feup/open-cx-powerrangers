@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app_screens/root.dart';
+import 'package:flutter_app/app_screens/wait_match.dart';
 import 'package:flutter_app/models/User.dart';
 import 'package:flutter_app/utils/constants.dart';
 import 'package:flutter_app/services/findMatch.dart';
@@ -23,35 +24,46 @@ var currentContext;
 
 class _MatchState extends State<Match> {
 
-  Future findRandomMatch(userId) async{
+  Future<DocumentSnapshot> findRandomMatch(userId) async{
 
-    QuerySnapshot query = await usersRef.where("uid",isGreaterThan: userId).getDocuments();
-
-    return query.documents;
+    DocumentSnapshot ds = await usersRef.document(userId).get();
+    print(ds.data);
+    return ds;
   }
 
+  static var uid1;
+  static var uid2;
 
+  @override
+  void initState() {
+    super.initState();
+    uid1= widget.userId;
+  }
 
-
+  static var currentContext;
 
   @override
   Widget build(BuildContext context) {
     currentContext = context;
     return Scaffold(
       body: FutureBuilder(
-        future: findRandomMatch(widget.userId),
-        builder: ( _, snapshot){
+        future: findRandomMatch("Cx1WXsOVNPgzFo3abCkM3IcIRfh1"),
+        builder: ( context , snapshot){
           if(!snapshot.hasData){
             return Center(
                 child: CircularProgressIndicator()
             );
           }
-          else{
-            var rnd = new Random();
-            var min = 0, max = 3;
-            var index = min + rnd.nextInt(max - min);
-            User user = User.fromDoc(snapshot.data[index]);
-
+          else {
+            //var rnd = new Random();
+            //var min = 0, max = 3;
+            //var index = min + rnd.nextInt(max - min);
+            //print(index);
+            //print(snapshot.data.documents.length);
+            User user = User.fromDoc(snapshot.data);
+            uid2 = user.uid;
+            //print(uid2);
+            //print(uid1);
             return Scaffold(
 
               appBar: AppBar(
@@ -132,7 +144,7 @@ class _MatchState extends State<Match> {
           child: RaisedButton(
             onPressed: () =>
             (Navigator.push( currentContext,
-                MaterialPageRoute(builder: (currentContext) => RootPage()))),
+                MaterialPageRoute(builder: (currentContext) =>WaitMatch(user1: uid1,user2: uid2,)))),
             textColor: Colors.white,
             color: Colors.green,
             child: Text("✓", textScaleFactor: 5),

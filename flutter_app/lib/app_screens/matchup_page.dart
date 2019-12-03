@@ -20,12 +20,14 @@ class Matchup extends StatefulWidget {
 }
 
 var currentContext;
+var m;
 
 class _MatchupState extends State<Matchup>{
 
   @override
   Widget build(BuildContext context) {
     currentContext = context;
+    m = widget.match;
     return null;
   }
 
@@ -53,11 +55,9 @@ class _MatchupState extends State<Matchup>{
     ),
   );
 
-  /*final popupRate = new AlertDialog(
 
-  );
 
-  final finishedMatch = new Container(
+  /*final finishedMatch = new Container(
     child: Column(
       children: <Widget>[
         SizedBox(
@@ -69,7 +69,6 @@ class _MatchupState extends State<Matchup>{
           child: RaisedButton(
             textColor: Colors.white,
             color: Colors.red,
-            onPressed: ,
             child: Text(
               "Cancel",
               textAlign: TextAlign.center,
@@ -77,7 +76,7 @@ class _MatchupState extends State<Matchup>{
         )
       ],
     ),
-  );
+  );*/
 
 
 }
