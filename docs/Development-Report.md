@@ -182,16 +182,15 @@ Scratch your tingle, get ready to mingle!
   * The user chooses the event to edit;
   * The user edits the desired topics and saves.
   
-#### Look up user information use case:
+#### Lookup user information use case:
 
 * **Actor**: Conference staff.
-* **Description**: Conference staff members have access to the profile information of all attendees that have opted-in into the matchmaking process and can look up any individual attendee and see their profile, personal and professional interests.
+* **Description**: Conference staff members have access to a list of all currently joined users.
 * **Preconditions and Postconditions**: The user must have higher priviledges for the conference in question to access this sub-menu.
 * **Normal Flow**: 
   * The user navigates to the conference page;
   * In the conference settings, the user selects 'See registred users';
-  * A page appears with all users ordered alphabetically but can directly search for a name;
-  * By pressing the desired attendee's link, the user can see all information they have public as well as thei match history for their conference in particular.
+  * A page appears with all users;
 
 ### User stories
 
