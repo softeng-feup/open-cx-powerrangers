@@ -10,6 +10,7 @@ import 'package:flutter_app/models/Conference.dart';
 import 'package:flutter_app/models/UserData.dart';
 import 'package:flutter_app/services/auth.dart';
 import 'package:flutter_app/services/database.dart';
+import 'package:flutter_app/utils/constants.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -43,12 +44,12 @@ class _ConferencePageState extends State<ConferencePage> {
     Navigator.pop(context);
   }
 
-  joinEvent() {
+  joinEvent(Conference conf) {
     if (topicos == null || topicos.isEmpty) topicos = _generateTopics();
 
     Database.followEvent(
         currentUserId: widget.currentUserId,
-        eventId: widget.conf.eventId,
+        eventId: conf.eventId,
         topics: topicos);
 
     setState(() {
@@ -62,14 +63,14 @@ class _ConferencePageState extends State<ConferencePage> {
         MaterialPageRoute(
             builder: (_) => SelectInterests(
                   topicMap: topicos,
-                  eventId: widget.conf.eventId,
+                  eventId: conf.eventId,
                   userId: widget.currentUserId,
                 )));
   }
 
-  unJoinEvent() {
+  unJoinEvent(Conference conf) {
     Database.unFollowEvent(
-        currentUserId: widget.currentUserId, eventId: widget.conf.eventId);
+        currentUserId: widget.currentUserId, eventId: conf.eventId);
 
     setState(() {
       isJoined = false;
@@ -77,9 +78,9 @@ class _ConferencePageState extends State<ConferencePage> {
     });
   }
 
-  List _getTopics() {
+  List _getTopics(Conference conf) {
     List<String> lista = new List();
-    widget.conf.topics.forEach(
+    conf.topics.forEach(
         (k, v) => v.toString().isNotEmpty ? lista.add(v.toString()) : null);
 
     return lista;
@@ -94,12 +95,11 @@ class _ConferencePageState extends State<ConferencePage> {
     super.initState();
     _setupIsJoined();
     _setupFollowerCount();
-    lst = _getTopics();
+    lst = _getTopics(widget.conf);
     _setupGetTopics();
   }
 
   _setupGetTopics() async {
-    print('here');
     DocumentSnapshot doc = await Database.getTopics(
         currentUserId: widget.currentUserId, eventId: widget.conf.eventId);
 
@@ -108,7 +108,6 @@ class _ConferencePageState extends State<ConferencePage> {
 
     if (topicos == null || topicos.isEmpty) {
       topicos = _generateTopics();
-      print('i was here');
     }
   }
 
@@ -147,207 +146,221 @@ class _ConferencePageState extends State<ConferencePage> {
             )
           ],
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Container(
-                      height: 200,
-                      width: 200,
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: widget.conf.imageUrl.isEmpty
-                            ? AssetImage('assets/images/event_placeholder.jpg')
-                            : CachedNetworkImageProvider(widget.conf.imageUrl),
-                      )),
-                    ),
-                  )
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(top: 12),
-                        child: Text(
-                          widget.conf.getMonth.toString(),
-                          style: TextStyle(
-                            fontSize: 17,
-                            fontWeight: FontWeight.w800,
-                            color: Colors.red,
-                          ),
-                        ),
-                      ),
-                      Text(widget.conf.getDate.day.toString(),
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.black,
-                          ))
-                    ],
-                  ),
-                  Column(
-                    children: <Widget>[
-                      Container(
-                        padding: EdgeInsets.only(top: 15),
-                        child: Text(
-                          widget.conf.name,
-                          style: TextStyle(
-                            fontSize: 28,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              Divider(
-                color: Colors.black,
-                height: 10,
-              ),
-              Row(
-                children: <Widget>[
-                  Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Icon(Icons.date_range),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: <Widget>[
-                      Text(
-                        widget.conf.getCalendarDate.toString(),
-                        style: TextStyle(fontSize: 20),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-              Divider(
-                color: Colors.white,
-                height: 5,
-              ),
-              Row(
-                children: <Widget>[
-                  Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Icon(Icons.location_on),
-                      ),
-                    ],
-                  ),
-                  Flexible(
-                    child: Column(
+        body: FutureBuilder(
+            future: eventRef.document(widget.conf.eventId).get(),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if (!snapshot.hasData) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              Conference conf = Conference.fromDoc(snapshot.data);
+              return SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    Row(
                       children: <Widget>[
-                        Text(
-                          widget.conf.address,
-                          style: TextStyle(fontSize: 20),
+                        Expanded(
+                          child: Container(
+                            height: 200,
+                            width: 200,
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: conf.imageUrl.isEmpty
+                                      ? AssetImage(
+                                      'assets/images/event_placeholder.jpg')
+                                      : CachedNetworkImageProvider(
+                                      conf.imageUrl),
+                                )),
+                          ),
+                        )
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Column(
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.only(top: 12),
+                              child: Text(
+                                conf.getMonth.toString(),
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w800,
+                                  color: Colors.red,
+                                ),
+                              ),
+                            ),
+                            Text(conf.getDate.day.toString(),
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.black,
+                                ))
+                          ],
+                        ),
+                        Column(
+                          children: <Widget>[
+                            Container(
+                              padding: EdgeInsets.only(top: 15),
+                              child: Text(
+                                conf.name,
+                                style: TextStyle(
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                  )
-                ],
-              ),
-              Divider(
-                color: Colors.white,
-                height: 5,
-              ),
-              Row(
-                children: <Widget>[
-                  Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.all(10),
-                        child: Icon(Icons.alternate_email),
-                      )
-                    ],
-                  ),
-                  Column(
-                    children: <Widget>[
-                      InkWell(
-                        child: Text(
-                          widget.conf.urlName.isEmpty
-                              ? widget.conf.urlLink
-                              : widget.conf.urlName,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                              color: Colors.blue),
+                    Divider(
+                      color: Colors.black,
+                      height: 10,
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Column(
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Icon(Icons.date_range),
+                            ),
+                          ],
                         ),
-                        onTap: () => launch(widget.conf.urlLink),
-                      )
-                    ],
-                  )
-                ],
-              ),
-              Divider(
-                color: Colors.black,
-                height: 10,
-              ),
-              _buildButtonOptions(),
-              Divider(
-                color: Colors.black,
-                height: 10,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ExpandablePanel(
-                  header: Text(
-                    'Details', //para ficar sempre assim, nao mudar
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
-                  ),
-                  expanded: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        widget.conf.descr,
-                        softWrap: true,
-                      )),
-                  tapHeaderToExpand: true,
-                  hasIcon: true,
+                        Column(
+                          children: <Widget>[
+                            Text(
+                              conf.getCalendarDate.toString(),
+                              style: TextStyle(fontSize: 20),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                    Divider(
+                      color: Colors.white,
+                      height: 5,
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Column(
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Icon(Icons.location_on),
+                            ),
+                          ],
+                        ),
+                        Flexible(
+                          child: Column(
+                            children: <Widget>[
+                              Text(
+                                conf.address,
+                                style: TextStyle(fontSize: 20),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                    Divider(
+                      color: Colors.white,
+                      height: 5,
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Column(
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Icon(Icons.alternate_email),
+                            )
+                          ],
+                        ),
+                        Column(
+                          children: <Widget>[
+                            InkWell(
+                              child: Text(
+                                conf.urlName.isEmpty
+                                    ? conf.urlLink
+                                    : conf.urlName,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                    color: Colors.blue),
+                              ),
+                              onTap: () => launch(conf.urlLink),
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                    Divider(
+                      color: Colors.black,
+                      height: 10,
+                    ),
+                    _buildButtonOptions(conf),
+                    Divider(
+                      color: Colors.black,
+                      height: 10,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ExpandablePanel(
+                        header: Text(
+                          'Details', //para ficar sempre assim, nao mudar
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.w800),
+                        ),
+                        expanded: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              conf.descr,
+                              softWrap: true,
+                            )),
+                        tapHeaderToExpand: true,
+                        hasIcon: true,
+                      ),
+                    ),
+                    Divider(
+                      color: Colors.black,
+                      height: 10,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          "Events Topics",
+                          style:
+                          TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 20.0),
+                        )
+                      ],
+                    ),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: lst.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        String topic = _getTopics(conf)[index];
+                        return _buildTopicTile(topic);
+                      },
+                    ),
+                    Divider(
+                      color: Colors.black,
+                      height: 10,
+                    ),
+                    _buildOwnerButtons(conf),
+                  ],
                 ),
-              ),
-              Divider(
-                color: Colors.black,
-                height: 10,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    "Events Topics",
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
-                  )
-                ],
-              ),
-              ListView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: lst.length,
-                itemBuilder: (BuildContext context, int index) {
-                  String topic = _getTopics()[index];
-                  return _buildTopicTile(topic);
-                },
-              ),
-              Divider(
-                color: Colors.black,
-                height: 10,
-              ),
-              _buildOwnerButtons(),
-            ],
-          ),
-        ));
+              );
+            }));
   }
 
-  _buildButtonOptions() {
+  _buildButtonOptions(Conference conf) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
@@ -363,7 +376,7 @@ class _ConferencePageState extends State<ConferencePage> {
             )
           ],
         ),
-        buildJoinButton(),
+        buildJoinButton(conf),
         FlatButton(
           onPressed: () => Navigator.push(
               context,
@@ -379,17 +392,17 @@ class _ConferencePageState extends State<ConferencePage> {
     );
   }
 
-  RaisedButton buildJoinButton() {
+  RaisedButton buildJoinButton(Conference conf) {
     if (!isJoined) {
       return RaisedButton.icon(
-        onPressed: joinEvent,
+        onPressed: () => joinEvent(conf),
         icon: Icon(Icons.add),
         label: Text('join us'),
         color: Colors.green,
       );
     } else {
       return RaisedButton.icon(
-        onPressed: unJoinEvent,
+        onPressed: () => unJoinEvent(conf),
         icon: Icon(Icons.remove),
         label: Text('unjoin'),
         color: Colors.red,
@@ -397,9 +410,9 @@ class _ConferencePageState extends State<ConferencePage> {
     }
   }
 
-  _buildOwnerButtons()
+  _buildOwnerButtons(Conference conf)
   {
-    if (widget.conf.ownerId == Provider.of<UserData>(context).currentUserId)
+    if (conf.ownerId == Provider.of<UserData>(context).currentUserId)
     {
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -410,7 +423,7 @@ class _ConferencePageState extends State<ConferencePage> {
             child: Text('Edit event'),
             onPressed: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) => ConferenceEdit(conf: widget.conf,))),
+                MaterialPageRoute(builder: (_) => ConferenceEdit(conf: conf,))),
           ),
           FlatButton(
             color: Colors.grey,
@@ -418,7 +431,7 @@ class _ConferencePageState extends State<ConferencePage> {
             child: Text('See Attendees'),
             onPressed: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) => ListAttendees(conf: widget.conf,))),
+                MaterialPageRoute(builder: (_) => ListAttendees(conf: conf,))),
           ),
         ],
       );

@@ -125,6 +125,8 @@ class _ConferenceEditState extends State<ConferenceEdit> {
       }
 
       if(widget.conf != null) {
+        print(_dateTime);
+
         Conference conf = Conference(
           eventId: widget.conf.eventId,
           ownerId: Provider.of<UserData>(context).currentUserId,

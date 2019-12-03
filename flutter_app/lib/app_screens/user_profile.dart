@@ -102,13 +102,6 @@ class _UserProfileState extends State<UserProfile> {
                     style: TextStyle(fontSize: 15),
                   ),
                   SizedBox(height: 5.0),
-                  Container(
-                    height: 80.0,
-                    child: Text(
-                      'Interests',
-                      style: TextStyle(fontSize: 15),
-                    ),
-                  ),
                 ],
               ),
             )
