@@ -204,6 +204,8 @@ Scratch your tingle, get ready to mingle!
 
 ### Logical architecture
 
+![alt text](https://github.com/softeng-feup/open-cx-powerrangers/blob/master/docs/img/package.jpg)
+
 ### Physical architecture
 
 Our application is fully developed using the very recent (but powerful) Flutter. Flutter is a framework for mobile development developed by Google, and supports both iOS and Android. We chose this platform in place of others because, when brought to our attention, seemed to be a very interesting technology and, as a consequence of being very recent, was literally growing before our eyes (during the span of this semester alone, the framework suffered several updates and new features were added). Despite this, both the documentation provided by Google themselves, and community support were abundant - which was crucial in helping us understand the tools and develop the app itself.
