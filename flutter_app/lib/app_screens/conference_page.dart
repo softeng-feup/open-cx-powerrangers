@@ -45,7 +45,8 @@ class _ConferencePageState extends State<ConferencePage> {
   }
 
   joinEvent(Conference conf) {
-    if (topicos == null || topicos.isEmpty) topicos = _generateTopics();
+    if (topicos == null || topicos.isEmpty)
+      topicos = _generateTopics();
 
     Database.followEvent(
         currentUserId: widget.currentUserId,
@@ -62,7 +63,7 @@ class _ConferencePageState extends State<ConferencePage> {
         context,
         MaterialPageRoute(
             builder: (_) => SelectInterests(
-                  topicMap: topicos,
+                  topicMap: _generateTopics(),
                   eventId: conf.eventId,
                   userId: widget.currentUserId,
                 )));
@@ -104,7 +105,10 @@ class _ConferencePageState extends State<ConferencePage> {
         currentUserId: widget.currentUserId, eventId: widget.conf.eventId);
 
     Attendee at = Attendee.fromDoc(doc);
-    topicos = at.topics;
+
+    setState(() {
+      topicos = at.topics;
+    });
 
     if (topicos == null || topicos.isEmpty) {
       topicos = _generateTopics();
@@ -377,19 +381,26 @@ class _ConferencePageState extends State<ConferencePage> {
           ],
         ),
         buildJoinButton(conf),
-        FlatButton(
-          onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (_) => SelectInterests(
-                        topicMap: topicos,
-                        eventId: widget.conf.eventId,
-                        userId: widget.currentUserId,
-                      ))),
+        isJoined ? FlatButton(
+          onPressed: () => pressedViewTopics(conf),
           child: Text('Topics'),
-        ),
+        )
+            : Container()
       ],
     );
+  }
+
+  pressedViewTopics(Conference conf)
+  {
+    _setupGetTopics();
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (_) => SelectInterests(
+              topicMap: topicos,
+              eventId: conf.eventId,
+              userId: widget.currentUserId,
+            )));
   }
 
   RaisedButton buildJoinButton(Conference conf) {

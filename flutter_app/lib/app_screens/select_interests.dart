@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/services/auth.dart';
 import 'package:flutter_app/services/database.dart';
 
 class SelectInterests extends StatefulWidget {
@@ -60,7 +59,6 @@ class _SelectInterestsState extends State<SelectInterests> {
   }
 
   getItems(){
-
     Database.followEvent(
         currentUserId: widget.userId,
         eventId: widget.eventId,
