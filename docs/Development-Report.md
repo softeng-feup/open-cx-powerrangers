@@ -64,11 +64,11 @@ Scratch your tingle, get ready to mingle!
 
 ### Use Case Diagram
 
-![alt text](https://github.com/softeng-feup/open-cx-powerrangers/blob/master/docs/img/useCaseDiagram.png)
+![alt text](https://github.com/softeng-feup/open-cx-powerrangers/blob/master/docs/img/use_case_diagram.png)
 
 #### Create account use case:
 
-* **Actor**: Atendee (since the conference staff can also use the app like a normal user, the actor 'Conference Staff' inherits from the'Atendee').
+* **Actor**: Attendee (since the conference staff can also use the app like a normal user, the actor 'Conference Staff' inherits from the'Atendee').
 * **Description**: In order to use the app, all users must create an account before setting up a personal profile and adhering to any conference. This process consists simply on choosing an account name and e-mail for future logins and filling in personal information such as name, age, sex.
 * **Preconditions and Postconditions**: The only precondition is to have the app downloaded and installed on the device. Since this use case assumes the user has no account prior to this step, the program is left in a state where it requires to user to create a personal profile.
 * **Normal Flow**: 
@@ -82,7 +82,7 @@ Scratch your tingle, get ready to mingle!
 
 #### Create profile use case:
 
-* **Actor**: Atendee.
+* **Actor**: Attendee.
 * **Description**: The user is now asked to create a profile for its account, persistent for all conferences. With this profile, other users are capable of identifying this user.
 * **Preconditions and Postconditions**: As a precondition, the user must have already created an account. Afterwards, the app can now be used normally by the user.
 * **Normal Flow**: 
@@ -95,7 +95,7 @@ Scratch your tingle, get ready to mingle!
 
 #### Select interests use case:
 
-* **Actor**: Atendee.
+* **Actor**: Attendee.
 * **Description**: When selecting to attend any given conference, the user must choose a few interests from a predefined pool, related to the conference, in order to provide a basis for how the matches are created. These interests are different from the profile-defined ones because they are only defined for each conference in particular. We call these 'professional interests'.
 * **Preconditions and Postconditions**: As preconditions, the user must have a correctly setup a user account and profile and must have opted-in into participating in the conference in question. The user can also opt-in and out of having the system activelly looking for possible matches. If the user opts-out of this, the system is left in a state where nothing really happens until/if the user decides to opt-in into the matchmaking process.
 * **Normal Flow**: 
@@ -108,7 +108,7 @@ Scratch your tingle, get ready to mingle!
 
 #### Accept matches use case:
 
-* **Actor**: Atendee.
+* **Actor**: Attendee.
 * **Description**: Having completed the previous steps successfully, and having opted-in into the matchmaking, the system will begin trying to match the conference's users based on both proximity, their personal and professional interests, the latter having a bigger influence on the outcome.
 * **Preconditions and Postconditions**: The user must have adhered to the conference in question, filled in the necessary interests and opted-in to the matchmaking process. Having accepted a match, the user must now look for their 'partner' in the real-world, and is given access to the other's profile information to ease this process. 
 * **Normal Flow**: 
@@ -119,13 +119,31 @@ Scratch your tingle, get ready to mingle!
 
 #### Search matches use case:
 
-* **Actor**: Atendee.
-* **Description**: The user is given the option to search is conference match history, so he can choose which match to Mingle with outside the conference.
+* **Actor**: Attendee.
+* **Description**: The user is given the option to search his conference match history, so he can choose which match to Mingle with outside the conference.
 * **Preconditions and Postconditions**: The user must have adhered to the conference in question, filled in the necessary interests and have at least one match.
 * **Normal Flow**: 
   * The user navigates to his profile;
   * In his profile the user selects "Search Matches".
   * He presses the match and he is able to start a conversation.
+  
+#### Search events use case:
+
+* **Actor**: Attendee.
+* **Description**: The user is given the option to search for a given event present in the app's database to join it.
+* **Preconditions and Postconditions**: The conference must have been already correctly setup.
+* **Normal Flow**: 
+  * The user navigates to the search screen;
+  * The user inputs the events full or partial name;
+  * The user selects the desired conference from between the presented ones.
+  
+#### See joined events use case:
+
+* **Actor**: Attendee.
+* **Description**: The user is given the option to search for all events (if any) he is currently enrolled in.
+* **Preconditions and Postconditions**: The conference must have been already correctly setup.
+* **Normal Flow**: 
+  * The user navigates to the "My Events" screen;
   
 #### Rate match use case:
 
@@ -137,39 +155,42 @@ Scratch your tingle, get ready to mingle!
   * The user is shown a scale of five starts and can choose to rate the match or dismiss it;
   * The user confirms their option and leaves the match screen.
   
-#### Define conference and related interests use case:
+#### Create/edit conference use case:
 
 * **Actor**: Conference Staff.
-* **Description**: For attendees to be able to join and make matches in a conference, the conference needs to be set up in the app. Therefore, someone from the conference staff needs to create the in-app event, filling it with several informations such as name, location, dates, external sites for more information. Additionally, they will be asked to provide a pool of topics related to the conference, so that attendees can choose which ones fit them the best.
-* **Preconditions and Postconditions**: The user must have higher privileges than a regular user in order to have access to the menu to create events. After the process is complete, the app will register the event and other user can search and join it.
+* **Description**: For attendees to be able to join and make matches in a conference, the conference needs to be set up in the app. Therefore, someone from the conference staff needs to create the in-app event, filling it with several informations such as name, location, dates, external sites for more information.
+* **Preconditions and Postconditions**: The user must be the original creator of the event (i.e. its owner) in order to have access to the menu to edit any event. After the process is complete, the app will register the event and other user can search and join it. Afterwords, the staff member must define some topics for the event in the following page.
 * **Normal Flow**: 
-  * The user navigates to the 'Create Event' menu;
-  * The user fills in the event's name, location, description and sets up and external link to the events webpage;
-  * The user defines other users to have staff privileges on that conference;
+  * The user navigates to the 'My Events' menu;
+  * The user presses the button to add a new event;
+  * The user fills in the event's name, location, description and sets up and external link to the event's webpage;
+  * The user confirms their submissions and creates/updates the event.
+  
+#### Define conference topics use case:
+
+* **Actor**: Conference Staff.
+* **Description**: For attendees to be able to make matches in a conference, the conference needs to have a availiable pool of topics. The conference's owner will be asked to provide a pool of topics related to it, so that attendees can choose which ones fit them the best.
+* **Preconditions and Postconditions**: The user must the conference's creator. The conference must be already correctly setup in order for this process.
+* **Normal Flow**: 
+  * The user navigates to the 'My Events' menu;
   * The user defines a set of topics related to the conference;
   * The user confirms their submissions and creates the event.
   
-#### Look up ongoing matches use case:
-
-* **Actor**: Conference staff.
-* **Description**: Conference staff members might have the need to check how active their attendees are with each other outside of the conferences planned events. Users with Staff privileges for a given conference can, therefore, check how many ongoing matches there are, as well as which topics these matches supposedly address.
-* **Preconditions and Postconditions**: The user must have higher priviledges for the conference in question to access this sub-menu.
-* **Normal Flow**: 
-  * The user navigates to the conference page;
-  * In the conference settings, the user selects 'See all matches';
-  * A page appears with all the ongoing matches as well as the topics that led to the creation of the match;
-  * The user can see some global statistics like how many matches are currently happening, how many matches have concluded and the most discussed topics in the matches.
+  **Alternate flow**:
+  * The user has already created the event and wants to change some/all of its topics;
+  * The user navigates to the 'My Events' menu;
+  * The user chooses the event to edit;
+  * The user edits the desired topics and saves.
   
-#### Look up user information use case:
+#### Lookup user information use case:
 
 * **Actor**: Conference staff.
-* **Description**: Conference staff members have access to the profile information of all attendees that have opted-in into the matchmaking process and can look up any individual attendee and see their profile, personal and professional interests.
+* **Description**: Conference staff members have access to a list of all currently joined users.
 * **Preconditions and Postconditions**: The user must have higher priviledges for the conference in question to access this sub-menu.
 * **Normal Flow**: 
   * The user navigates to the conference page;
   * In the conference settings, the user selects 'See registred users';
-  * A page appears with all users ordered alphabetically but can directly search for a name;
-  * By pressing the desired attendee's link, the user can see all information they have public as well as thei match history for their conference in particular.
+  * A page appears with all users;
 
 ### User stories
 
