@@ -13,6 +13,8 @@ import 'package:flutter_app/utils/constants.dart';
 import 'package:meta/meta.dart';
 import 'package:flutter_app/services/database.dart';
 
+import 'matchup_page.dart';
+
 
 class WaitMatch extends StatefulWidget{
   final String user1;
@@ -62,23 +64,18 @@ class _WaitMatchState extends State<WaitMatch> {
   }
 
   Future waitForResponse() async{
-    //print("Before insert");
-    //print(inserted);
     if(inserted == 0){
-      //print("In insert");
       match = Match(
         requester: widget.user1,
         receiver: widget.user2,
         event: "",
         rating: 0,
-        accepted: false,
+        accepted: true,
         completed: false
       );
-      //print("Set match id");
       matchid = await Database().addMatch(match);
     }
 
-    //print("After insert");
     if(matchid == null){
       return null;
     }
@@ -164,7 +161,7 @@ class _WaitMatchState extends State<WaitMatch> {
                                   child: RaisedButton(
                                       onPressed: () =>
                                       (Navigator.push( currentContext,
-                                        MaterialPageRoute(builder: (currentContext) => RootPage()))), // TODO: Meetup page
+                                        MaterialPageRoute(builder: (currentContext) => Matchup(match: match,)))),
                                         textColor: Colors.white,
                                         color: Colors.green,
                                         child: Text("Go to Meetup", textScaleFactor: 5),

@@ -28,7 +28,22 @@ class _MatchupState extends State<Matchup>{
   Widget build(BuildContext context) {
     currentContext = context;
     m = widget.match;
-    return null;
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "Matchup"
+        ),
+      ),
+      body: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              cancelMatch
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
 
