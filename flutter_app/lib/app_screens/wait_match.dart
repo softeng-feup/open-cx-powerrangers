@@ -62,10 +62,10 @@ class _WaitMatchState extends State<WaitMatch> {
   }
 
   Future waitForResponse() async{
-    print("Before insert");
-    print(inserted);
+    //print("Before insert");
+    //print(inserted);
     if(inserted == 0){
-      print("In insert");
+      //print("In insert");
       match = Match(
         requester: widget.user1,
         receiver: widget.user2,
@@ -74,18 +74,18 @@ class _WaitMatchState extends State<WaitMatch> {
         accepted: false,
         completed: false
       );
-      print("Set match id");
+      //print("Set match id");
       matchid = await Database().addMatch(match);
     }
 
-    print("After insert");
+    //print("After insert");
     if(matchid == null){
       return null;
     }
     else{
-      QuerySnapshot query = await matchesRef.where("uid" ,isEqualTo: matchid).getDocuments();
+      DocumentSnapshot snap = await matchesRef.document(matchid).get();
 
-      return query.documents;
+      return snap;
     }
   }
 
