@@ -11,6 +11,7 @@ import 'package:flutter_app/models/Match.dart';
 import 'package:flutter_app/services/findMatch.dart';
 import 'package:flutter_app/utils/constants.dart';
 import 'package:meta/meta.dart';
+import 'package:flutter_app/services/database.dart';
 
 
 class WaitMatch extends StatefulWidget{
@@ -24,51 +25,68 @@ class WaitMatch extends StatefulWidget{
 
 }
 
+
+
 class _WaitMatchState extends State<WaitMatch> {
   
   Timer timer;
 
-  var inserted = 0;
+  int inserted;
   var initTime;
   var newTime;
   var timeoutTime;
 
+  Match match;
+  Match m;
+  var matchid;
+
   @override
   void initState() {
     super.initState();
+    inserted = 0;
     initTime =  new DateTime.now();
     timeoutTime = initTime.add(new Duration(seconds: 60));
+    newTime = DateTime.now();
     timer = Timer.periodic(Duration(seconds: 1), (Timer t) {
       setState(() {
         newTime = DateTime.now();
+        inserted++;
       });
     });
   }
 
   @override
   void dispose() {
-    timer.cancel();
+    timer?.cancel();
     super.dispose();
   }
 
   Future waitForResponse() async{
+    print("Before insert");
+    print(inserted);
     if(inserted == 0){
-      matchesRef.add({
-        'requester': widget.user1,
-        'receiver' :widget.user2,
-        'event'    :"",
-        'accepted' :false,
-        'completed':false,
-        'rating': 0.0
-      });
-      inserted = 1;
+      print("In insert");
+      match = Match(
+        requester: widget.user1,
+        receiver: widget.user2,
+        event: "",
+        rating: 0,
+        accepted: false,
+        completed: false
+      );
+      print("Set match id");
+      matchid = await Database().addMatch(match);
     }
 
-    QuerySnapshot query = await matchesRef.where("requester",isEqualTo: widget.user1).where("receiver",isEqualTo: widget.user2).limit(1).getDocuments();
+    print("After insert");
+    if(matchid == null){
+      return null;
+    }
+    else{
+      QuerySnapshot query = await matchesRef.where("uid" ,isEqualTo: matchid).getDocuments();
 
-
-
-    return query.documents[0];
+      return query.documents;
+    }
   }
 
   var currentContext;
@@ -80,23 +98,19 @@ class _WaitMatchState extends State<WaitMatch> {
       body: FutureBuilder(
         future: waitForResponse(),
         builder: ( _,snapshot){
-          //newTime = DateTime.now();
-          //print(newTime);
-          //print(timeoutTime);
+
+          //print(snapshot.data['requester']);
           if(!snapshot.hasData && newTime.isBefore(timeoutTime)  == true){// or match is not accepted and timeout not reached
-            //print("yeet");
-            //newTime = DateTime.now();
-            //print(newTime);
+
             return Center(
                 child: CircularProgressIndicator()
             );
           }
-          //print("yeet2");
-          Match match = Match.fromDoc(snapshot.data);
+
+          match = Match.fromDoc(snapshot.data);
 
           if(match.accepted == false && newTime.isBefore(timeoutTime) == true){
-            //newTime = DateTime.now();
-            //print(newTime);
+
               return Center(
                   child: CircularProgressIndicator()
               );
@@ -150,7 +164,7 @@ class _WaitMatchState extends State<WaitMatch> {
                                   child: RaisedButton(
                                       onPressed: () =>
                                       (Navigator.push( currentContext,
-                                        MaterialPageRoute(builder: (currentContext) => HomePage()))), // TODO: Meetup page
+                                        MaterialPageRoute(builder: (currentContext) => RootPage()))), // TODO: Meetup page
                                         textColor: Colors.white,
                                         color: Colors.green,
                                         child: Text("Go to Meetup", textScaleFactor: 5),

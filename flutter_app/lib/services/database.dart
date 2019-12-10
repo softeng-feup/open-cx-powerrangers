@@ -15,12 +15,29 @@ class Database{
     });
   }
 
-  static void addMatch(Match match) async{
+  Future<String> addMatch(Match match) async{
     DocumentReference ref =  await matchesRef.add({
-      'requester' : match.requester,
-      'receiver' : match.receiver,
-      'event' : match.event,
-      'accepted' : match.accepted
+      'requester': match.requester,
+      'receiver': match.receiver,
+      'event': match.event,
+      'accepted': match.accepted,
+      'completed': match.completed,
+      'rating': match.rating
+    });
+    String matchid = ref.documentID;
+
+    return Future.value(matchid);
+
+  }
+
+  static void updateMatch(Match match) async{
+    matchesRef.document(match.uid).updateData({
+      'requester': match.requester,
+      'receiver': match.receiver,
+      'event': match.event,
+      'accepted': match.accepted,
+      'completed': match.completed,
+      'rating': match.rating
     });
   }
 

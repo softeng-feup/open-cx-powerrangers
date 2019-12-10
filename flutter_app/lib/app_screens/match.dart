@@ -27,7 +27,7 @@ class _MatchState extends State<Match> {
   Future<DocumentSnapshot> findRandomMatch(userId) async{
 
     DocumentSnapshot ds = await usersRef.document(userId).get();
-    print(ds.data);
+    //print(ds.data);
     return ds;
   }
 
