@@ -220,3 +220,172 @@ In essence, this is what the following UML diagram (which is an integrated deplo
 
 ![alt text](https://github.com/softeng-feup/open-cx-powerrangers/blob/master/docs/img/dep_com_uml.jpg)
 
+## Acceptance Testing
+
+### Feature: Join Button
+
+The attendees should be incremented when the button is pressed.
+
+**Scenario**: Counter increases when the button is pressed 
+
+**Given** The "Join Us" button
+
+**When** I tap the "Join Us" button it changes to “unjoin button”
+
+**Then** I expect the “attendees” number to be 1 more than before.
+
+### Feature: Unjoin Button
+
+The attendees should be decremented when the button is pressed.
+
+**Scenario**: Counter decrements when the button is pressed 
+
+**Given** The "Unjoin Us" button
+
+**When** I tap the "Unjoin Us" button it changes to “Join button”
+
+**Then** I expect the “attendees” number to be 1 less than before.
+
+
+### Feature: Choose Date
+
+The calendar should be shown when the button “choose date” is pressed and the date updated after pressing the day.
+
+**Scenario**: calendar shows up and date should be updated 
+
+**Given** The "choose a date" button
+
+**When** I tap the "choose a date" button it displays a calendar
+
+**Then** I expect the “date” to be updated to the selected date.
+
+### Feature: Accept Match
+The match should be accepted when pressing the accept button
+
+**Scenario**: Match is accepted when the right button is pressed
+
+**Given** The “accept” button
+
+**When**  I tap the accept button, the match should be accepted
+
+**Then** I expect the match to be shown in my match history, and to be able to message my match
+
+### Feature: Log Out
+
+The account should be logged out when the “Log out “ button is pressed
+
+**Scenario**: Log out button is shown, and If pressed the account should be logged out
+
+**Given**   I’m in the user profile and I’m logged In
+
+**When** I tap the "log out" button
+
+**Then** I expect my account to be logged out.
+
+### Feature: Search event
+
+The event I want should be shown, if exists, when I write the correct event name
+
+**Scenario**: search bar is shown, allowing me to write a conference name
+
+**Given** The search bar
+
+**When** I write the conference name
+
+**Then** I expect the conference to be shown.
+
+### Feature: Decline Match
+
+The match should be declined when pressing the decline button
+
+**Scenario**: Match is declined when the right button is pressed
+
+**Given** The “decline” button
+
+**When**  I tap the decline button, the match should be declined
+
+**Then** I expect the match pop up to disappear.
+
+### Feature:Edit Profile
+
+The profile can be edited by pressing the edit profile
+
+**Scenario**: Profile is updated after editing
+
+**Given** I expect the “edit profile” button
+
+**When**  I tap the edit profile button, the profile fields should be able editable
+
+**Then** I the profile to be updated, according to the edits.
+
+### Feature:Change profile image
+
+The profile image should be changed
+
+**Scenario**: Image is updated after editing
+
+**Given** I expect the “change profile image” button
+
+**When**  I tap the change profile button, the profile image should be able to edit(choose from gallery etc.)
+
+**Then** I expect the profile image to be updated.
+
+### Feature:About Us
+
+A brief description about the app creators should be displayed
+
+**Scenario**: A description is shown after pressing the button
+
+**Given** I expect the “about us” button
+
+**When**  I tap the about us button, a textbox or a container should be displayed
+
+**Then** I expect the brief description to be inside that container.
+
+### Feature:Go To Event
+
+By pressing this button, it should display the conference page
+
+**Scenario**: Conference profile is shown after pressing the “Go to event” button
+
+**Given** The “Go To Event” button
+
+**When**  I press the button
+
+**Then** I expect to be redirected to the conference page.
+
+### Feature: Select Topics
+
+A list of topics is displayed, and I’m should choose at least one
+
+**Scenario**:   Conference database is updated after user chooses his conference topics
+
+**Given** The list of topics 
+
+**When**  I join a conference, I select the topics I’m interested in and press the submit button
+
+**Then** I expect those options to be saved in the conference database
+
+### Feature: Create Conference
+
+A new conference is added to the app database
+
+**Scenario**: After Conference fields are correctly filled, Conference MinglerTalk, 21/12/2019, FEUP, @www.mingler.com, “Mingle with knowledge”, with 2 topics (Firebase and Trello) is created.
+
+**Given** The “Save Changes” button
+
+**When** I press the button
+
+**Then** I expect the conference with the fields specified to be added to the application database.
+
+### Feature: Match History
+
+All matches are displayed
+
+**Scenario**: 	After pressing the “Match History” button,  all user matches are displayed.
+
+**Given** The “Match History” button
+
+**When** I press the button
+
+**Then** I expect all my matches to be shown.
