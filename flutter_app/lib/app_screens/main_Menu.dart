@@ -43,7 +43,7 @@ class _MainMenuState extends State<MainMenu> {
       body: PageView(
           controller: _pageController,
           children: <Widget>[
-            HomePage(),
+            HomePage(uid: _getUid(context)),
             UserProfile(userId: _getUid(context))
           ],
         onPageChanged: (int index) {
