@@ -6,14 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/app_screens/root.dart';
 import 'package:flutter_app/app_screens/wait_match.dart';
 import 'package:flutter_app/models/User.dart';
+import 'package:flutter_app/services/database.dart';
 import 'package:flutter_app/utils/constants.dart';
-import 'package:flutter_app/services/findMatch.dart';
+
 
 class Match extends StatefulWidget {
   final String userId;
+  final String eventName;
 
 
-  Match({this.userId});
+  Match({this.userId,this.eventName});
 
   @override
   _MatchState createState() => _MatchState();
@@ -24,12 +26,14 @@ var currentContext;
 
 class _MatchState extends State<Match> {
 
-  Future<DocumentSnapshot> findRandomMatch(userId) async{
+  Future<QuerySnapshot> _match;
+
+  /*Future<DocumentSnapshot> findRandomMatch(userId) async{
 
     DocumentSnapshot ds = await usersRef.document(userId).get();
     //print(ds.data);
     return ds;
-  }
+  }*/
 
   static var uid1;
   static var uid2;
@@ -38,6 +42,7 @@ class _MatchState extends State<Match> {
   void initState() {
     super.initState();
     uid1= widget.userId;
+    _match = Database.findMatch2Pair(widget.eventName, widget.userId);
   }
 
   static var currentContext;
@@ -47,7 +52,7 @@ class _MatchState extends State<Match> {
     currentContext = context;
     return Scaffold(
       body: FutureBuilder(
-        future: findRandomMatch("Cx1WXsOVNPgzFo3abCkM3IcIRfh1"),
+        future: _match,
         builder: ( context , snapshot){
           if(!snapshot.hasData){
             return Center(
@@ -60,7 +65,7 @@ class _MatchState extends State<Match> {
             //var index = min + rnd.nextInt(max - min);
             //print(index);
             //print(snapshot.data.documents.length);
-            User user = User.fromDoc(snapshot.data);
+            User user = User.fromDoc(snapshot.data.documents[0]);
             uid2 = user.uid;
             //print(uid2);
             //print(uid1);

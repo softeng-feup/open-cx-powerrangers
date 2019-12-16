@@ -70,7 +70,7 @@ class _WaitMatchState extends State<WaitMatch> {
         receiver: widget.user2,
         event: "",
         rating: 0,
-        accepted: true,
+        accepted: false,
         completed: false
       );
       matchid = await Database().addMatch(match);

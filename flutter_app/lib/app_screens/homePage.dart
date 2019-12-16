@@ -42,6 +42,11 @@ class _HomePageState extends State<HomePage>{
 
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   Future getConferences() async{
     List<DocumentSnapshot> docs = List();
     for(int i = 0; i < allconferences.length ;i++){
@@ -88,7 +93,7 @@ class _HomePageState extends State<HomePage>{
                     for(int i = 0; i < snap2.data[0].length ;i++){
                       exists = false;
                      conf = Conference.fromDoc(snap2.data[0][i]);
-                     for(int j = 0; j < conferencenames.length; i++){
+                     for(int j = 0; j < conferencenames.length; j++){
                        if(conferencenames[j] == conf.name){
                          exists = true;
                          break;
@@ -99,28 +104,60 @@ class _HomePageState extends State<HomePage>{
                      }
                     }
 
-                    return DropdownButton<String>(
-                      value: dropdownevent,
-                      icon: Icon(Icons.arrow_downward),
-                      iconSize: 24,
-                      elevation: 16,
-                      style: TextStyle(color: Colors.deepPurple),
-                      underline: Container(
-                        height: 2,
-                        color: Colors.deepPurpleAccent,
+                    return Scaffold(
+                      body: Center(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: <Widget>[
+                          DropdownButton<String>(
+                          value: dropdownevent,
+                            icon: Icon(Icons.arrow_downward),
+                            iconSize: 24,
+                            elevation: 16,
+                            style: TextStyle(color: Colors.deepPurple),
+                            underline: Container(
+                              height: 2,
+                              color: Colors.deepPurpleAccent,
+                            ),
+                            onChanged: (String newValue) {
+                              setState(() {
+                                dropdownevent = newValue;
+                              });
+                            },
+                            items:conferencenames
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                          ),
+                            Container(
+                              width: 200,
+                              height: 200,
+                              child: Column(
+                                children: <Widget>[
+                                  SizedBox( // Register button
+                                    height: 20,
+                                  ),
+                                  ButtonTheme(
+                                    minWidth: double.infinity,
+                                    height: 100,
+                                    child: RaisedButton(
+                                      onPressed: () =>  (Navigator.push( context,
+                                          MaterialPageRoute(builder: (context) =>Match(userId: widget.uid,eventName: dropdownevent,)))),
+                                      textColor: Colors.white,
+                                      color: Colors.green,
+                                      child: Text("✓", textScaleFactor: 5),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                            ],
+                          ),
+                        ),
                       ),
-                      onChanged: (String newValue) {
-                        setState(() {
-                          dropdownevent = newValue;
-                        });
-                      },
-                      items:conferencenames
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
                     );
                   }
                 },

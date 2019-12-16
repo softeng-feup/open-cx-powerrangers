@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_app/models/Attendee.dart';
 import 'package:flutter_app/models/Conference.dart';
 import 'package:flutter_app/models/User.dart';
 import 'package:flutter_app/utils/constants.dart';
@@ -151,6 +154,66 @@ class Database{
       'completed': match.completed,
       'rating': match.rating
     });
+  }
+
+  static Future<QuerySnapshot> findMatch2Pair(String eventname, String id) async{
+    QuerySnapshot event = await eventRef.where('name', isEqualTo: eventname).getDocuments();
+
+    Conference conf = Conference.fromDoc(event.documents[0]);
+
+    DocumentSnapshot topics = await followersRef.document(conf.eventId).collection('userFollowers').document(id).get();
+
+    Attendee requester = Attendee.fromDoc(topics);
+
+    QuerySnapshot randomUser1 = await followersRef.document(conf.eventId).collection('userFollowers').where('name', isGreaterThan: id).getDocuments();
+    QuerySnapshot randomUser2 = await followersRef.document(conf.eventId).collection('userFollowers').where('name', isLessThan: id).getDocuments();
+
+    Attendee receiver;
+
+    if(randomUser1.documents.length > 0){
+      var compatible = false;
+      var match;
+      for(int i = 0; i < randomUser1.documents.length; i++){
+        receiver = Attendee.fromDoc(randomUser1.documents[i]);
+        requester.topics.forEach((key1,value1){
+          receiver.topics.forEach((key2,value2){
+            if(key1 == key2 && value1 == value2){
+              compatible = true;
+            }
+          });
+          if(compatible == true){
+            match = receiver;
+          }
+        });
+        if(compatible == true){
+          QuerySnapshot m = await usersRef.where('name',isEqualTo: match.name).getDocuments();
+          return m;
+        }
+      }
+    }
+    if(randomUser2.documents.length > 0){
+      var compatible = false;
+      var match;
+      for(int i = 0; i < randomUser2.documents.length; i++){
+        receiver = Attendee.fromDoc(randomUser2.documents[i]);
+        requester.topics.forEach((key1,value1){
+          receiver.topics.forEach((key2,value2){
+            if(key1 == key2 && value1 == value2){
+              compatible = true;
+            }
+          });
+          if(compatible == true){
+            match = receiver;
+          }
+        });
+        if(compatible == true){
+          QuerySnapshot m = await usersRef.where('name',isEqualTo: match.name).getDocuments();
+          return m;
+        }
+      }
+    }
+
+    return null;
   }
 
 }
