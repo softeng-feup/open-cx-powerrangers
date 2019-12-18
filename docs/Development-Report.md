@@ -402,3 +402,11 @@ In essence, this is what the following UML diagram (which is an integrated deplo
 ![alt text](https://github.com/softeng-feup/open-cx-powerrangers/blob/master/docs/img/dep_com_uml.jpg)
 
 
+##Test
+
+###Test Plan
+
+Because most of our app interacts with Firebase, we can't test those interactions, so our tests will focus on UI testing.
+We will do this UI testing using flutter widget tests.
+
+In order to automate the acceptance testing we will use gherkin. Gherkin allows us to test the acceptance tests that we made based on Use cases. Those tests are located in folder "test_driver".
