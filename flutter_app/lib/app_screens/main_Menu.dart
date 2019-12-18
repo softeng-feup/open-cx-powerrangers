@@ -1,8 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/app_screens/conference_edit.dart';
 import 'package:flutter_app/app_screens/conference_page.dart';
 import 'package:flutter_app/app_screens/list_events.dart';
+import 'package:flutter_app/app_screens/search_screen.dart';
 import 'package:flutter_app/models/User.dart';
 import 'package:flutter_app/models/UserData.dart';
 import 'package:flutter_app/utils/constants.dart';
@@ -10,6 +12,8 @@ import 'package:provider/provider.dart';
 import '../services/auth.dart';
 import 'package:flutter_app/app_screens/homePage.dart';
 import 'package:flutter_app/app_screens/user_profile.dart';
+
+import 'match_requests.dart';
 
 class MainMenu extends StatefulWidget {
 
@@ -39,7 +43,7 @@ class _MainMenuState extends State<MainMenu> {
       body: PageView(
           controller: _pageController,
           children: <Widget>[
-            HomePage(),
+            HomePage(uid: _getUid(context)),
             UserProfile(userId: _getUid(context))
           ],
         onPageChanged: (int index) {
@@ -91,19 +95,32 @@ class _MainMenuState extends State<MainMenu> {
                 ListTile(
                   leading: Icon(Icons.search),
                   title: Text('Search Event'),
-                  onTap: () => print('searching'),
+                  onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => SearchScreen())),
                 ),
                 ListTile(
                   leading: Icon(Icons.book),
                   title: Text('My Events'),
-                  onTap: () => Navigator.push(
+                  onTap: () => Navigator.push(context,
+                  MaterialPageRoute(builder: (_) => ListEvents(uid: user.uid,))) /*Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (_) => ConferencePage())),
+                      MaterialPageRoute(builder: (_) => ConferencePage())),*/
                 ),
                 ListTile(
                   leading: Icon(Icons.history),
                   title: Text('Match history'),
-                  onTap: () => print('historiating'),
+                  onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => ConferenceEdit())),
+                ),
+                ListTile(
+                  leading: Icon(Icons.mail),
+                  title: Text('Match requests'),
+                  onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => MatchRequests())
+                  ),
                 ),
                 Divider(),
                 Expanded(

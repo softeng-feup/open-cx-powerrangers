@@ -1,16 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_app/app_screens/homePage.dart';
-import 'package:flutter_app/app_screens/main_Menu.dart';
-import 'package:flutter_app/app_screens/user_login.dart';
-import 'package:flutter_app/models/User.dart';
 import 'package:flutter_app/models/UserData.dart';
 import 'package:provider/provider.dart';
 
 class AuthService {
   static final _auth = FirebaseAuth.instance;
   static final _firestore = Firestore.instance;
+
+
 
   static void signUpUser(
       BuildContext context, String name, String email, String password) async {
