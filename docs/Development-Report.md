@@ -196,40 +196,6 @@ Scratch your tingle, get ready to mingle!
 
 [Link to the Trello page.](https://trello.com/b/zLgW01zY/esof-mingler)
 
-### Domain model
-
-![alt text](https://github.com/softeng-feup/open-cx-powerrangers/blob/master/docs/img/domain_model.png)
-
-## Architecture and Design
-
-### Logical architecture
-
-The main portion of our app consists on classes whose only role is interacting with the user, be it by retrieving or displaying information - with little logic behind them. All these classes constitute our package *'app_screens'*. We further divide this package EventUI, UserUI and MatchUI where each of these packages, being part of app_screens, deals with all events related to their respective name.
-
-The app_screens package depens on four other: Utils, Models, Services and the UIManager. Starting with the simpler one, the *Utils* package simply defines a variety of constants used a bit all throughout the program.
-
-The *UIManager* package constains all classes (and the driver function) responsible with deciding, upon app launch, wether or not to display any of the app_screens or locking the user out of them if he/she is not authenticated.
-
-The *Models* package is responsible with turning *'loose'* information coming from the Database into an actual object, allowing for easier and safer manipulation by our part. Because of this interaction with Database-related functions, this package ends up depending on the *Services* package.
-
-Finally, the *Services* package contains all services we use in our app, this is, the Authentication Service, Database Service and Storage service. Therefore, this package is the backbone of our app, since it allows us to store users, their information, events and matches.
-
-![alt text](https://github.com/softeng-feup/open-cx-powerrangers/blob/master/docs/img/package.jpg)
-
-### Physical architecture
-
-Our application is fully developed using the very recent (but powerful) Flutter. Flutter is a framework for mobile development developed by Google, and supports both iOS and Android. We chose this platform in place of others because, when brought to our attention, seemed to be a very interesting technology and, as a consequence of being very recent, was literally growing before our eyes (during the span of this semester alone, the framework suffered several updates and new features were added). Despite this, both the documentation provided by Google themselves, and community support were abundant - which was crucial in helping us understand the tools and develop the app itself.
-
-As a consequence of using Flutter, the program had to be developed fully in Dart. Dart was also created by Google and is a script, object-oriented and class-based language. This language initially added a whole new layer of adaptation but we would soon realize its power and wielded it to our benefict. Using this language was less of a choice but more of an obligation related to the framework we use.
-
-Finally, although if time permits we intend on using ESOF's own back-end, our current back-end is Google's Firebase. Firebase provides, basically freely, authentication services, databases, cloud storage and even notification-handling and messaging. The database is in NoSQL, but because of the structure of Firebase we don't have to interact with it directly, and is collection-based. Firebase has its challenges but with time became very intuitive and be it because the entire app resided inside Google's services ecosystem or because support for the several parts was extensive, we never had integration issues between all these components.
-
-Regarding the architecture itself, briefly speaking, has two parts to it: the smartphone-based components and the Firebase-side artifacts. Through the app's UI screens, the user sees/edits several pieces of information which are sent to/retrieved from several classes (the Models). These classes get their internal information by accesing the collections located in Firebase and execute CRUD operations upon the documents inside them.
-
-In essence, this is what the following UML diagram (which is an integrated deployment and component diagram) refers to:
-
-![alt text](https://github.com/softeng-feup/open-cx-powerrangers/blob/master/docs/img/dep_com_uml.jpg)
-
 ## Acceptance Testing
 
 ### Feature: Join Button
@@ -399,3 +365,40 @@ All matches are displayed
 **When** I press the button
 
 **Then** I expect all my matches to be shown.
+
+
+### Domain model
+
+![alt text](https://github.com/softeng-feup/open-cx-powerrangers/blob/master/docs/img/domain_model.png)
+
+## Architecture and Design
+
+### Logical architecture
+
+The main portion of our app consists on classes whose only role is interacting with the user, be it by retrieving or displaying information - with little logic behind them. All these classes constitute our package *'app_screens'*. We further divide this package EventUI, UserUI and MatchUI where each of these packages, being part of app_screens, deals with all events related to their respective name.
+
+The app_screens package depens on four other: Utils, Models, Services and the UIManager. Starting with the simpler one, the *Utils* package simply defines a variety of constants used a bit all throughout the program.
+
+The *UIManager* package constains all classes (and the driver function) responsible with deciding, upon app launch, wether or not to display any of the app_screens or locking the user out of them if he/she is not authenticated.
+
+The *Models* package is responsible with turning *'loose'* information coming from the Database into an actual object, allowing for easier and safer manipulation by our part. Because of this interaction with Database-related functions, this package ends up depending on the *Services* package.
+
+Finally, the *Services* package contains all services we use in our app, this is, the Authentication Service, Database Service and Storage service. Therefore, this package is the backbone of our app, since it allows us to store users, their information, events and matches.
+
+![alt text](https://github.com/softeng-feup/open-cx-powerrangers/blob/master/docs/img/package.jpg)
+
+### Physical architecture
+
+Our application is fully developed using the very recent (but powerful) Flutter. Flutter is a framework for mobile development developed by Google, and supports both iOS and Android. We chose this platform in place of others because, when brought to our attention, seemed to be a very interesting technology and, as a consequence of being very recent, was literally growing before our eyes (during the span of this semester alone, the framework suffered several updates and new features were added). Despite this, both the documentation provided by Google themselves, and community support were abundant - which was crucial in helping us understand the tools and develop the app itself.
+
+As a consequence of using Flutter, the program had to be developed fully in Dart. Dart was also created by Google and is a script, object-oriented and class-based language. This language initially added a whole new layer of adaptation but we would soon realize its power and wielded it to our benefict. Using this language was less of a choice but more of an obligation related to the framework we use.
+
+Finally, although if time permits we intend on using ESOF's own back-end, our current back-end is Google's Firebase. Firebase provides, basically freely, authentication services, databases, cloud storage and even notification-handling and messaging. The database is in NoSQL, but because of the structure of Firebase we don't have to interact with it directly, and is collection-based. Firebase has its challenges but with time became very intuitive and be it because the entire app resided inside Google's services ecosystem or because support for the several parts was extensive, we never had integration issues between all these components.
+
+Regarding the architecture itself, briefly speaking, has two parts to it: the smartphone-based components and the Firebase-side artifacts. Through the app's UI screens, the user sees/edits several pieces of information which are sent to/retrieved from several classes (the Models). These classes get their internal information by accesing the collections located in Firebase and execute CRUD operations upon the documents inside them.
+
+In essence, this is what the following UML diagram (which is an integrated deployment and component diagram) refers to:
+
+![alt text](https://github.com/softeng-feup/open-cx-powerrangers/blob/master/docs/img/dep_com_uml.jpg)
+
+
