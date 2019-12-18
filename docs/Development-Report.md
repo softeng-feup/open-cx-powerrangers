@@ -196,9 +196,9 @@ Scratch your tingle, get ready to mingle!
 
 [Link to the Trello page.](https://trello.com/b/zLgW01zY/esof-mingler)
 
-## Acceptance Testing
+### Acceptance Testing
 
-### Feature: Join Button
+#### Feature: Join Button
 
 The attendees should be incremented when the button is pressed.
 
@@ -210,7 +210,7 @@ The attendees should be incremented when the button is pressed.
 
 **Then** I expect the “attendees” number to be 1 more than before.
 
-### Feature: Unjoin Button
+#### Feature: Unjoin Button
 
 The attendees should be decremented when the button is pressed.
 
@@ -223,7 +223,7 @@ The attendees should be decremented when the button is pressed.
 **Then** I expect the “attendees” number to be 1 less than before.
 
 
-### Feature: Choose Date
+#### Feature: Choose Date
 
 The calendar should be shown when the button “choose date” is pressed and the date updated after pressing the day.
 
@@ -235,7 +235,7 @@ The calendar should be shown when the button “choose date” is pressed and th
 
 **Then** I expect the “date” to be updated to the selected date.
 
-### Feature: Accept Match
+#### Feature: Accept Match
 The match should be accepted when pressing the accept button
 
 **Scenario**: Match is accepted when the right button is pressed
@@ -246,7 +246,7 @@ The match should be accepted when pressing the accept button
 
 **Then** I expect the match to be shown in my match history, and to be able to message my match
 
-### Feature: Log Out
+#### Feature: Log Out
 
 The account should be logged out when the “Log out “ button is pressed
 
@@ -258,7 +258,7 @@ The account should be logged out when the “Log out “ button is pressed
 
 **Then** I expect my account to be logged out.
 
-### Feature: Search event
+#### Feature: Search event
 
 The event I want should be shown, if exists, when I write the correct event name
 
@@ -270,7 +270,7 @@ The event I want should be shown, if exists, when I write the correct event name
 
 **Then** I expect the conference to be shown.
 
-### Feature: Decline Match
+#### Feature: Decline Match
 
 The match should be declined when pressing the decline button
 
@@ -282,7 +282,7 @@ The match should be declined when pressing the decline button
 
 **Then** I expect the match pop up to disappear.
 
-### Feature:Edit Profile
+#### Feature:Edit Profile
 
 The profile can be edited by pressing the edit profile
 
@@ -294,7 +294,7 @@ The profile can be edited by pressing the edit profile
 
 **Then** I the profile to be updated, according to the edits.
 
-### Feature:Change profile image
+#### Feature:Change profile image
 
 The profile image should be changed
 
@@ -306,7 +306,7 @@ The profile image should be changed
 
 **Then** I expect the profile image to be updated.
 
-### Feature:About Us
+#### Feature:About Us
 
 A brief description about the app creators should be displayed
 
@@ -318,7 +318,7 @@ A brief description about the app creators should be displayed
 
 **Then** I expect the brief description to be inside that container.
 
-### Feature:Go To Event
+#### Feature:Go To Event
 
 By pressing this button, it should display the conference page
 
@@ -330,7 +330,7 @@ By pressing this button, it should display the conference page
 
 **Then** I expect to be redirected to the conference page.
 
-### Feature: Select Topics
+#### Feature: Select Topics
 
 A list of topics is displayed, and I’m should choose at least one
 
@@ -342,7 +342,7 @@ A list of topics is displayed, and I’m should choose at least one
 
 **Then** I expect those options to be saved in the conference database
 
-### Feature: Create Conference
+#### Feature: Create Conference
 
 A new conference is added to the app database
 
@@ -354,7 +354,7 @@ A new conference is added to the app database
 
 **Then** I expect the conference with the fields specified to be added to the application database.
 
-### Feature: Match History
+#### Feature: Match History
 
 All matches are displayed
 
@@ -402,9 +402,19 @@ In essence, this is what the following UML diagram (which is an integrated deplo
 ![alt text](https://github.com/softeng-feup/open-cx-powerrangers/blob/master/docs/img/dep_com_uml.jpg)
 
 
-##Test
+### Prototype
 
-###Test Plan
+We have implemented a vertical prototype, a thin slice of the system. The prototype's role in our development proccess was more about testing if the tools (Flutter/Dart/Firebase) were adequate to what we aimed to do and less about actually advancing the development of the app itself. The flowing user stories are present in our prototype:
+
+1. As an attendee for the upcoming conference, I create an account in Mingler, input some of my information, and get access to all of the app's features.
+
+2. As an event attendee, I want to be able to create a profile and input some personal interests so as to allow other users to know me better and incentivate them to accept their match with me.
+
+
+
+## Test
+
+### Test Plan
 
 Because most of our app interacts with Firebase, we can't test those interactions, so our tests will focus on UI testing.
 We will do this UI testing using flutter widget tests.
