@@ -204,6 +204,16 @@ Scratch your tingle, get ready to mingle!
 
 ### Logical architecture
 
+The main portion of our app consists on classes whose only role is interacting with the user, be it by retrieving or displaying information - with little logic behind them. All these classes constitute our package *'app_screens'*. We further divide this package EventUI, UserUI and MatchUI where each of these packages, being part of app_screens, deals with all events related to their respective name.
+
+The app_screens package depens on four other: Utils, Models, Services and the UIManager. Starting with the simpler one, the *Utils* package simply defines a variety of constants used a bit all throughout the program.
+
+The *UIManager* package constains all classes (and the driver function) responsible with deciding, upon app launch, wether or not to display any of the app_screens or locking the user out of them if he/she is not authenticated.
+
+The *Models* package is responsible with turning *'loose'* information coming from the Database into an actual object, allowing for easier and safer manipulation by our part. Because of this interaction with Database-related functions, this package ends up depending on the *Services* package.
+
+Finally, the *Services* package contains all services we use in our app, this is, the Authentication Service, Database Service and Storage service. Therefore, this package is the backbone of our app, since it allows us to store users, their information, events and matches.
+
 ![alt text](https://github.com/softeng-feup/open-cx-powerrangers/blob/master/docs/img/package.jpg)
 
 ### Physical architecture
