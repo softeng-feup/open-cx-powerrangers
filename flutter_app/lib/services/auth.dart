@@ -10,6 +10,8 @@ class AuthService {
 
 
 
+
+
   static void signUpUser(
       BuildContext context, String name, String email, String password) async {
     try {
@@ -42,5 +44,9 @@ class AuthService {
     } catch (e) {
       print(e);
     }
+  }
+
+  Future<FirebaseUser> getCurrentUser(){
+    return  _auth.currentUser();
   }
 }
