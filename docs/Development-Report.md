@@ -410,7 +410,11 @@ We have implemented a vertical prototype, a thin slice of the system. The protot
 
 2. As an event attendee, I want to be able to create a profile and input some personal interests so as to allow other users to know me better and incentivate them to accept their match with me.
 
+## Project management
 
+Project managment is a crucial part of any development effort so that all those involved are up to date and on the same page in regards to what has been done, by whom, what is currently being developed and what needs yet to be done. 
+
+With this in mind, we chose to use Trello as our main management tool, since it was easy to use and keep updated. Our Trello page can be viewed [here](https://trello.com/b/zLgW01zY/esof-mingler).
 
 ## Test
 
